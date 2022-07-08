@@ -1,13 +1,123 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background-color: white !important;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#linear {
+    background: 
+            linear-gradient(217deg, rgba(255, 0, 0, 0.167), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgb(18, 189, 18), rgba(5, 143, 5, 0) 70.71%),
+            linear-gradient(336deg, rgb(5, 239, 5), rgba(8, 209, 32, 0) 70.71%);
+}
+
+#linear2 {
+    background: 
+            linear-gradient(217deg, rgba(255, 0, 0, 0.167), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgb(247, 239, 7), rgba(188, 232, 13, 0) 70.71%),
+            linear-gradient(336deg, rgb(208, 208, 114), rgba(211, 236, 21, 0) 70.71%);
+}
+
+#linear3 {
+    background: 
+            linear-gradient(217deg, rgba(13, 101, 216, 0.167), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgb(4, 183, 214), rgba(249, 200, 5, 0) 70.71%),
+            linear-gradient(336deg, rgb(26, 172, 121), rgba(218, 246, 6, 0) 70.71%);
+}
+
+#linear4 {
+    background: 
+            linear-gradient(217deg, rgba(227, 191, 11, 0.167), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgb(46, 253, 4), rgba(104, 242, 5, 0) 70.71%),
+            linear-gradient(336deg, rgb(22, 228, 12), rgba(8, 234, 27, 0) 70.71%);
+}
+
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 80vh;
+    width: 80vw;
+  }
+
+  .btn-primary {
+    background-color: rgb(89, 7, 211) !important;
+    border-radius: 50px;
+    outline: none;
+    border: none;
+  }
+
+  .secondary {
+    background-color: rgb(7, 36, 65) !important;
+    border-top-right-radius: 100px;
+    height: 100%;
+  }
+
+  .secondaryNav {
+    background-color: rgb(7, 36, 65) !important;
+    border-top-right-radius: 100px;
+    width: 100%;
+  }
+
+  .primary {
+    background-color: rgb(71, 7, 168) !important;
+    border-radius: 100px;
+  }
+
+  .fondos-cards {
+    background-color: rgb(89, 7, 211);
+    border-radius: 35px;
+  }
+
+  .progress {
+    background-color: rgb(10, 25, 45) !important;
+    border-radius: 100px !important;
+    height: 10px;
+    font-size: 10px;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+  .accordion-button:not(.collapsed) {
+    background-color: transparent;
+    color: black;
+  }
+
+  .accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon) !important;
+  }
+
+  .dropdown-toggle::after {
+    display:none !important;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(71, 7, 168); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(7, 36, 65); 
+}
+
+.borderless td, .borderless th {
+  border: none;
+  vertical-align: middle;
+  text-align: center;
 }
