@@ -10,7 +10,7 @@ export const Cards = () => {
   }
   return (
     <>
-      <div className="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 my-2">
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
         <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
           <img src="https://cdn.pixabay.com/photo/2020/04/22/12/28/book-5077895__340.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
           <div className='p-2'>
@@ -24,7 +24,7 @@ export const Cards = () => {
         </div>
       </div>
       
-      <div className="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 my-2">
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
         <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
           <img src="https://cdn.pixabay.com/photo/2020/04/22/12/28/book-5077895__340.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
           <div className='p-2'>
@@ -38,7 +38,7 @@ export const Cards = () => {
         </div>
       </div>
 
-      <div className="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 my-2">
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
         <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
           <img src="https://cdn.pixabay.com/photo/2020/04/22/12/28/book-5077895__340.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
           <div className='p-2'>
@@ -52,7 +52,7 @@ export const Cards = () => {
         </div>
       </div>
 
-      <div className="col-xs-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 my-2">
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
         <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
           <img src="https://cdn.pixabay.com/photo/2020/04/22/12/28/book-5077895__340.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
           <div className='p-2'>

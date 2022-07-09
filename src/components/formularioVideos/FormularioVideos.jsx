@@ -29,9 +29,9 @@ export const FormularioVideos = () => {
         <div className='p-4'>
             <h1>Crear capacitación</h1>
 
-            <form className=' my-5'>
+            <form className='my-5'>
                 <div className="row">
-                    <div className="col-6 form-group">
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
                         <label className='form-label'>Titulo</label>
                         <input type="text" placeholder='Titulo de la capacitación' className='form-control' />
                     </div>
@@ -42,22 +42,22 @@ export const FormularioVideos = () => {
                         return (
                             <Fragment key={element + index}>
                                 <div className="row">
-                                    <div className="col-3 form-group">
+                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Titulo del video</label>
                                         <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
                                     </div>
 
-                                    <div className="col-3 form-group">
+                                    <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Imagen</label>
                                         <input name='imagen' value={element.imagen} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Imagen de la capacitación' className='form-control' />
                                     </div>
 
-                                    <div className="col-3 form-group">
+                                    <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Video</label>
                                         <input name='video' value={element.video} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
                                     </div>
 
-                                    <div className="col-2 form-group">
+                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Acción</label>
                                         <div className="row">
                                             <div className="col-12">

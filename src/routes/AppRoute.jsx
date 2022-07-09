@@ -18,7 +18,7 @@ export const AppRoute = () => {
         <Route path='/pincel-admin' element = {<DashboardAdmin />} />
         <Route path='/capacitacion' element = {<Capacitacion />} />
         <Route path='/formCapacitaciones' element = {<FormularioVideos />} />
-        <Route path='/ListCapacitaciones' element = {<ListadoVideos />} />
+        <Route path='/ListVideos' element = {<ListadoVideos />} />
         <Route path='/capacitacion/:id' element = {<VideosComponent />} />
         <Route path='/perfil' element = {<Perfil />} />
 
