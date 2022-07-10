@@ -9,6 +9,7 @@ export const TableVideos = () => {
                 <thead>
                     <tr>
                         <th scope="col">Imagen</th>
+                        <th scope="col">Tipo</th>
                         <th scope="col">Titulo</th>
                         <th scope="col">Titulo de la capacitación</th>
                         <th scope="col">Video</th>
@@ -17,11 +18,12 @@ export const TableVideos = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -35,11 +37,12 @@ export const TableVideos = () => {
                     </tr>
                     
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -53,11 +56,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -71,11 +75,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -89,11 +94,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -107,11 +113,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -125,11 +132,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
@@ -143,11 +151,12 @@ export const TableVideos = () => {
                     </tr>
 
                     <tr>
-                        <td>
+                        <td className='d-flex justify-content-center'>
                             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                 <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                             </div>
                         </td>
+                        <td>Video</td>
                         <td>Servicio al cliente</td>
                         <td>Servicio 1</td>
                         <td>Video</td>
