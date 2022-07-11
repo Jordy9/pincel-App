@@ -1,9 +1,47 @@
 import React from 'react'
 import { useResponsive } from '../../hooks/useResponsive'
+import Slider from "react-slick";
 
 export const CardsAdmin = () => {
 
   const [ respWidth ] = useResponsive()
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false
+        }
+      }
+    ]
+  };
 
   return (
     <>
@@ -25,45 +63,44 @@ export const CardsAdmin = () => {
                 (respWidth >= 992)
                   ?
                 <div className="row my-3">
-                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-col-xxl-4">
-                    <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                        <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                            <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                        </div>
-                      María Rodriguez
-                    </div>
-                    </div>
-                  </div>
+                  <Slider {...settings}>
+                    {
+                      [1, 2, 3, 4].map((element, index) => {
+                        return (
+                          <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
+                            <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
+                              <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                  <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                              </div>
+                              María Rodriguez
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                  </Slider>
+                </div>
                   :
                   <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-col-xxl-4">
-                      <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
-                          <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                              <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                          </div>
-                          <span className='ml-4'>María Rodriguez</span>
-                      </div>
-                    </div>
+                    <Slider {...settings}>
+                      {
+                        [1, 2, 3, 4].map((element, index) => {
+                          return (
+                            <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
+                              <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
+                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                                </div>
+                                <span className='ml-4'>María Rodriguez</span>
+                              </div>
+                            </div>
+                          )
+                        })
+                      }
+                    </Slider>
                   </div>
               }
 
-              {/* <div className="col-4">
-                <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                    <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                        <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                    </div>
-                  María Rodriguez
-                </div>
-              </div>
-
-              <div className="col-4">
-                <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                    <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                        <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                    </div>
-                  María Rodriguez
-                </div>
-              </div> */}
               {
                 (respWidth > 454 && respWidth < 992)
                   ?
@@ -92,26 +129,42 @@ export const CardsAdmin = () => {
                 (respWidth >= 992)
                   ?
                 <div className="row my-3">
-                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-col-xxl-4">
-                    <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                        <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                            <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                        </div>
-                      María Rodriguez
-                    </div>
-                    </div>
-                  </div>
+                  <Slider {...settings}>
+                      {
+                        [1, 2, 3, 4].map((element, index) => {
+                          return (
+                            <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
+                              <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
+                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                                </div>
+                                María Rodriguez
+                              </div>
+                            </div>
+                          )
+                        })
+                      }
+                  </Slider>
+                </div>
                   :
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-col-xxl-4">
-                      <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
-                          <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                              <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                <div className="row">
+                  <Slider {...settings}>
+                    {
+                      [1, 2, 3, 4].map((element, index) => {
+                        return (
+                          <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
+                            <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
+                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                                </div>
+                                <span className='ml-4'>María Rodriguez</span>
+                            </div>
                           </div>
-                          <span className='ml-4'>María Rodriguez</span>
-                      </div>
-                    </div>
-                  </div>
+                        )
+                      })
+                    }
+                  </Slider>
+                </div>
               }
 
               {

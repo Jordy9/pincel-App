@@ -1,9 +1,48 @@
 import React from 'react'
 import { useResponsive } from '../../hooks/useResponsive'
+import Slider from "react-slick";
 
 export const Cards = () => {
 
   const [ respWidth ] = useResponsive()
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false
+        }
+      }
+    ]
+  };
+
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 my-2">
@@ -110,23 +149,19 @@ export const Cards = () => {
             <h5 className='text-center my-3'>Selecciona la evaluacion que desees retomar, para mejorar la calificación</h5>
 
             <div className="row my-2">
-              <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                <div className='btn primary p-2 text-center text-white'>
-                  Ver todas las capacitaciones
-                </div>
-              </div>
-
-              {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                <div className='btn primary p-2 text-center text-white'>
-                  Ver todas las capacitaciones
-                </div>
-              </div>
-
-              <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                <div className='btn primary p-2 text-center text-white'>
-                  Ver todas las capacitaciones
-                </div>
-              </div> */}
+              <Slider {...settings}>
+                {
+                  [1, 2, 3, 4].map((Element, index) => {
+                    return (
+                      <div key={Element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                        <div className='btn primary text-center text-white'>
+                          Ver todas las capacitaciones
+                        </div>
+                      </div>
+                    )
+                  })
+                }
+              </Slider>
             </div>
             <h5 className='p-2 text-center' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Debes mejorar 20</h5>
           </div>
