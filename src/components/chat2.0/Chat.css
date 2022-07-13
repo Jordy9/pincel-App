@@ -1,0 +1,60 @@
+.hoverChat:hover {
+    background-color: rgb(209, 202, 202) !important;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.focusChat {
+    background-color: rgb(209, 202, 202) !important;
+    /* background-color: rgb(236, 220, 220) !important; */
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+button#input-group-dropdown-3.dropdown-toggle.btn.btn-dark::after {
+    display: none !important;
+}
+
+#input-group-dropdown-3 {
+    border-radius: 50px;
+}
+
+#input-group-dropdown-3 {
+    border: none !important;
+}
+
+#input-group-dropdown-3:hover {
+    border: none !important;
+}
+
+#input-group-dropdown-3:focus {
+    border: none !important;
+}
+
+img {
+    max-width: 100%;
+}
+
+.dropdown-menu {
+    background-color: lightgray !important;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-radius: 20px;
+}
+
+/* .btn-outline-primary {
+    background-color: transparent !important;
+    color: white;
+}
+
+.btn-outline-secondary {
+    background-color: lightgray !important;
+} */
+
+
+.contentModal {
+    background-color: rgb(209, 202, 202);
+}
+
+
+

@@ -1,13 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 export const Navb = () => {
 
   const navigate = useNavigate()
 
+  const { pathname } = useLocation()
+
+  const [isRoute, setIsRoute] = useState(false)
+
+  useEffect(() => {
+    if (pathname === '/Aclaraciones') {
+      setIsRoute(true)
+    } else {
+      setIsRoute(false)
+    }
+  }, [])
+  
+
   const goBack = () => {
-    navigate('/capacitacion')
+    if (isRoute) {
+      navigate('/pincel')
+    } else {
+      navigate('/capacitacion')
+    }
   }
 
   return (

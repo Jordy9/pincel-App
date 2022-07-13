@@ -23,7 +23,7 @@ export const Notificaciones = () => {
     const [show, setShow] = useState(false)
     
     useEffect(() => {
-        if (pathname === '/capacitacion/1') {
+        if (pathname === '/capacitacion/1' || pathname === '/Aclaraciones') {
             setShow(true)
         } else {
             setShow(false)

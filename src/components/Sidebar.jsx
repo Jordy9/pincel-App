@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Offcanvas } from 'react-bootstrap'
 import { useResponsive } from '../hooks/useResponsive'
+import { useSelector } from 'react-redux'
 
 export const Sidebar = ({children}) => {
+
+  const { usuarioActivo } = useSelector(state => state.auth);
 
   const navigate = useNavigate()
 
@@ -23,6 +26,12 @@ export const Sidebar = ({children}) => {
 
   const [ respWidth ] = useResponsive()
 
+  const {notificaciones} = useSelector(state => state.nt)
+  
+  const notificacionesFiltradas = notificaciones.filter(not => not.from !== usuarioActivo?.id)
+
+  const notify = notificacionesFiltradas.filter(not => not.to === usuarioActivo?.id)
+
   return (
     <>
       {
@@ -36,7 +45,7 @@ export const Sidebar = ({children}) => {
                     <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
                   </div>
                 </NavLink>
-                <h5 className='text-center'>Maria Rodriguez</h5>
+                <h5 className='text-center'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h5>
                 <div className='d-flex justify-content-center'>
                   <button onClick={navigateTo} className='btn btn-primary text-white'>Ver perfil</button>
                 </div>
@@ -45,6 +54,7 @@ export const Sidebar = ({children}) => {
                   <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
                 </div>
               </div>
           </div>
