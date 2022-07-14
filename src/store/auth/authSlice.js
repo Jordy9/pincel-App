@@ -28,9 +28,17 @@ reducers: {
         state.usuarioActivo = action.payload;
     },
 
-    onChecking: (state ) => {
+    onChecking: (state) => {
         state.checking = false;
+    },
+
+    onLogout: (state) => {
+        state.checking = true;
+        state.uid = null;
+        state.name = null;
+        state.usuarioActivo = null;
+        state.usuarios = null;
     },
 }
 });
-export const { onGetUsers, onLogin, onRegister, onActiveUser, onChecking } = authSlice.actions;
+export const { onGetUsers, onLogin, onRegister, onActiveUser, onChecking, onLogout } = authSlice.actions;

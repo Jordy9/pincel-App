@@ -50,11 +50,14 @@ export const Sidebar = ({children}) => {
                   <button onClick={navigateTo} className='btn btn-primary text-white'>Ver perfil</button>
                 </div>
                 <div className='my-5 secondary'>
+                  <NavLink className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
                 </div>
               </div>
           </div>
@@ -84,10 +87,14 @@ export const Sidebar = ({children}) => {
                 </ul>
               <Offcanvas.Body className='mt-3 secondary'>
                 <ul className='list-group list-group-flush'>
+                  <NavLink className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
                   <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                  <NavLink className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
                 </ul>
               </Offcanvas.Body>
             </Offcanvas>

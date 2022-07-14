@@ -1,0 +1,9 @@
+#title-navbar-responsive {
+    display: block;
+}
+
+@media (max-width: 992px) {
+    #title-navbar-responsive {
+        display: none;
+    }
+}

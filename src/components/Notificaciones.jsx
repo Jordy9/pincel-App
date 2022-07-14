@@ -38,7 +38,7 @@ export const Notificaciones = () => {
             <DropdownButton
                 onBlur = {onBlurBell}
                 onClick = {onClickBell}
-                style={{position: 'absolute', zIndex: 1045, right: '20px', top: '15px', backgroundColor: 'transparent'}}
+                style={{position: 'absolute', zIndex: 1045, right: '70px', top: '15px', backgroundColor: 'transparent'}}
                 className='mr-2 d-flex align-items-center'
                 title = {
                     <>

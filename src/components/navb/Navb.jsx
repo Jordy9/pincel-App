@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navbar } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import './Navb.css'
 
 export const Navb = () => {
 
@@ -31,7 +32,7 @@ export const Navb = () => {
   return (
     <Navbar style={{backgroundColor: 'rgb(10, 25, 45)'}} variant='dark' expand="lg">
       <i onClick={goBack} style={{fontSize: '30px', cursor: 'pointer'}} className="bi bi-arrow-left-circle-fill text-white mx-3"></i>
-      <Navbar.Brand to='/pincel' className='navbar-brand'>Pincel te capacita para el trabajo</Navbar.Brand>
+      <Navbar.Brand id='title-navbar-responsive' to='/pincel'>Pincel te capacita para el trabajo</Navbar.Brand>
     </Navbar>
   )
 }

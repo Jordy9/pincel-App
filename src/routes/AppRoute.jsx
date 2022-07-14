@@ -20,6 +20,9 @@ import { useSocket } from '../hooks/useSocket';
 import { startSocket } from '../store/socket/socketSlice';
 import { activeMessage, isTyping } from '../store/chat/chatSlice';
 import { cargarNotificaciones } from '../store/notificaciones/thunks';
+import { Comunicado } from '../components/comunicado/Comunicado';
+import { ListadoComunicados } from '../components/listadoComunicados/ListadoComunicados';
+import { IconExit } from '../components/IconExit';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -77,6 +80,7 @@ export const AppRoute = () => {
           :
         <>
           <Notificaciones />
+          <IconExit />
           <Routes>
             <Route path='/pincel' element = {<Dashboard />} />
             <Route path='/pincel-admin' element = {<DashboardAdmin />} />
@@ -85,6 +89,8 @@ export const AppRoute = () => {
             <Route path='/ListVideos' element = {<ListadoVideos />} />
             <Route path='/capacitacion/:id' element = {<VideosComponent />} />
             <Route path='/Aclaraciones' element = {<ChatScreen />} />
+            <Route path='/Comunicado' element = {<Comunicado />} />
+            <Route path='/ListComunicados' element = {<ListadoComunicados />} />
             <Route path='/perfil' element = {<Perfil />} />
 
             <Route path='/*' element = {<Navigate to='/pincel' />} />

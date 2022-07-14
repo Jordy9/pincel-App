@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2"
-import { onActiveUser, onChecking, onGetUsers, onLogin, onRegister } from "./authSlice"
+import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister } from "./authSlice"
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -133,6 +133,15 @@ export const obtenerUsuarioActivo = () => {
     }
 }
 
+export const iniciarLogout = () => {
+    return (dispatch) => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('token-init-date')
+
+        dispatch(onLogout())
+    }
+}
+
 export const iniciarAutenticacion = () => {
     return async(dispatch) => {
 
@@ -150,6 +159,7 @@ export const iniciarAutenticacion = () => {
             localStorage.removeItem('token')
             localStorage.removeItem('token-init-date')
             dispatch(onChecking())
+            dispatch(onLogout())
         }
     }
 }
