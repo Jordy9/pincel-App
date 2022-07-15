@@ -63,6 +63,10 @@ body {
     border-radius: 100px;
   }
 
+  .text-primary {
+    color: rgb(71, 7, 168) !important;
+  }
+
   .fondos-cards {
     background-color: rgb(89, 7, 211);
     border-radius: 35px;
