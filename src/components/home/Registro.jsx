@@ -76,7 +76,7 @@ export const Registro = () => {
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
                                 <label>Correo Electrónico</label>
-                                <input {...getFieldProps('email')} type="text" placeholder = 'Ejemplo@hotmail.com' className = 'form-control bg-transparent text-black ' />
+                                <input {...getFieldProps('email')} type="text" placeholder = 'Ejemplo@gmail.com' className = 'form-control bg-transparent text-black ' />
                                 {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
                             </div>
                         </div>

@@ -32,6 +32,10 @@ export const Sidebar = ({children}) => {
 
   const notify = notificacionesFiltradas.filter(not => not.to === usuarioActivo?.id)
 
+  const activeStyle = {
+    color: 'rgb(89, 7, 211)'
+  }
+
   return (
     <>
       { 
@@ -54,14 +58,15 @@ export const Sidebar = ({children}) => {
                     (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
                       &&
                     <>
-                      {/* <NavLink className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink> */}
-                      <NavLink className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
-                      {/* <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink> */}
-                      {/* <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink> */}
-                      <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                      {/* <NavLink className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink> */}
-                      {/* <NavLink className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink> */}
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink> */}
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicadoUser'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink> */}
                     </>
                   }
                   
@@ -69,14 +74,14 @@ export const Sidebar = ({children}) => {
                     (usuarioActivo?.role && usuarioActivo?.role === 'Administrador')
                       &&
                     <>
-                      <NavLink className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
-                      <NavLink className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
                     </>
                   }
                 </div>
@@ -108,14 +113,14 @@ export const Sidebar = ({children}) => {
                 </ul>
               <Offcanvas.Body className='mt-3 secondary'>
                 <ul className='list-group list-group-flush'>
-                  <NavLink className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
-                  <NavLink className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
                 </ul>
               </Offcanvas.Body>
             </Offcanvas>

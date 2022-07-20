@@ -52,6 +52,21 @@ export const FormularioVideos = () => {
 
             <form className='my-5'>
                 <div className="row">
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                        <label>Equipos</label>
+                        <select className="form-select" aria-label="Default select example">
+                            <option selected>Seleccione una opción</option>
+                            <option value="Servicio">Equipo de Servicio</option>
+                            <option value="Shamponier">Equipo de Shamponier</option>
+                            <option value="Unas">Equipo de Uñas</option>
+                            <option value="Estilista">Equipo de Estilistas</option>
+                            <option value="Administrador">Administrador</option>
+                        </select>
+                        {/* {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>} */}
+                    </div>
+                </div>
+
+                <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
                         <label className='form-label'>Titulo</label>
                         <input type="text" placeholder='Titulo de la capacitación' className='form-control' />

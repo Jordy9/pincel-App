@@ -12,7 +12,7 @@ export const Sidebar = () => {
   return (
     <div className='p-4' style={{height: '77.2vh', overflowY: 'auto', overflowX: 'hidden'}}>
       {
-        usuarios.filter(usuario => usuario.id !== uid && usuario.role !== 'Pastor').map( (usuarios) => (
+        usuarios.filter(usuario => usuario.id !== uid).map( (usuarios) => (
             <SidebarChat key={ usuarios.id }
             usuarios = {usuarios}
             istyping = {istyping} />

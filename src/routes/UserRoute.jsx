@@ -5,6 +5,7 @@ import { VideosComponent } from '../components/capacitacion/VideosComponent';
 import { Dashboard } from '../components/dashBoard/Dashboard';
 import { ChatScreen } from '../components/chat2.0/ChatScreen';
 import { Perfil } from '../components/perfil/Perfil';
+import { ListadoComunicadoUser } from '../components/listadoComunicadoUser/ListadoComunicadosUser';
 
 export const UserRoute = () => {
   return (
@@ -13,6 +14,7 @@ export const UserRoute = () => {
         <Route path='/capacitacion' element = {<Capacitacion />} />
         <Route path='/capacitacion/:id' element = {<VideosComponent />} />
         <Route path='/Aclaraciones' element = {<ChatScreen />} />
+        <Route path='/ListComunicadoUser' element = {<ListadoComunicadoUser />} />
         <Route path='/perfil' element = {<Perfil />} />
         <Route path='/*' element = {<Navigate to='/pincel' />} />
     </Routes>

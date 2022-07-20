@@ -51,14 +51,14 @@ export const Login = () => {
                         <div className="row my-3">
                             <div className="col-12">
                                 <label>Correo electrónico</label>
-                                <input {...getFieldProps('email')} type="text" placeholder = 'Juan' className = 'form-control' />
+                                <input {...getFieldProps('email')} type="text" placeholder = 'Ejemplo@gmail.com' className = 'form-control' />
                             </div>
                         </div>
 
                         <div className="row">
                             <div className="col-12 form-group">
                                 <label>Contraseña</label>
-                                <input {...getFieldProps('password')} type="text" placeholder = 'Juan' className = 'form-control' />
+                                <input {...getFieldProps('password')} type="text" placeholder = '********' className = 'form-control' />
                             </div>
                         </div>
 

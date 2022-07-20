@@ -1,179 +1,101 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useResponsive } from '../../hooks/useResponsive'
-import Slider from "react-slick";
+import {
+  Chart as ChartJS,
+  // ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+
+ChartJS.register(
+  CategoryScale,
+  // ArcElement,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export const CardsAdmin = () => {
 
-  const [ respWidth ] = useResponsive()
+  const [show, setShow] = useState(true)
 
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: false
-        }
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
       },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-          dots: false
-        }
+      title: {
+        display: true,
+        text: 'Evaluaciones de los empleados',
       },
+    },
+  };
+
+  const options2 = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Reseñas de los clientes',
+      },
+    },
+  };
+
+  const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  const labels2 = ['Julio'];
+
+  const labels = (show) ? labels2 : labels1
+
+  const data = {
+    labels,
+    datasets: [
       {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false
-        }
-      }
-    ]
+        label: 'Promedio general',
+        data: labels.map(() => '15'),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  };
+
+  const data2 = {
+    labels,
+    datasets: [
+      {
+        label: 'Reseñas',
+        data: labels.map(() => '15'),
+        backgroundColor: 'blue',
+      },
+    ],
   };
 
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-          <div className='text-black shadow p-4 d-flex flex-column' style={{width: '100%', height: '300px', borderRadius: '35px', backgroundColor: 'white'}}>
-            <div className="row">
-              <div className="col-6">
-                <h5 style={{fontSize: '50px'}}><i style={{color: 'rgb(71, 7, 168)'}} className="bi bi-people-fill"> </i></h5>
-              </div>
-
-              <div className="col-6 d-flex justify-content-center align-items-center">
-                <h5 className='text-center'><strong>Promedio general</strong></h5>
-              </div>
-            </div>
-
-            <h5 className='text-center my-2'>Empleados con promedio de 90 en adelante</h5>
-
-              {
-                (respWidth >= 992)
-                  ?
-                <div className="row my-3">
-                  <Slider {...settings}>
-                    {
-                      [1, 2, 3, 4].map((element, index) => {
-                        return (
-                          <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
-                            <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                              <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                  <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                              </div>
-                              María Rodriguez
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                  </Slider>
-                </div>
-                  :
-                  <div className="row">
-                    <Slider {...settings}>
-                      {
-                        [1, 2, 3, 4].map((element, index) => {
-                          return (
-                            <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
-                              <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                                </div>
-                                <span className='ml-4'>María Rodriguez</span>
-                              </div>
-                            </div>
-                          )
-                        })
-                      }
-                    </Slider>
-                  </div>
-              }
-
-              {
-                (respWidth > 454 && respWidth < 992)
-                  ?
-                <h5 className='p-2 text-center my-3' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Hay 20 empleados con este promedio</h5>
-                  :
-                <h5 className='p-2 text-center my-1' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Hay 20 empleados con este promedio</h5>
-              }
+          <div className="shadow p-4" style={{borderRadius: '35px'}}>
+            <button disabled = {(show === false)} className='btn btn-primary mr-1' onClick={() => setShow(false)}>Todos los meses</button>
+            <button disabled = {show} className='btn btn-primary ml-1' onClick={() => setShow(true)}>Mes actual</button>
+            <Bar options={options} data={data} />
           </div>
         </div>
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-          <div className='text-black shadow p-4 d-flex flex-column' style={{width: '100%', height: '300px', borderRadius: '35px', backgroundColor: 'white'}}>
-            <div className="row">
-              <div className="col-6">
-                <h5 style={{fontSize: '50px'}}><i style={{color: 'rgb(71, 7, 168)'}} className="bi bi-people-fill"> </i></h5>
-              </div>
-
-              <div className="col-6 d-flex justify-content-center align-items-center">
-                <h5 className='text-center'><strong>Promedio general</strong></h5>
-              </div>
-            </div>
-
-            <h5 className='text-center my-2'>Empleados con un promedio menor de 89</h5>
-
-              {
-                (respWidth >= 992)
-                  ?
-                <div className="row my-3">
-                  <Slider {...settings}>
-                      {
-                        [1, 2, 3, 4].map((element, index) => {
-                          return (
-                            <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
-                              <div className='btn primary p-2 text-center text-white d-flex justify-content-center align-items-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                                </div>
-                                María Rodriguez
-                              </div>
-                            </div>
-                          )
-                        })
-                      }
-                  </Slider>
-                </div>
-                  :
-                <div className="row">
-                  <Slider {...settings}>
-                    {
-                      [1, 2, 3, 4].map((element, index) => {
-                        return (
-                          <div key={element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-col-xxl-12">
-                            <div className='btn primary p-2 text-center text-white d-flex align-items-center'>
-                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
-                                </div>
-                                <span className='ml-4'>María Rodriguez</span>
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                  </Slider>
-                </div>
-              }
-
-              {
-                (respWidth > 454 && respWidth < 992)
-                  ?
-                <h5 className='p-2 text-center my-3' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Hay 20 empleados con este promedio</h5>
-                  :
-                <h5 className='p-2 text-center my-1' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Hay 20 empleados con este promedio</h5>
-              }
+          <div className="shadow p-4" style={{borderRadius: '35px'}}>
+            <button disabled = {(show === false)} className='btn btn-primary mr-1' onClick={() => setShow(false)}>Todos los meses</button>
+            <button disabled = {show} className='btn btn-primary ml-1' onClick={() => setShow(true)}>Mes actual</button>
+            <Bar options={options2} data={data2} />
           </div>
         </div>
     </>

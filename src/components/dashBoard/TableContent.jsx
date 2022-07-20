@@ -22,8 +22,13 @@ export const TableContent = (props) => {
         </td>
         <td>{name}</td>
         <td>{lastName}</td>
-        <td>{date}</td>
-        <td>{email}</td>
+        <td>10</td>
+        <td>15</td>
+        <td>
+            <div className="progress my-2">
+              <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+            </div>
+        </td>
         <td className={`${(role === 'Usuario') ? 'text-primary' : 'text-success'}`}>{role}</td>
         <td>
             <div>

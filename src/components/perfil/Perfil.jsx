@@ -98,7 +98,7 @@ export const Perfil = () => {
                             </div>
 
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                                <label>Imagen</label>
+                                <label>Cambiar contraseña</label>
                                 <button onClick={modalOpen} type='button' className = 'btn btn-primary form-control'>Cambiar contraseña</button>
                             </div>
 

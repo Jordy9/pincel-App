@@ -48,15 +48,16 @@ reducers: {
     },
 
     setActiveUser: (state, action) => {
-        state.activeUser = action.payload
+        state.activeUser = action.payload;
     },
 
     modalOpen: (state) => {
-        state.modalUser = true
+        state.modalUser = true;
     },
 
     modalClose: (state) => {
-        state.modalUser = false
+        state.modalUser = false;
+        state.activeUser = null;
     },
 }
 });

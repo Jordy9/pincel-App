@@ -19,6 +19,7 @@ import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { obtenerComunicados } from '../store/comunicado/thunk';
 import { UserRoute } from './UserRoute';
 import { AdminRoute } from './AdminRoute';
+import { Evaluacion } from '../components/home/Evaluacion';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -93,6 +94,7 @@ export const AppRoute = () => {
         <Routes>
           <Route path='/login' element = {<Login />} />
           <Route path='/registro' element = {<Registro />} />
+          <Route path='/Evaluacion' element = {<Evaluacion />} />
 
           <Route path='/*' element = {<Navigate to='/login' />} />
         </Routes>
