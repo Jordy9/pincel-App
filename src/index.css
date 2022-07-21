@@ -141,3 +141,14 @@ body {
 .slick-next:before {
   color: black;
 }
+
+.rdt_TableRow {
+  border: none !important;
+  outline: none !important;
+}
+
+.rdt_TableHeadRow {
+  vertical-align: bottom !important;
+  border-bottom: 2.5px solid #dee2e6 !important;
+  font-weight: bolder !important;
+}

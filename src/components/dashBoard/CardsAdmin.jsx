@@ -64,7 +64,7 @@ export const CardsAdmin = () => {
     datasets: [
       {
         label: 'Promedio general',
-        data: labels.map(() => '15'),
+        data: labels.map((_, index) => index + 1),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
@@ -75,7 +75,7 @@ export const CardsAdmin = () => {
     datasets: [
       {
         label: 'Reseñas',
-        data: labels.map(() => '15'),
+        data: labels.map((_, index) => index + 5),
         backgroundColor: 'blue',
       },
     ],

@@ -5,8 +5,9 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { Rating } from 'react-simple-star-rating'
+import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
 
-export const ModalEvaluacion = ({modalShow, setModalShow, activeUser}) => {
+export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) => {
 
     const dispatch = useDispatch();
 
@@ -39,8 +40,11 @@ export const ModalEvaluacion = ({modalShow, setModalShow, activeUser}) => {
         setModalShow(false)
     }
 
+    const [modalShowDescripcion, setModalShowDescripcion] = useState(false)
+
     const handledButton = () => {
         document.getElementById('idButton').click()
+        setModalShowDescripcion(true)
     }
 
   return (
@@ -53,19 +57,24 @@ export const ModalEvaluacion = ({modalShow, setModalShow, activeUser}) => {
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <form>
                         <div className="row">
-                            <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4">
-                                <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
-                                </div>
-                                <h3 className='text-center my-2'>{activeUser?.name} {activeUser?.lastName}</h3>
-                                <div className='text-center'>
-                                    <Rating readonly ratingValue={rating} />
-                                    <span style={{fontSize: '12px'}}>10 reseñas</span>
-                                </div>
-                            </div>
+                            {
+                                first?.map(e => {
+                                    return (
+                                        <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3">
+                                            <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                                <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
+                                            </div>
+                                            <h3 className='text-center my-2'>{activeUser?.name || 'Maria'} {activeUser?.lastName || 'Rodriguez'}</h3>
+                                            <div className='text-center'>
+                                                <Rating readonly ratingValue={rating} />
+                                                <span style={{fontSize: '12px'}}>10 reseñas</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
 
-
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
+                            {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
                                 <div className="row">
                                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
                                         <label className='d-flex justify-content-center'>Calificación en base al servicio que ofreció Maria</label>
@@ -79,16 +88,16 @@ export const ModalEvaluacion = ({modalShow, setModalShow, activeUser}) => {
                                         <textarea type="text" cols={30} rows={10} {...getFieldProps('Descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
-                        <button type='submit' id='idButton' hidden></button>
+                        <button type='button' id='idButton' hidden></button>
                     </form>
                 </div>
             </div>
 
         </Modal.Body>
         <Modal.Footer onSubmit={handleSubmit}>
-            <button type='submit' onClick={handledButton} className='btn btn-primary'>
+            <button type='button' onClick={handledButton} className='btn btn-primary'>
                 Guardar
             </button>
 
@@ -96,6 +105,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, activeUser}) => {
                 Cancelar
             </button>
         </Modal.Footer>
+
+        <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} />
     </Modal>
   )
 }

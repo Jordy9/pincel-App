@@ -1,5 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import { Sidebar } from '../Sidebar'
+import { MultiSelect } from "react-multi-select-component";
+
+const options = [
+    { label: "Equipo de Servicio", value: "Servicio" },
+    { label: "Equipo de Shamponier", value: "Shamponier" },
+    { label: "Equipo de Uñas", value: "Unas"},
+    { label: "Equipo de Estilistas", value: "Estilista"},
+    { label: "Administrador", value: "Administrador"},
+  ];
 
 export const FormularioVideos = () => {
 
@@ -45,6 +54,8 @@ export const FormularioVideos = () => {
         setFormEvaluacion(newFormValues)
     }
 
+    const [first, setfirst] = useState([])
+
   return (
     <Sidebar>
         <div className='p-4'>
@@ -54,14 +65,14 @@ export const FormularioVideos = () => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                         <label>Equipos</label>
-                        <select className="form-select" aria-label="Default select example">
-                            <option selected>Seleccione una opción</option>
-                            <option value="Servicio">Equipo de Servicio</option>
-                            <option value="Shamponier">Equipo de Shamponier</option>
-                            <option value="Unas">Equipo de Uñas</option>
-                            <option value="Estilista">Equipo de Estilistas</option>
-                            <option value="Administrador">Administrador</option>
-                        </select>
+                        <MultiSelect
+                            options={options}
+                            value={first}
+                            onChange={setfirst}
+                            labelledBy="Select"
+                            hasSelectAll = {false}
+                            disableSearch
+                        />
                         {/* {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>} */}
                     </div>
                 </div>

@@ -14,8 +14,8 @@ export const TableAdmin = () => {
                         <th scope="col">Foto</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
-                        <th scope="col">Capacitaciones completas</th>
-                        <th scope="col">Capacitaciones por mejorar</th>
+                        <th scope="col">Promedio de las evaluaciones</th>
+                        <th scope="col">Promedio de las reseñas</th>
                         <th scope="col">Capacitaciones en curso</th>
                         <th scope="col">Rol</th>
                         <th scope="col">Acción</th>
