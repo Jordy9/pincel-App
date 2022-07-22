@@ -16,62 +16,121 @@ export const Evaluacion = () => {
         <h1 className='text-white p-4'>Evalúa nuestro personal</h1>
         <div className="row p-4 my-2">
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    {
+                        (first.length > 0)
+                            &&
+                        <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 0, right: 20}} className="text-primary bi bi-check-circle-fill"></i>
+                    }
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px', opacity: (first.length !== 0) && 0.5}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
                     <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="row p-4 my-2">
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
+                    </div>
+                </div>
+            </div>
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
+                <div onClick={() => setFirst([...first, 1])} className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
+                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <div className='p-2'>
+                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
+                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>
@@ -80,104 +139,41 @@ export const Evaluacion = () => {
         <div className="row p-4 my-2">
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div className="row p-4 my-2">
-            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
-                <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
-                    <div className='p-2'>
-                        <h5 className='text-white text-center'>Maria Rodriguez</h5>
-                        <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-col-xxl-2 my-2">
                 <div className='bg-transparent d-flex flex-column' style={{width: '100%', height: 'auto', borderRadius: '10px'}}>
-                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
+                    <img onClick={() => setFirst([...first, 1])} src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' style={{borderRadius: '20px'}} alt="" />
                     <div className='p-2'>
                         <h5 className='text-white text-center'>Maria Rodriguez</h5>
                         <p style={{fontSize: '15px'}} className='text-white text-center'>Lavado de pelo</p>
-                        <button onClick={() => setFirst([...first, 1])} className='btn btn-primary form-control'>Seleccionar</button>
+
                     </div>
                 </div>
             </div>

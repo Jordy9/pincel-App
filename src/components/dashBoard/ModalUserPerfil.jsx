@@ -142,21 +142,6 @@ export const ModalPerfilUser = ({modalShow, setModalShow}) => {
                                         <input type="text" readOnly value={0} placeholder='4' className='form-control' />
                                     </div>
                                 </div>
-
-                                <div className="row d-flex justify-content-center">
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected>Evaluaciones tomadas</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                                        <button className='btn btn-primary form-control'>Permitir otro intento</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <button type='submit' id='idButton' hidden></button>
@@ -170,8 +155,8 @@ export const ModalPerfilUser = ({modalShow, setModalShow}) => {
                 Guardar
             </button>
 
-            <button onClick={handleClose} className='btn btn-primary'>
-                Cancelar
+            <button onClick={handleClose} className='btn btn-danger'>
+                Desactivar usuario
             </button>
         </Modal.Footer>
     </Modal>

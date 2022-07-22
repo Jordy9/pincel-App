@@ -14,9 +14,9 @@ export const TableContent = (props) => {
         dispatch(modalOpen())
     }
   return (
-    <tr>
+    <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(props)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         <td className='d-flex justify-content-center'>
-            <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+            <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
             </div>
         </td>
@@ -25,18 +25,18 @@ export const TableContent = (props) => {
         <td>10</td>
         <td>15</td>
         <td>
-            <div className="progress my-2">
+            <div data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" className="progress my-2">
               <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
             </div>
         </td>
         <td className={`${(role === 'Usuario') ? 'text-primary' : 'text-success'}`}>{role}</td>
-        <td>
+        {/* <td>
             <div>
-                <button onClick={() => handledActive(props)} className='btn btn-primary mx-1'><i className="bi bi-eye text-info"></i></button>
+                <button onClick={() => handledActive(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-eye text-info"></i></button>
                 
-                <button className='btn btn-primary mx-1'><i className="bi bi-trash-fill text-danger"></i></button>
+                <button className='btn btn-primary mx-1 my-1'><i className="bi bi-trash-fill text-danger"></i></button>
             </div>
-        </td>
+        </td> */}
     </tr>
   )
 }

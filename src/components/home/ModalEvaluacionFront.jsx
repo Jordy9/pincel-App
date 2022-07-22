@@ -6,9 +6,8 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { Rating } from 'react-simple-star-rating'
 import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
-import { ModalEvaluacionFront } from './ModalEvaluacionFront'
 
-export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) => {
+export const ModalEvaluacionFront = ({modalShowFront, setModalShowFront, activeUser}) => {
 
     const dispatch = useDispatch();
 
@@ -38,18 +37,18 @@ export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) =>
     })
 
     const handleClose = () => {
-        setModalShow(false)
+        setModalShowFront(false)
     }
 
-    const [modalShowFront, setModalShowFront] = useState(false)
+    const [modalShowDescripcion, setModalShowDescripcion] = useState(false)
 
     const handledButton = () => {
         document.getElementById('idButton').click()
-        setModalShowFront(true)
+        setModalShowDescripcion(true)
     }
 
   return (
-    <Modal fullscreen show={modalShow} onHide={handleClose}>
+    <Modal fullscreen show={modalShowFront} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
           <Modal.Title><h1>Evaluando personal</h1></Modal.Title>
         </Modal.Header>
@@ -58,22 +57,27 @@ export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) =>
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <form>
                         <div className="row">
-                            {
-                                first?.map(e => {
-                                    return (
-                                        <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
-                                            <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                                <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
-                                            </div>
-                                            <h3 className='text-center my-2'>{activeUser?.name || 'Maria'} {activeUser?.lastName || 'Rodriguez'}</h3>
-                                            <div className='text-center'>
-                                                <Rating readonly ratingValue={rating} />
-                                                <span style={{fontSize: '12px'}}>10 reseñas</span>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                            <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
+                                <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                    <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
+                                </div>
+                                <h3 className='text-center my-2'>{activeUser?.name || 'Maria'} {activeUser?.lastName || 'Rodriguez'}</h3>
+                                <div className='text-center'>
+                                    <Rating readonly ratingValue={rating} />
+                                    <span style={{fontSize: '12px'}}>10 reseñas</span>
+                                </div>
+                            </div>
+
+                            <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
+                                <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                                    <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
+                                </div>
+                                <h3 className='text-center my-2'>{activeUser?.name || 'Maria'} {activeUser?.lastName || 'Rodriguez'}</h3>
+                                <div className='text-center'>
+                                    <Rating readonly ratingValue={rating} />
+                                    <span style={{fontSize: '12px'}}>10 reseñas</span>
+                                </div>
+                            </div>
 
                             {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
                                 <div className="row">
@@ -107,7 +111,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) =>
             </button>
         </Modal.Footer>
 
-        <ModalEvaluacionFront modalShowFront = {modalShowFront} setModalShowFront = {setModalShowFront} />
+        <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} />
     </Modal>
   )
 }

@@ -69,7 +69,7 @@ export const ModalUser = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr onDoubleClick={() => setModalShowEvaluacion(true)}>
+                                        <tr style={{cursor: 'pointer'}} onDoubleClick={() => setModalShowEvaluacion(true)}>
                                             <td className='d-flex justify-content-center'>
                                                 <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                                                     <img src={user} className='img-fluid' alt="" />
@@ -79,7 +79,7 @@ export const ModalUser = () => {
                                             <td>-</td>
                                             <td>
                                                 <div className="progress my-2">
-                                                <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                                    <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                                                 </div>
                                             </td>
                                         </tr>

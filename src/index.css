@@ -46,16 +46,20 @@ body {
     border: none;
   }
 
+  .btn-danger {
+    border-radius: 50px;
+  }
+
   .secondary {
     background-color: rgb(7, 36, 65) !important;
     border-top-right-radius: 100px;
-    height: 100%;
+    height: 100vh !important;
   }
 
   .secondaryNav {
     background-color: rgb(7, 36, 65) !important;
     border-top-right-radius: 100px;
-    width: 100%;
+    width: 100% !important;
   }
 
   .primary {

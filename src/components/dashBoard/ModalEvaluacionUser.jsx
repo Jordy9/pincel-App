@@ -68,6 +68,10 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
             </div>
 
         </Modal.Body>
+        
+        <Modal.Footer>
+            <button className='btn btn-primary'>Permitir otro intento</button>
+        </Modal.Footer>
     </Modal>
   )
 }

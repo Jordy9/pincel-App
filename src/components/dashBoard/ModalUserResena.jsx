@@ -4,6 +4,7 @@ import { Rating } from 'react-simple-star-rating'
 import { useSelector } from 'react-redux'
 import user from '../../heroes/user.webp'
 import DataTable from 'react-data-table-component'
+import { ModalResenaDetalle } from './ModalResenaDetalle'
 
 export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
 
@@ -25,6 +26,8 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
         setModalShowResena(false)
     }
 
+    const [modalShowDetalle, setModalShowDetalle] = useState(false)
+
     const columns = [
         {
           name: 'Calificación',
@@ -40,6 +43,10 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
           selector: 'fecha',
           sortable: true,
         },
+        {
+          name: 'Eliminar',
+          selector: 'eliminar',
+        },
       ]
   
       const rows = [
@@ -47,81 +54,145 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
@@ -132,11 +203,19 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         {
           calificacion: <Rating size={20} readonly ratingValue={rating} />,
           descripcion: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
           fecha: '20/07/2022',
+          eliminar: 
+            <button className='btn btn-primary mx-1 my-1'>
+              <i className="bi bi-trash-fill text-danger"></i>
+            </button>
         },
         
       ]
@@ -187,6 +266,7 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
                         <DataTable
                             customStyles = {customStyles}
                             columns = {columns}
+                            onRowDoubleClicked = {() => setModalShowDetalle(true)}
                             theme = "white"
                             data={rows}
                             pagination
@@ -200,6 +280,8 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
             </div>
 
         </Modal.Body>
+
+        <ModalResenaDetalle modalShowDetalle = {modalShowDetalle} setModalShowDetalle = {setModalShowDetalle} />
     </Modal>
   )
 }

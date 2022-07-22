@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useResponsive } from '../../hooks/useResponsive'
 import {
   Chart as ChartJS,
   // ArcElement,
