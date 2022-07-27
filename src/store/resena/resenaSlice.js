@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const resenaSlice = createSlice({
    name: 'resena',
    initialState: {
-      resena: []
+      resena: [],
+      AResena: []
    },
    reducers: {
        getResena: (state, action ) => {
@@ -12,6 +13,16 @@ export const resenaSlice = createSlice({
 
        createResena: (state, action ) => {
            state.resena.push(action.payload)
+        },
+        
+       createAResena: (state, action ) => {
+           state.AResena.push(action.payload)
+        },
+
+       deleteAResena: (state, action ) => {
+            state.AResena = state.AResena.filter(
+                e => (e.id !== action.payload.id)
+            );
         },
 
        UpdateResena: (state, action ) => {
@@ -24,4 +35,4 @@ export const resenaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { getResena, createResena, UpdateResena } = resenaSlice.actions;
+export const { getResena, createResena, createAResena, deleteAResena, UpdateResena } = resenaSlice.actions;

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from "sweetalert2"
-import { createResena, getResena, UpdateResena } from './resenaSlice';
+import { createAResena, createResena, deleteAResena, getResena, UpdateResena } from './resenaSlice';
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -20,11 +20,11 @@ export const obtenerResena = () => {
     }
 }
 
-export const crearResena = (id, calificacion, descripcion) => {
+export const crearResena = (calificacion, descripcion) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.post(`${endPoint}/resena/new`, {id, calificacion, descripcion}, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/resena/new`, {calificacion, descripcion}, {headers: {'x-token': token}})
     
             dispatch(createResena(resp.data.resena))
 
@@ -47,6 +47,21 @@ export const crearResena = (id, calificacion, descripcion) => {
 
         } catch (error) {
             console.log(error)
+        }
+        
+    }
+}
+
+export const crearAResena = (usuario) => {
+    return async(dispatch, getState) => {
+
+        const { AResena } = getState().rs;
+        const condicion = AResena?.filter(rs => rs?.id === usuario?.id)
+
+        if (condicion?.length !== 0) {
+            dispatch(deleteAResena(usuario))
+        } else {
+            dispatch(createAResena(usuario))
         }
         
     }

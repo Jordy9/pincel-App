@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import user from '../../heroes/user.webp'
 import { useFormik } from 'formik'
@@ -6,32 +6,37 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { Rating } from 'react-simple-star-rating'
 import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
-import { ModalEvaluacionFront } from './ModalEvaluacionFront'
+import Slider from "react-slick";
+import { ModalEvaluacionFront } from './EvaluacionFront'
 
-export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) => {
+export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) => {
 
     const dispatch = useDispatch();
 
-    const [rating, setRating] = useState(90)
+    const [rating, setRating] = useState(0)
+
+    const [idUsuarios, setIdUsuarios] = useState([])
 
         // Catch Rating value
     const handleRating = (rate) => {
-        setRating(rate)
+        const condicion = idUsuarios?.filter(id => id?.id === rate[1])
+        if (condicion?.length !== 0) {
+            setIdUsuarios(idUsuarios?.map(id => id?.id === rate[1] ? {id: rate[1], calificacion: rate[0]} : id))
+        } else {
+            setIdUsuarios([...idUsuarios, {id: rate[1], calificacion: rate[0]}])
+        }
+        setRating(rate[0])
         // other logic
     }
 
     const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
-            name: activeUser?.name ,
-            lastName: activeUser?.lastName,
-            date: activeUser?.date,
-            email: activeUser?.email,
-            role: activeUser?.role,
-            password: activeUser?.password,
+            // calificacion:,
+            // descripcion:
         },
         enableReinitialize: true,
-        onSubmit: ({name, lastName, date, email, password, role}) => {
-            // dispatch(iniciarActualizacion(activeUser?.id, name, lastName, date, email.toLowerCase(), password, role))
+        onSubmit: ({}) => {
+            dispatch()
         },
         validationSchema: Yup.object({
         })
@@ -41,73 +46,109 @@ export const ModalEvaluacion = ({modalShow, setModalShow, first, activeUser}) =>
         setModalShow(false)
     }
 
-    const [modalShowFront, setModalShowFront] = useState(false)
+    // const [modalShowFront, setModalShowFront] = useState(false)
 
-    const handledButton = () => {
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              infinite: false,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              initialSlide: 1,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              dots: true
+            }
+          }
+        ]
+      };
+
+      const [next, setNext] = useState(false)
+
+      const [ShowModalFront, setShowModalFront] = useState(false)
+
+      useEffect(() => {
+        if (idUsuarios?.length === resena?.length) {
+            setNext(true)
+            setShowModalFront(true)
+        }
+      }, [idUsuarios])
+
+      const trueFalse = resena.filter(resena => resena.role === 'Administrador')
+
+      const handledButton = () => {
         document.getElementById('idButton').click()
-        setModalShowFront(true)
+        setShowModalFront(true)
     }
 
   return (
     <Modal fullscreen show={modalShow} onHide={handleClose}>
-        <Modal.Header style={{border: 'none'}} closeButton>
+        <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
           <Modal.Title><h1>Evaluando personal</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <form>
-                        <div className="row">
+                    <div className="row">
+                        <Slider {...settings}>
                             {
-                                first?.map(e => {
+                                resena?.map(usuario => {
                                     return (
-                                        <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
-                                            <div className='d-flex mx-auto' style={{width: '250px', height: '250px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                                <img src={activeUser?.urlImage || user} className='img-fluid' alt="" />
+                                        <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
+                                            <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} {usuario?.lastName} el día de hoy?</h3>
+                                            <div className='d-flex mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
+                                                <img src={'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                             </div>
-                                            <h3 className='text-center my-2'>{activeUser?.name || 'Maria'} {activeUser?.lastName || 'Rodriguez'}</h3>
-                                            <div className='text-center'>
-                                                <Rating readonly ratingValue={rating} />
-                                                <span style={{fontSize: '12px'}}>10 reseñas</span>
+                                            <div className='text-center mt-3'>
+                                                <Rating onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                <span style={{fontSize: '12px'}}></span>
                                             </div>
                                         </div>
                                     )
                                 })
                             }
+                        </Slider>
+                    </div>
 
-                            {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
-                                <div className="row">
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
-                                        <label className='d-flex justify-content-center'>Calificación en base al servicio que ofreció Maria</label>
-                                        <div className='d-flex justify-content-center'>
-                                            <Rating onChange = {handleRating} ratingValue={rating} />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
-                                        <label className='d-flex justify-content-center'>Descripción</label>
-                                        <textarea type="text" cols={30} rows={10} {...getFieldProps('Descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
-                                    </div>
-                                </div>
-                            </div> */}
-                        </div>
-                        <button type='button' id='idButton' hidden></button>
-                    </form>
+                    <button type='button' id='idButton' hidden></button>
                 </div>
             </div>
 
+            {
+                (next)
+                    &&
+                <ModalEvaluacionFront resena = {resena} idUsuarios = {idUsuarios} setIdUsuarios = {setIdUsuarios} ShowModalFront = {ShowModalFront} setShowModalFront = {setShowModalFront} />
+            }
+            
+
         </Modal.Body>
         <Modal.Footer onSubmit={handleSubmit}>
-            <button type='button' onClick={handledButton} className='btn btn-primary'>
-                Guardar
-            </button>
-
-            <button onClick={handleClose} className='btn btn-primary'>
-                Cancelar
+            <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
+                Siguiente
             </button>
         </Modal.Footer>
-
-        <ModalEvaluacionFront modalShowFront = {modalShowFront} setModalShowFront = {setModalShowFront} />
     </Modal>
   )
 }
