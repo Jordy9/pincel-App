@@ -1,35 +1,22 @@
 import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import user from '../../heroes/user.webp'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
-import { Rating } from 'react-simple-star-rating'
+import { crearResena } from '../../store/resena/thunk'
 
-export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDescripcion, activeUser}) => {
+export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDescripcion, idUsuarios}) => {
 
     const dispatch = useDispatch();
 
-    const [rating, setRating] = useState(90)
-
-        // Catch Rating value
-    const handleRating = (rate) => {
-        setRating(rate)
-        // other logic
-    }
-
-    const {handleSubmit, getFieldProps, touched, errors} = useFormik({
+    const {handleSubmit, getFieldProps} = useFormik({
         initialValues: {
-            name: activeUser?.name ,
-            lastName: activeUser?.lastName,
-            date: activeUser?.date,
-            email: activeUser?.email,
-            role: activeUser?.role,
-            password: activeUser?.password,
+            calificacion: idUsuarios,
+            descripcion: ''
         },
         enableReinitialize: true,
-        onSubmit: ({name, lastName, date, email, password, role}) => {
-            // dispatch(iniciarActualizacion(activeUser?.id, name, lastName, date, email.toLowerCase(), password, role))
+        onSubmit: ({calificacion, descripcion}) => {
+            dispatch(crearResena(calificacion, descripcion))
         },
         validationSchema: Yup.object({
         })
@@ -40,28 +27,28 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
     }
 
     const handledButton = () => {
-        document.getElementById('idButton').click()
+        document.getElementById('idButtonDesc').click()
     }
 
   return (
     <Modal fullscreen show={modalShowDescripcion} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Evaluando personal</h1></Modal.Title>
+          <Modal.Title><h1>Evaluando a todo el personal seleccionado</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
-                            <label className='d-flex justify-content-center'>Reseña general para el equipo</label>
-                            <textarea type="text" cols={30} rows={10} {...getFieldProps('Descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
+                            <h3 className='d-flex justify-content-center'>Reseña general para el equipo</h3>
+                            <textarea type="text" cols={30} rows={10} {...getFieldProps('descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                         </div>
-                        <button type='submit' id='idButton' hidden></button>
+                        <button type='submit' id='idButtonDesc' hidden></button>
                     </form>
                 </div>
             </div>
         </Modal.Body>
-        <Modal.Footer onSubmit={handleSubmit}>
+        <Modal.Footer>
             <button type='submit' onClick={handledButton} className='btn btn-primary'>
                 Guardar
             </button>

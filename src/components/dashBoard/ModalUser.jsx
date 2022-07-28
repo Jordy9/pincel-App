@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { Rating } from 'react-simple-star-rating'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,8 +20,6 @@ export const ModalUser = () => {
 
     const [completa, mejorar, calificacion] = evaluacionUser;
 
-    const [rating, setRating] = useState(90) // initial rating value
-
     const handleClose = () => {
         dispatch(modalClose())
     }
@@ -32,6 +30,29 @@ export const ModalUser = () => {
 
     const [modalShowEvaluacion, setModalShowEvaluacion] = useState(false)
 
+    const tooltipArray = [
+        'Malo',
+        'Malo+',
+        'Intermedio',
+        'Bueno',
+        'Excelente',
+      ]
+
+    const fillColorArray = [
+        '#f17a45',
+        '#f17a45',
+        '#f19745',
+        '#f1b345',
+        '#f1d045',
+      ]
+
+      useEffect(() => {
+        if (modalUser) {
+            const span = document.getElementsByClassName('filled-icons')
+            span[0]?.removeAttribute("title")
+        }
+      }, [modalUser])
+      
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -50,8 +71,8 @@ export const ModalUser = () => {
                             </div>
                             <h3 className='text-center'>{activeUser?.name} {activeUser?.lastName}</h3>
                             <div onDoubleClick={() => setModalShowResena(true)} className='text-center' style={{cursor: 'pointer'}}>
-                                <Rating readonly ratingValue={rating} />
-                                <span style={{fontSize: '12px'}}>10 reseñas</span>
+                                <Rating  allowHalfIcon readonly ratingValue={activeUser?.calificacion} />
+                                <span style={{fontSize: '12px'}}>{activeUser?.cantidad} reseñas</span>
                             </div>
                         </div>
 

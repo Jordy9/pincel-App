@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from "sweetalert2"
-import { createAResena, createResena, deleteAResena, getResena, UpdateResena } from './resenaSlice';
+import { createAResena, createResena, deleteAResena, DeleteResena, getResena, UpdateResena } from './resenaSlice';
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -67,11 +67,14 @@ export const crearAResena = (usuario) => {
     }
 }
 
-export const actualizarResena = (id, calificacion, descripcion) => {
+export const actualizarResena = (props) => {
     return async(dispatch) => {
+        const {_id, calificacion, descripcion} = props
+
+        const estado = !props.estado
 
         try {
-            const resp = await axios.put(`${endPoint}/resena/${id}`, {id, calificacion, descripcion}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${endPoint}/resena/update/${_id}`, {calificacion, descripcion, estado}, {headers: {'x-token': token}})
     
             dispatch(UpdateResena(resp.data.resena))
 
@@ -90,6 +93,38 @@ export const actualizarResena = (id, calificacion, descripcion) => {
             return Toast.fire({
                 icon: 'success',
                 title: 'Reseña actualizada correctamente'
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+}
+
+export const eliminarResena = (id) => {
+    return async(dispatch) => {
+
+        try {
+            const resp = await axios.delete(`${endPoint}/resena/delete/${id}`, {headers: {'x-token': token}})
+    
+            dispatch(DeleteResena(id))
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Reseña eliminada correctamente'
             })
 
         } catch (error) {

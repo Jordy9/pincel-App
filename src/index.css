@@ -156,3 +156,7 @@ body {
   border-bottom: 2.5px solid #dee2e6 !important;
   font-weight: bolder !important;
 }
+
+.Hola .filled-icons {
+  background-color: red !important;
+}

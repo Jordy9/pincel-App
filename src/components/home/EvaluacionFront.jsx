@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import user from '../../heroes/user.webp'
 import { Rating } from 'react-simple-star-rating'
 import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
@@ -16,7 +16,13 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
         // Catch Rating value
     const handleRating = (rate) => {
-        setRating(rate)
+        const condicion = idUsuarios?.filter(id => id?.id === rate[1])
+        if (condicion?.length !== 0) {
+            setIdUsuarios(idUsuarios?.map(id => id?.id === rate[1] ? {id: rate[1], calificacion: rate[0]} : id))
+        } else {
+            setIdUsuarios([...idUsuarios, {id: rate[1], calificacion: rate[0]}])
+        }
+        setRating(rate[0])
         // other logic
     }
 
@@ -77,6 +83,20 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
         }, 500);
       }
 
+      const [next, setNext] = useState(false)
+
+      const resenaToDesc = resena?.filter(resena => resena?.role === 'Administrador')
+    useEffect(() => {
+
+        if (resenaToDesc?.length !== 0) {
+            if (idUsuarios?.length === resena?.length) {
+                setNext(true)
+                setModalShowDescripcion(true)
+            }
+        }
+
+    }, [idUsuarios])
+
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
@@ -135,9 +155,18 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                         <button hidden = {(trueFalse?.length === 0 || !evaluateFront)} onClick={() => setEvaluateFront(false)} className='btn btn-primary form-control' style={{position: 'fixed', zIndex: 1045, top: 0}}>Evaluar</button>
                     </div>
                 </div>
-                <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} />
+                {
+                    (next)
+                        &&
+                    <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} idUsuarios = {idUsuarios} />
+                }
             </div>
         </Modal.Body>
+        <Modal.Footer>
+            <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
+                Siguiente
+            </button>
+        </Modal.Footer>
     </Modal>
   )
 }
