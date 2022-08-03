@@ -10,10 +10,6 @@ export const Capacitacion = () => {
         <div className="row my-5">
           <Cards />
         </div>
-
-        <div className="row">
-          <Cards />
-        </div>
       </div>
     </Sidebar>
   )

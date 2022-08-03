@@ -15,11 +15,11 @@ import { activeMessage, isTyping } from '../store/chat/chatSlice';
 import { cargarNotificaciones } from '../store/notificaciones/thunks';
 import { IconExit } from '../components/IconExit';
 import { obtenerResena } from '../store/resena/thunk';
-import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { obtenerComunicados } from '../store/comunicado/thunk';
 import { UserRoute } from './UserRoute';
 import { AdminRoute } from './AdminRoute';
 import { Evaluacion } from '../components/home/Evaluacion';
+import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -37,7 +37,7 @@ export const AppRoute = () => {
     dispatch(iniciarAutenticacion())
     dispatch(cargarNotificaciones())
     dispatch(obtenerResena())
-    dispatch(obtenerEvaluacion())
+    dispatch(obtenerCapacitacion())
     dispatch(obtenerComunicados())
   }, [dispatch])
 

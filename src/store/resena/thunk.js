@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from "sweetalert2"
-import { createAResena, createResena, deleteAResena, DeleteResena, getResena, UpdateResena } from './resenaSlice';
+import { createAResena, createResena, deleteAResena, DeleteResena, getResena, setClearResena, UpdateResena } from './resenaSlice';
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -27,6 +27,9 @@ export const crearResena = (calificacion, descripcion) => {
             const resp = await axios.post(`${endPoint}/resena/new`, {calificacion, descripcion}, {headers: {'x-token': token}})
     
             dispatch(createResena(resp.data.resena))
+
+            dispatch(setClearResena())
+
 
             const Toast = Swal.mixin({
                 toast: true,

@@ -1,6 +1,11 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import { MultiSelect } from "react-multi-select-component";
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
+import { useDispatch, useSelector } from 'react-redux';
+import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
 
 const options = [
     { label: "Equipo de Servicio", value: "Servicio" },
@@ -12,16 +17,97 @@ const options = [
 
 export const FormularioVideos = () => {
 
+    const dispatch = useDispatch();
+
+    const { paraGuardar } = useSelector(state => state.cp);
+    
+    const [formValuesTitulo, setFormValuesTitulo] = useState('')
+
+    const [imag, setimag] = useState()
+
     const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
 
     const [formEvaluacion, setFormEvaluacion] = useState([{ pregunta: '', respuesta: '' }])
+
+    const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
+        initialValues: {
+            titulo: formValuesTitulo ,
+            image: '',
+            video: formValues,
+            evaluacion: formEvaluacion,
+        },
+        enableReinitialize: true,
+        onSubmit: ({titulo, image, video, evaluacion}) => {
+
+            for (let index = 0; index < video.length; index++) {
+                const element = video[index];
+                
+                dispatch(crearVideos(element))
+
+            }
+
+            // image: document.getElementsByName('image').value = ''
+
+            // setimag()
+
+        },
+        validationSchema: Yup.object({
+            // name: Yup.string()
+            //             .max(50, 'Debe de tener 50 caracteres o menos')
+            //             .min(3, 'Debe de tener 3 caracteres o más')
+            //             .required('Requerido'),
+            // lastName: Yup.string()
+            //             .max(50, 'Debe de tener 50 caracteres o menos')
+            //             .min(3, 'Debe de tener 3 caracteres o más')
+            //             .required('Requerido'),
+            // date: Yup.string()
+            //             .required('Requerido'),
+            // email: Yup.string()
+            //             .email('La dirección de email no es válida')
+            //             .required('Requerido'),
+            // role: Yup.string()
+            //             .required('Requerido'),
+            // password: Yup.string()
+            //             .min(8, 'Debe de tener 8 caracteres o más')
+            //             .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
+            //             .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
+            //             .required('Requerido'),
+            // confirmPassword: Yup.string()
+            //             .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
+            //             .required('Requerido')
+        })
+    })
+
+    useEffect(() => {
+        if (paraGuardar?.length === formValues?.length) {
+            let arregloVideo = []
+            paraGuardar?.map(e => {
+                arregloVideo.push({
+                    titulo: e?.title,
+                    idVideo: e?.id,
+                    video: e?.url,
+                    createdAt: e?.createdAt,
+                    check: false,
+                    duration: e?.duration
+                })
+            })
+            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion))
+            dispatch(toSaveClear())
+        }
+    }, [paraGuardar])
+    
 
     // Contenido de Capacitación de Video
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
-        newFormValues[i][e.target.name] = e.target.value;
-        setFormValues(newFormValues);
+        if (e.target.name === "") {            
+            newFormValues[i]['video'] = e.target.files[0];
+            setFormValues(newFormValues);
+        } else {
+            newFormValues[i][e.target.name] = e.target.value;
+            setFormValues(newFormValues);
+        }
      }
         
     const agregar = () => {
@@ -56,12 +142,16 @@ export const FormularioVideos = () => {
 
     const [first, setfirst] = useState([])
 
+    // const handleVideo = () => {
+    //     document.getElementById('fileVideo').click()
+    // }
+
   return (
     <Sidebar>
         <div className='p-4'>
             <h1>Crear capacitación</h1>
 
-            <form className='my-5'>
+            <form onSubmit={handleSubmit} className='my-5'>
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                         <label>Equipos</label>
@@ -80,12 +170,15 @@ export const FormularioVideos = () => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
                         <label className='form-label'>Titulo</label>
-                        <input type="text" placeholder='Titulo de la capacitación' className='form-control' />
+                        <input onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
                     </div>
 
                     <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                         <label className='form-label'>Imagen</label>
-                        <input type="text" placeholder='Imagen de la capacitación' className='form-control' />
+                        <input accept="image/*" type="file" className='form-control' name='image' onChange={(e) => {
+                            // setFieldValue('image', setimag(e.currentTarget.files[0], (e.currentTarget.files[0]) ? setimag(URL.createObjectURL(e.currentTarget.files[0]) || '') : setimag())
+                            setimag(e.currentTarget.files[0])
+                        }} />
                     </div>
                 </div>
 
@@ -101,7 +194,7 @@ export const FormularioVideos = () => {
 
                                     <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Video</label>
-                                        <input name='video' value={element.video} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                        <input accept="video/*" id='fileVideo' onChange = {(e) => handleChange(index, e)} type="file" className='form-control' />
                                     </div>
 
                                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
@@ -141,12 +234,12 @@ export const FormularioVideos = () => {
                                 <div className="row">
                                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
                                         <label className='form-label'>Pregunta</label>
-                                        <input name='titulo' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
+                                        <input name='pregunta' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
                                     </div>
 
                                     <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                         <label className='form-label'>Respuesta</label>
-                                        <input name='video' value={element.respuesta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                        <input name='respuesta' value={element.respuesta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
                                     </div>
 
                                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">

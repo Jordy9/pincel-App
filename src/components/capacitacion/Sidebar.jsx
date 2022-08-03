@@ -1,85 +1,53 @@
 import React from 'react'
-import { Accordion } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { activeCapacitacion } from '../../store/capacitacion/capacitacionSlice';
 
 export const Sidebar = () => {
-    const arreglo = [
-        {
-            titulo: 'Que es el cliente',
-            content: [
-                {
-                    nombre: 'primero1',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/02/04/12/25/man-2037255__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-                {
-                    nombre: 'primero2',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/02/04/12/25/man-2037255__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-                {
-                    nombre: 'primero3',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/02/04/12/25/man-2037255__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-            ],
-        },
-        {
-            titulo: 'Que es el servicio al cliente',
-            content: [
-                {
-                    nombre: 'segundo1',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/03/20/10/50/books-2158737__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-                {
-                    nombre: 'segundo2',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/03/20/10/50/books-2158737__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-                {
-                    nombre: 'segundo3',
-                    imagen: 'https://cdn.pixabay.com/photo/2017/03/20/10/50/books-2158737__340.jpg',
-                    duracion: '2 h 05 min',
-                },
-            ],
-        },
-    ]
-    console.log(arreglo)
+
+    const dispatch = useDispatch();
+
+    const { capacitacion, capacitacionActiva } = useSelector(state => state.cp);
+
+    const capacitacionId = window.location.pathname.split('/')[2]
+    
   return (
     <div style={{width: '100%', height: '100vh'}}>
         <h4 className='text-center p-1'>Contenido de la capacitacion</h4>
-        <Accordion flush style={{backgroundColor: '#181818'}} defaultActiveKey="">
             {
-                arreglo.map((capa, index) => (
-                    <Accordion.Item eventKey={index - 1}>
-                        <Accordion.Header>{capa.titulo}</Accordion.Header>
-                        <Accordion.Body>
-                                {
-                                    capa.content.map(capa => (
-                                        <>
-                                        <div className="row">
-                                            <div className="col-1">
-                                                <input type="checkbox" className='form-check-input' />
-                                            </div>
-                                            <div className="col-11">
-                                                <img src={capa.imagen} style = {{width: '100px', height: '100px'}} className = 'mx-2 img-fluid' alt="" />
-                                                {capa.nombre}
-                                            </div>
-                                        
-                                            <caption style={{fontSize: '13px'}}>{capa.duracion}</caption>
-                                        </div>
-                                        </>
+                capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)?.map(capacitacion => {
+                    return (
+                        capacitacion?.video?.map((capacitacion, index) => {
+                            const duracion = parseInt(capacitacion.duration / 60)
+                            return (
+                                <div onClick={() => dispatch(activeCapacitacion(capacitacion))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion}>
+                                    <div className="col-2 d-flex justify-content-center">
+                                        <input type="checkbox" className='form-check-input' />
+                                    </div>
 
-                                    ))
-
-                                    
-                                }
-
-                        </Accordion.Body>
-                    </Accordion.Item>
-                ))
+                                    <div className="col-10">
+                                        <span>{index + 1}. {capacitacion?.titulo}</span>
+                                    <caption style={{fontSize: '13px'}}>{(duracion < 1) ? 1 : duracion}min</caption>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    )
+                })
             }
-        </Accordion>
+                {/* <>
+                <div className='p-4 sidebarCapacitacion' style={{justifyContent: 'space-between', display: 'flex'}}>
+                    <div>
+                        <input type="checkbox" className='form-check-input' />
+                    </div>
+                    <div className="col-11">
+                    <div>
+                        <span>{capacitacion?.titulo}</span>
+                    </div>
+                    </div>
+                
+                    <caption style={{fontSize: '13px'}}>2h 5min</caption>
+                </div>
+                </> */}
     </div>
   )
 }

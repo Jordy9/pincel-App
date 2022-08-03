@@ -5,9 +5,13 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { crearResena } from '../../store/resena/thunk'
 
-export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDescripcion, idUsuarios}) => {
+export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDescripcion, idUsuarios, setIdUsuarios}) => {
 
     const dispatch = useDispatch();
+
+    const handleClose = () => {
+        setModalShowDescripcion(false)
+    }
 
     const {handleSubmit, getFieldProps} = useFormik({
         initialValues: {
@@ -17,14 +21,12 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
         enableReinitialize: true,
         onSubmit: ({calificacion, descripcion}) => {
             dispatch(crearResena(calificacion, descripcion))
+            handleClose()
+            setIdUsuarios([])
         },
         validationSchema: Yup.object({
         })
     })
-
-    const handleClose = () => {
-        setModalShowDescripcion(false)
-    }
 
     const handledButton = () => {
         document.getElementById('idButtonDesc').click()

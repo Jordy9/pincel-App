@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import user from '../../heroes/user.webp'
 import { useFormik } from 'formik'
@@ -103,6 +103,20 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
         setShowModalFront(true)
     }
 
+    const ref = useRef()
+
+    useEffect(() => {
+      if (ref?.current) {
+        ref?.current?.slickNext()
+      }
+    }, [idUsuarios])
+
+    useEffect(() => {
+      if (resena?.length === 0) {
+        handleClose()
+      }
+    }, [resena])
+    
   return (
     <Modal fullscreen show={modalShow} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
@@ -112,7 +126,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <div className="row">
-                        <Slider {...settings}>
+                        <Slider ref={ref} {...settings}>
                             {
                                 resena?.filter(usuario => usuario?.role !== 'Administrador')?.map(usuario => {
                                     return (

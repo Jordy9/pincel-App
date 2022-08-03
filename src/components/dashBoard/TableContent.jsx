@@ -9,6 +9,12 @@ export const TableContent = (props) => {
 
     const { resena } = useSelector(state => state.rs);
 
+    const a = resena.flatMap(n => n)
+
+    const as = [1, 2, [12, [12, [15]]]]
+
+    console.log(resena.flatMap(e => e.calificacion).flat(Infinity))
+
     const {id, name, lastName, date, email, urlImage, role} = props
 
     const handledActive = (user) => {
@@ -52,7 +58,7 @@ export const TableContent = (props) => {
         <td>{name}</td>
         <td>{lastName}</td>
         <td>10</td>
-        <td>{parseInt(suma/division) || 0}</td>
+        <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseañas`}>{parseInt(suma/division) || 0}</td>
         <td>
             <div data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" className="progress my-2">
               <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>

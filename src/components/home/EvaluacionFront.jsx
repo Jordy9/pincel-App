@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import user from '../../heroes/user.webp'
 import { Rating } from 'react-simple-star-rating'
 import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
@@ -97,6 +97,20 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     }, [idUsuarios])
 
+    const ref = useRef()
+
+    useEffect(() => {
+      if (ref?.current) {
+        ref?.current?.slickNext()
+      }
+    }, [idUsuarios])
+
+    useEffect(() => {
+        if (resena?.length === 0) {
+          handleClose()
+        }
+      }, [resena])
+
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
@@ -128,7 +142,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     )
                                 })
                                     :
-                                <Slider {...settings}>
+                                <Slider ref={ref} {...settings}>
                                     {
                                         resena?.filter(usuarios => usuarios?.role === 'Administrador')?.map(usuario => {
                                             return (
@@ -158,7 +172,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                 {
                     (next)
                         &&
-                    <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} idUsuarios = {idUsuarios} />
+                    <ModalEvaluacionDescripcion modalShowDescripcion = {modalShowDescripcion} setModalShowDescripcion = {setModalShowDescripcion} idUsuarios = {idUsuarios} setIdUsuarios = {setIdUsuarios} />
                 }
             </div>
         </Modal.Body>

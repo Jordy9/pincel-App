@@ -160,3 +160,21 @@ body {
 .Hola .filled-icons {
   background-color: red !important;
 }
+
+.sidebarCapacitacion:hover {
+  background-color: grey;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.sidebarCapacitacion:focus {
+  background-color: grey;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.sidebarCapacitacionfocus {
+  background-color: grey;
+  border-radius: 20px;
+  cursor: pointer;
+}

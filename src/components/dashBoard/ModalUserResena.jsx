@@ -27,7 +27,7 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
                                 <th scope="col">Calificación</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Fecha</th>
-                                <th scope="col">Eliminar</th>
+                                <th scope="col">Inhabilitar</th>
                             </tr>
                         </thead>
                         <tbody>

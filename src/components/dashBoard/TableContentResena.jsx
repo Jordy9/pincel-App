@@ -39,7 +39,7 @@ export const TableContentResena = (props) => {
                     <td>{descripcion}</td>
                     <td>{moment(createdAt).format('MMMM Do YYYY')}</td>
                     <td>             
-                        <button onClick={() => dispatch(actualizarResena(props))} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash-fill text-danger"></i></button>
+                        <button onClick={() => dispatch(actualizarResena(props))} className='btn mx-1 my-1'><i style={{fontSize: '23px'}} className="bi bi-x-octagon text-danger"></i></button>
                     </td>
                 </>
         }
