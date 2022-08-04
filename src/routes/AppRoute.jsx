@@ -43,30 +43,30 @@ export const AppRoute = () => {
 
   useEffect(() => {
     if (uid) {
-        conectarSocket()
+      conectarSocket()
     }
   }, [uid, conectarSocket])
 
   useEffect(() => {
-      if (!uid) {
-          desconectarSocket()
-      }
+    if (!uid) {
+      desconectarSocket()
+    }
   }, [uid, desconectarSocket])
 
   useEffect(() => {
-      dispatch(startSocket(socket, online))
+    dispatch(startSocket({socket, online}))
   }, [dispatch, socket, online])
 
   useEffect(() => {
-      socket?.on('mensaje-personal', (mensaje) => {
-          dispatch(activeMessage(mensaje))
-      })
+    socket?.on('mensaje-personal', (mensaje) => {
+      dispatch(activeMessage(mensaje))
+    })
   }, [socket, dispatch])
 
   useEffect(() => {
-      socket?.on('escribiendo', (typing) => {
-          dispatch(isTyping(typing))
-      })
+    socket?.on('escribiendo', (typing) => {
+      dispatch(isTyping(typing))
+    })
   }, [socket, dispatch])
 
   return (

@@ -83,6 +83,13 @@ body {
     font-size: 10px;
   }
 
+  .progress2 {
+    background-color: rgb(10, 25, 45) !important;
+    border-radius: 100px !important;
+    height: 15px;
+    font-size: 10px;
+  }
+
   .accordion-button:focus {
     box-shadow: none;
     border-color: rgba(0,0,0,.125);

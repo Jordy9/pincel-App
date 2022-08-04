@@ -1,5 +1,5 @@
 import axios from "axios"
-import { activeCapacitacion, createCapacitacion, getCapacitacion, toSave } from "./capacitacionSlice";
+import { activeCapacitacion, createCapacitacion, getCapacitacion, toSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -44,9 +44,15 @@ export const crearVideos = (video) => {
         formData.append('title', video.titulo)
         
         try {
-            const resp = await axios.post(`${endPoint}/fileUpload`, formData, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
+                headers: {'x-token': token}, 
+                onUploadProgress: (e) =>
+                {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+            })
 
             dispatch(toSave(resp.data.image))
+
+            dispatch(uploadFinish())
     
         } catch (error) {
         }
@@ -54,7 +60,7 @@ export const crearVideos = (video) => {
     }
 }
 
-export const crearCapacitacion = (title, file, video, Preguntas) => {
+export const crearCapacitacion = (title, file, video, Preguntas, duracion) => {
     return async(dispatch) => {
 
         const formData = new FormData()
@@ -64,18 +70,31 @@ export const crearCapacitacion = (title, file, video, Preguntas) => {
         try {
 
 
-            const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {headers: {'x-token': token}})
+            const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
+                headers: {'x-token': token},
+                onUploadProgress: (e) =>
+                {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+            })
 
             const idImage = respImage.data.image.id
             const image = respImage.data.image.url
 
-            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas}, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion}, {headers: {'x-token': token}})
     
+            dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
 
         } catch (error) {
             console.log(error)
         }
         
+    }
+}
+
+export const checkVideoUser = (id, idVideo, uid) => {
+    return (dispatch, getState) => {
+        const { socket } = getState().sk;
+
+        socket?.emit('check-video-capacitacion', {id, idVideo, uid})
     }
 }

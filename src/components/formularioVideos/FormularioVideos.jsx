@@ -19,7 +19,7 @@ export const FormularioVideos = () => {
 
     const dispatch = useDispatch();
 
-    const { paraGuardar } = useSelector(state => state.cp);
+    const { paraGuardar, upload } = useSelector(state => state.cp);
     
     const [formValuesTitulo, setFormValuesTitulo] = useState('')
 
@@ -28,6 +28,8 @@ export const FormularioVideos = () => {
     const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
 
     const [formEvaluacion, setFormEvaluacion] = useState([{ pregunta: '', respuesta: '' }])
+
+    const [tituloSubida, setTituloSubida] = useState('')
 
     const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
         initialValues: {
@@ -44,6 +46,7 @@ export const FormularioVideos = () => {
                 
                 dispatch(crearVideos(element))
 
+                setTituloSubida('videos')
             }
 
             // image: document.getElementsByName('image').value = ''
@@ -81,17 +84,20 @@ export const FormularioVideos = () => {
     useEffect(() => {
         if (paraGuardar?.length === formValues?.length) {
             let arregloVideo = []
+            let SumaDuracion = 0
             paraGuardar?.map(e => {
+                SumaDuracion = SumaDuracion + Number(e?.duration)
                 arregloVideo.push({
                     titulo: e?.title,
                     idVideo: e?.id,
                     video: e?.url,
                     createdAt: e?.createdAt,
-                    check: false,
+                    check: [],
                     duration: e?.duration
                 })
             })
-            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion))
+            setTituloSubida('imagen')
+            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion))
             dispatch(toSaveClear())
         }
     }, [paraGuardar])
@@ -270,6 +276,14 @@ export const FormularioVideos = () => {
                             </Fragment>
                         )
                     })
+                }
+
+                {
+                    (upload !== 0)
+                        &&
+                    <div className="progress2 my-2">
+                        <div className="progress-bar" role="progressbar" style={{width: `${upload}%`, backgroundColor: 'rgb(89, 7, 211)', color: 'white', borderRadius: 100}} aria-valuemin="0" aria-valuemax="100">Subiendo {tituloSubida} {upload}%</div>
+                    </div>
                 }
 
                 <div className='d-grid gap-2 col-6 mx-auto'>

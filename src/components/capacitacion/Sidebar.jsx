@@ -8,6 +8,8 @@ export const Sidebar = () => {
 
     const { capacitacion, capacitacionActiva } = useSelector(state => state.cp);
 
+    const { uid } = useSelector(state => state.auth);
+
     const capacitacionId = window.location.pathname.split('/')[2]
     
   return (
@@ -21,7 +23,7 @@ export const Sidebar = () => {
                             return (
                                 <div onClick={() => dispatch(activeCapacitacion(capacitacion))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion}>
                                     <div className="col-2 d-flex justify-content-center">
-                                        <input type="checkbox" className='form-check-input' />
+                                        <input defaultChecked = {(capacitacion?.check?.includes(uid))} type="checkbox" className='form-check-input' />
                                     </div>
 
                                     <div className="col-10">

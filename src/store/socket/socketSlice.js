@@ -3,13 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 export const socketSlice = createSlice({
    name: 'socket',
    initialState: {
-      socket: null
+      socket: null,
+      online: null
    },
    reducers: {
-        startSocket: (state, action ) => {
-
-           state.socket = action.payload;
-       },
+      startSocket: (state, action ) => {
+         state.socket = action.payload.socket;
+         state.online = action.payload.online;
+      },
    }
 });
 
