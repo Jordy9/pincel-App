@@ -10,6 +10,8 @@ export const Cards = () => {
 
   const { capacitacion } = useSelector(state => state.cp);
 
+  const { uid } = useSelector(state => state.auth);
+
   const navigate = useNavigate()
 
   const VideoComponent = (id) => {
@@ -28,9 +30,9 @@ export const Cards = () => {
     {
       capacitacion?.map(({title, _id, image, duracion, video}) => {
         const duration = parseInt(duracion / 60)
-        const CantidadCheck = video?.filter(video => video?.check === true)
+        const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
-        const porcentaje = CantidadCheck?.length / video?.length
+        const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
 
         console.log(porcentaje)
         
@@ -45,7 +47,7 @@ export const Cards = () => {
                   (porcentaje >= 1)
                     &&
                   <div className="progress my-2">
-                    <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    <div className="progress-bar" role="progressbar" style={{width: `${porcentaje}%`, backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{porcentaje}%</div>
                   </div>
                 }
                 <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje >= 1) ? 'Continuar capacitación' : 'Empezar capacitación' }</button>

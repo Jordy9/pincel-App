@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import io from 'socket.io-client';
+import { actualizarCapacitacion } from '../store/capacitacion/capacitacionSlice';
+import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { UsuariosCargados } from '../store/chat/chatSlice';
 import { NotificacionesCargadas } from '../store/notificaciones/notificacionesSlice';
 import { BorrarNotificaciones } from '../store/notificaciones/thunks';
@@ -63,6 +65,14 @@ export const useSocket = ( serverPath ) => {
             dispatch(NotificacionesCargadas(notificaciones))
 
             dispatch(BorrarNotificaciones())
+        })
+    }, [ socket, dispatch])
+
+    useEffect(() => {
+        socket?.on('checked-video-user', (checked) => {
+            if (checked) {
+                dispatch(obtenerCapacitacion())
+            }
         })
     }, [ socket, dispatch])
 
