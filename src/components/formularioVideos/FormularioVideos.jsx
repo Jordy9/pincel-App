@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
+import { mixed } from 'yup';
 
 const options = [
     { label: "Equipo de Servicio", value: "Servicio" },
@@ -27,19 +28,22 @@ export const FormularioVideos = () => {
 
     const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
 
-    const [formEvaluacion, setFormEvaluacion] = useState([{ pregunta: '', respuesta: '' }])
+    const [formEvaluacion, setFormEvaluacion] = useState([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
 
     const [tituloSubida, setTituloSubida] = useState('')
+
+    const [equiposCapacitacion, setEquiposCapacitacion] = useState([])
 
     const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
         initialValues: {
             titulo: formValuesTitulo ,
-            image: '',
+            image: imag,
             video: formValues,
             evaluacion: formEvaluacion,
+            equipos: equiposCapacitacion
         },
         enableReinitialize: true,
-        onSubmit: ({titulo, image, video, evaluacion}) => {
+        onSubmit: ({titulo, image, video, evaluacion, equipos}) => {
 
             for (let index = 0; index < video.length; index++) {
                 const element = video[index];
@@ -55,29 +59,28 @@ export const FormularioVideos = () => {
 
         },
         validationSchema: Yup.object({
-            // name: Yup.string()
-            //             .max(50, 'Debe de tener 50 caracteres o menos')
-            //             .min(3, 'Debe de tener 3 caracteres o más')
-            //             .required('Requerido'),
-            // lastName: Yup.string()
-            //             .max(50, 'Debe de tener 50 caracteres o menos')
-            //             .min(3, 'Debe de tener 3 caracteres o más')
-            //             .required('Requerido'),
-            // date: Yup.string()
-            //             .required('Requerido'),
-            // email: Yup.string()
-            //             .email('La dirección de email no es válida')
-            //             .required('Requerido'),
-            // role: Yup.string()
-            //             .required('Requerido'),
-            // password: Yup.string()
-            //             .min(8, 'Debe de tener 8 caracteres o más')
-            //             .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
-            //             .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
-            //             .required('Requerido'),
-            // confirmPassword: Yup.string()
-            //             .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
-            //             .required('Requerido')
+            titulo: Yup.string()
+                        .max(50, 'Debe de tener 50 caracteres o menos')
+                        .min(3, 'Debe de tener 3 caracteres o más')
+                        .required('Requerido'),
+            image: Yup.mixed()
+                        .required('Requerido'),
+            equipos: Yup.array()
+                        .length(1, 'Debe de contener al menos un equipo')
+                        .required('Requerido'),
+            video: Yup.array().of(Yup.object({
+                    titulo: Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
+                    video: mixed().required('Requerido')
+                })
+            ),
+            evaluacion: Yup.array().of(Yup.object({
+                    pregunta: Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
+                    respuesta1: Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                    respuesta2: Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                    respuesta3: Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                    respuesta4: Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                })
+            )
         })
     })
 
@@ -146,11 +149,11 @@ export const FormularioVideos = () => {
         setFormEvaluacion(newFormValues)
     }
 
-    const [first, setfirst] = useState([])
-
     // const handleVideo = () => {
     //     document.getElementById('fileVideo').click()
     // }
+
+    const [evaluacionChange, setEvaluacionChange] = useState(false)
 
   return (
     <Sidebar>
@@ -163,120 +166,159 @@ export const FormularioVideos = () => {
                         <label>Equipos</label>
                         <MultiSelect
                             options={options}
-                            value={first}
-                            onChange={setfirst}
+                            value={equiposCapacitacion}
+                            onChange={setEquiposCapacitacion}
                             labelledBy="Select"
                             hasSelectAll = {false}
                             disableSearch
                         />
-                        {/* {touched.role && errors.role && <span style={{color: 'red'}}>{errors.role}</span>} */}
+                        {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
                     </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
-                        <label className='form-label'>Titulo</label>
-                        <input onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
-                    </div>
-
-                    <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                        <label className='form-label'>Imagen</label>
-                        <input accept="image/*" type="file" className='form-control' name='image' onChange={(e) => {
-                            // setFieldValue('image', setimag(e.currentTarget.files[0], (e.currentTarget.files[0]) ? setimag(URL.createObjectURL(e.currentTarget.files[0]) || '') : setimag())
-                            setimag(e.currentTarget.files[0])
-                        }} />
+                    
+                    <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                        <label>{(!evaluacionChange) ? 'Evaluación' :'Videos'}</label>
+                        <button type='button' onClick={() => setEvaluacionChange(!evaluacionChange)} className='btn btn-primary form-control'>{(!evaluacionChange) ? 'Crear evaluación' :'Crear videos'}</button>
                     </div>
                 </div>
 
                 {
-                    formValues.map((element, index) => {
-                        return (
-                            <Fragment key={element + index}>
-                                <div className="row">
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
-                                        <label className='form-label'>Titulo del video</label>
-                                        <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
-                                    </div>
-
-                                    <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                                        <label className='form-label'>Video</label>
-                                        <input accept="video/*" id='fileVideo' onChange = {(e) => handleChange(index, e)} type="file" className='form-control' />
-                                    </div>
-
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                                        <label className='form-label'>Acción</label>
+                    (!evaluacionChange)
+                        ?
+                    <>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
+                                <label className='form-label'>Titulo</label>
+                                <input onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
+                                {touched?.titulo && errors?.titulo && <span style={{color: 'red'}}>{errors?.titulo}</span>}
+                            </div>
+        
+                            <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                <label className='form-label'>Imagen</label>
+                                <input accept="image/*" type="file" className='form-control' name='image' onChange={(e) => {
+                                    // setFieldValue('image', setimag(e.currentTarget.files[0], (e.currentTarget.files[0]) ? setimag(URL.createObjectURL(e.currentTarget.files[0]) || '') : setimag())
+                                    setimag(e.currentTarget.files[0])
+                                }} />
+                                {touched?.image && errors?.image && <span style={{color: 'red'}}>{errors?.image}</span>}
+                            </div>
+                        </div>
+        
+                        {
+                            formValues.map((element, index) => {
+                                return (
+                                    <Fragment key={element + index}>
                                         <div className="row">
-                                            <div className="col-12">
-                                                {
-                                                    (formValues.length === index + 1)
-                                                        &&
-                                                    <button onClick={agregar} type='button' className='btn btn-primary mx-1'>
-                                                        <i className="bi bi-plus-lg"></i>
-                                                    </button>  
-                                                }
-
-                                                {
-                                                    (index !== 0)
-                                                        &&
-                                                    <button onClick={() => eliminar(index)} type='button' className='btn btn-primary mx-1'>
-                                                        <i className="bi bi-trash-fill"></i>
-                                                    </button>
-                                                }
+                                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
+                                                <label className='form-label'>Titulo del video</label>
+                                                <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
+                                                {touched?.video?.filter(video => video.titulo) && errors?.video?.filter(video => video.titulo) && <span style={{color: 'red'}}>{errors?.video[index]?.titulo}</span>}
                                             </div>
+        
+                                            <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                                <label className='form-label'>Video</label>
+                                                <input accept="video/*" id='fileVideo' onChange = {(e) => handleChange(index, e)} type="file" className='form-control' />
+                                                {touched?.video?.filter(video => video.video) && errors?.video?.filter(video => video.video) && <span style={{color: 'red'}}>{errors?.video[index]?.video}</span>}
+                                            </div>
+        
+                                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                                <label className='form-label'>Acción</label>
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        {
+                                                            (formValues.length === index + 1)
+                                                                &&
+                                                            <button onClick={agregar} type='button' className='btn btn-primary mx-1'>
+                                                                <i className="bi bi-plus-lg"></i>
+                                                            </button>  
+                                                        }
+        
+                                                        {
+                                                            (index !== 0)
+                                                                &&
+                                                            <button onClick={() => eliminar(index)} type='button' className='btn btn-primary mx-1'>
+                                                                <i className="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+        
                                         </div>
-                                        
-                                    </div>
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </>
+                        :
+                    <>
+                        {
+                            formEvaluacion.map((element, index) => {
+                                return (
+                                    <Fragment key={element + index}>
+                                        <div className="row">
+                                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
+                                                <label className='form-label'>Pregunta</label>
+                                                <input name='pregunta' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
+                                                {touched?.evaluacion?.filter(evaluacion => evaluacion.pregunta) && errors?.evaluacion?.filter(evaluacion => evaluacion.pregunta) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.pregunta}</span>}
+                                            </div>
 
-                                </div>
-                            </Fragment>
-                        )
-                    })
+                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                                <label className='form-label'>Respuesta</label>
+                                                <input name='respuesta1' value={element.respuesta1} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta1) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta1) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta1}</span>}
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                                <label className='form-label'>Respuesta</label>
+                                                <input name='respuesta2' value={element.respuesta2} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta2) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta2) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta2}</span>}
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                                <label className='form-label'>Respuesta</label>
+                                                <input name='respuesta3' value={element.respuesta3} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta3) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta3) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta3}</span>}
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                                <label className='form-label'>Respuesta</label>
+                                                <input name='respuesta4' value={element.respuesta4} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta4) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta4) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta4}</span>}
+                                            </div>
+
+                                            <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                                <label className='form-label'>Acción</label>
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        {
+                                                            (formEvaluacion.length === index + 1)
+                                                                &&
+                                                            <button onClick={agregarPregunta} type='button' className='btn btn-primary mx-1'>
+                                                                <i className="bi bi-plus-lg"></i>
+                                                            </button>  
+                                                        }
+
+                                                        {
+                                                            (index !== 0)
+                                                                &&
+                                                            <button onClick={() => eliminarPregunta(index)} type='button' className='btn btn-primary mx-1'>
+                                                                <i className="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </>
                 }
 
-                {
-                    formEvaluacion.map((element, index) => {
-                        return (
-                            <Fragment key={element + index}>
-                                <div className="row">
-                                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
-                                        <label className='form-label'>Pregunta</label>
-                                        <input name='pregunta' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
-                                    </div>
 
-                                    <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                                        <label className='form-label'>Respuesta</label>
-                                        <input name='respuesta' value={element.respuesta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
-                                    </div>
-
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                                        <label className='form-label'>Acción</label>
-                                        <div className="row">
-                                            <div className="col-12">
-                                                {
-                                                    (formEvaluacion.length === index + 1)
-                                                        &&
-                                                    <button onClick={agregarPregunta} type='button' className='btn btn-primary mx-1'>
-                                                        <i className="bi bi-plus-lg"></i>
-                                                    </button>  
-                                                }
-
-                                                {
-                                                    (index !== 0)
-                                                        &&
-                                                    <button onClick={() => eliminarPregunta(index)} type='button' className='btn btn-primary mx-1'>
-                                                        <i className="bi bi-trash-fill"></i>
-                                                    </button>
-                                                }
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-
-                                </div>
-                            </Fragment>
-                        )
-                    })
-                }
 
                 {
                     (upload !== 0)
