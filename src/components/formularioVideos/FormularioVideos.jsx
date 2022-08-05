@@ -20,7 +20,7 @@ export const FormularioVideos = () => {
 
     const dispatch = useDispatch();
 
-    const { paraGuardar, upload } = useSelector(state => state.cp);
+    const { paraGuardar, upload, paraEditar } = useSelector(state => state.cp);
     
     const [formValuesTitulo, setFormValuesTitulo] = useState('')
 
@@ -33,6 +33,8 @@ export const FormularioVideos = () => {
     const [tituloSubida, setTituloSubida] = useState('')
 
     const [equiposCapacitacion, setEquiposCapacitacion] = useState([])
+
+    console.log(equiposCapacitacion)
 
     const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
         initialValues: {
@@ -66,7 +68,7 @@ export const FormularioVideos = () => {
             image: Yup.mixed()
                         .required('Requerido'),
             equipos: Yup.array()
-                        .length(1, 'Debe de contener al menos un equipo')
+                        // .length(1, 'Debe de contener al menos un equipo')
                         .required('Requerido'),
             video: Yup.array().of(Yup.object({
                     titulo: Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
@@ -100,13 +102,34 @@ export const FormularioVideos = () => {
                 })
             })
             setTituloSubida('imagen')
-            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion))
+            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
             dispatch(toSaveClear())
         }
     }, [paraGuardar])
     
 
     // Contenido de Capacitación de Video
+
+    useEffect(() => {
+      if (paraEditar) {
+        paraEditar?.video?.map(video => (
+            setFormValues([{ titulo: video?.titulo, video: video?.video }])
+        ))
+        paraEditar?.Preguntas?.map(preguntas => (
+            setFormEvaluacion([{ 
+                pregunta: preguntas?.pregunta, 
+                respuesta1: preguntas?.respuesta1, 
+                respuesta2: preguntas?.respuesta2, 
+                respuesta3: preguntas?.respuesta3, 
+                respuesta4: preguntas?.respuesta4 
+            }])
+        ))
+        setimag(paraEditar?.image)
+        setEquiposCapacitacion([...paraEditar?.team])
+        setFormValuesTitulo(paraEditar?.title)
+      }
+    }, [paraEditar])
+    
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
@@ -139,7 +162,7 @@ export const FormularioVideos = () => {
      }
         
     const agregarPregunta = () => {
-        setFormEvaluacion([...formEvaluacion, { pregunta: '', respuesta: '' }])
+        setFormEvaluacion([...formEvaluacion, { pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
      }
     
     const eliminarPregunta = (i) => {
@@ -188,7 +211,7 @@ export const FormularioVideos = () => {
                         <div className="row">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
                                 <label className='form-label'>Titulo</label>
-                                <input onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
+                                <input value={formValuesTitulo} onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
                                 {touched?.titulo && errors?.titulo && <span style={{color: 'red'}}>{errors?.titulo}</span>}
                             </div>
         
@@ -329,7 +352,7 @@ export const FormularioVideos = () => {
                 }
 
                 <div className='d-grid gap-2 col-6 mx-auto'>
-                    <button type='submit' className = 'btn btn-primary  my-2'>Guardar</button>
+                    <button hidden = {(!evaluacionChange)} type='submit' className = 'btn btn-primary  my-2'>Guardar</button>
                 </div>
             </form>
         </div>

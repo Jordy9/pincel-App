@@ -60,7 +60,7 @@ export const crearVideos = (video) => {
     }
 }
 
-export const crearCapacitacion = (title, file, video, Preguntas, duracion) => {
+export const crearCapacitacion = (title, file, video, Preguntas, duracion, team) => {
     return async(dispatch) => {
 
         const formData = new FormData()
@@ -79,7 +79,7 @@ export const crearCapacitacion = (title, file, video, Preguntas, duracion) => {
             const idImage = respImage.data.image.id
             const image = respImage.data.image.url
 
-            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion}, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
     
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))

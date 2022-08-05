@@ -13,6 +13,8 @@ export const Sidebar = () => {
     const capacitacionId = window.location.pathname.split('/')[2]
 
     const capacitacionFiltrada = capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)
+
+    console.log(capacitacionFiltrada[0]?.video)
     
   return (
     <div style={{width: '100%', height: '100vh'}}>
