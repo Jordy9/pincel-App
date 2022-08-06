@@ -1,5 +1,5 @@
 import axios from "axios"
-import { activeCapacitacion, createCapacitacion, getCapacitacion, toSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import { activeCapacitacion, createCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -60,6 +60,51 @@ export const crearVideos = (video) => {
     }
 }
 
+export const actualizarVideos = (video, indice, index) => {
+    return async(dispatch, getState) => {
+
+        const { capacitacion, paraEditar } = getState().cp;
+        
+        try {
+            if (typeof video?.video !== 'string') {
+                const formData = new FormData()
+                formData.append('file', video.video)
+                formData.append('title', video.titulo)
+                
+                const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
+                    headers: {'x-token': token}, 
+                    onUploadProgress: (e) =>
+                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+                })
+
+                let nuevo
+
+                if (paraEditar?.video[indice]) {
+                    capacitacion?.map(capacitacion => (
+                        capacitacion?.video[indice]?.idVideo === paraEditar?.video[indice]?.idVideo ? nuevo = resp.data.image : capacitacion
+                    ))
+
+                    nuevo.createdAt = paraEditar?.video[indice].createdAt
+        
+                    dispatch(toSave(nuevo))
+                } else {
+                    dispatch(toSave(resp.data.image))
+                }
+
+
+            } else {
+                dispatch(toSave(paraEditar?.video[index]))
+            }
+
+
+            dispatch(uploadFinish())
+    
+        } catch (error) {
+        }
+        
+    }
+}
+
 export const crearCapacitacion = (title, file, video, Preguntas, duracion, team) => {
     return async(dispatch) => {
 
@@ -83,6 +128,48 @@ export const crearCapacitacion = (title, file, video, Preguntas, duracion, team)
     
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
+
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
+}
+
+export const actualizarCapacitacionForm = (title, file, video, Preguntas, duracion, team) => {
+    return async(dispatch, getState) => {
+
+        const { paraEditar } = getState().cp;
+        
+        try {
+            if (typeof file !== 'string') {
+
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('title', title + '123456')
+    
+                const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
+                    headers: {'x-token': token},
+                    onUploadProgress: (e) =>
+                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+                })
+    
+                const idImage = respImage.data.image.id
+                const image = respImage.data.image.url
+    
+                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+        
+                dispatch(uploadFinish())
+                dispatch(createCapacitacion(resp.data.capacitacion))
+            } else {
+                const image = file
+                const idImage = paraEditar?.idImage
+                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+        
+                dispatch(uploadFinish())
+                dispatch(createCapacitacion(resp.data.capacitacion))
+                dispatch(toUpdateClear())
+            }
 
         } catch (error) {
             console.log(error)

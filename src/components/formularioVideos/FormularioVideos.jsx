@@ -3,9 +3,9 @@ import { Sidebar } from '../Sidebar'
 import { MultiSelect } from "react-multi-select-component";
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
+import { actualizarCapacitacionForm, actualizarVideos, crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
 import { useDispatch, useSelector } from 'react-redux';
-import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
+import { toSave, toSaveClear, toUpdateSave } from '../../store/capacitacion/capacitacionSlice';
 import { mixed } from 'yup';
 
 const options = [
@@ -34,7 +34,7 @@ export const FormularioVideos = () => {
 
     const [equiposCapacitacion, setEquiposCapacitacion] = useState([])
 
-    console.log(equiposCapacitacion)
+    const [indiceActualizar, setindiceActualizar] = useState([])
 
     const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
         initialValues: {
@@ -47,11 +47,19 @@ export const FormularioVideos = () => {
         enableReinitialize: true,
         onSubmit: ({titulo, image, video, evaluacion, equipos}) => {
 
+            // if (paraEditar) {
+            //     dispatch(toSave(paraEditar?.video))
+            // }
+
             for (let index = 0; index < video.length; index++) {
                 const element = video[index];
-                
-                dispatch(crearVideos(element))
 
+                if (!paraEditar) {
+                    dispatch(crearVideos(element))
+                } else {
+                    dispatch(actualizarVideos(element, indiceActualizar[index], index))
+                }
+                
                 setTituloSubida('videos')
             }
 
@@ -88,33 +96,56 @@ export const FormularioVideos = () => {
 
     useEffect(() => {
         if (paraGuardar?.length === formValues?.length) {
+            console.log(paraGuardar)
             let arregloVideo = []
             let SumaDuracion = 0
             paraGuardar?.map(e => {
+                console.log(e)
                 SumaDuracion = SumaDuracion + Number(e?.duration)
-                arregloVideo.push({
-                    titulo: e?.title,
-                    idVideo: e?.id,
-                    video: e?.url,
-                    createdAt: e?.createdAt,
-                    check: [],
-                    duration: e?.duration
-                })
+                if (e?.idVideo === undefined) {
+                    arregloVideo.push({
+                        titulo: e?.title,
+                        idVideo: e?.id,
+                        video: e?.url,
+                        createdAt: e?.createdAt,
+                        check: [],
+                        duration: e?.duration
+                    })
+                } else {
+                    arregloVideo.push(e)
+                }
             })
             setTituloSubida('imagen')
-            dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
+            if (!paraEditar) {
+                dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
+                setFormValuesTitulo('')
+                setimag()
+                setFormValues([{ titulo: '', video: '' }])
+                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+                setEquiposCapacitacion([])
+                setindiceActualizar([])
+            } else {
+                dispatch(actualizarCapacitacionForm(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
+                setFormValuesTitulo('')
+                setimag()
+                setFormValues([{ titulo: '', video: '' }])
+                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+                setEquiposCapacitacion([])
+                setindiceActualizar([])
+            }
             dispatch(toSaveClear())
         }
     }, [paraGuardar])
     
-
     // Contenido de Capacitación de Video
 
     useEffect(() => {
       if (paraEditar) {
+        let videos = []
         paraEditar?.video?.map(video => (
-            setFormValues([{ titulo: video?.titulo, video: video?.video }])
+            videos.push({titulo: video.titulo, video: video.video})
         ))
+        setFormValues([...videos])
         paraEditar?.Preguntas?.map(preguntas => (
             setFormEvaluacion([{ 
                 pregunta: preguntas?.pregunta, 
@@ -129,10 +160,10 @@ export const FormularioVideos = () => {
         setFormValuesTitulo(paraEditar?.title)
       }
     }, [paraEditar])
-    
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
+        setindiceActualizar(indiceActualizar => [...indiceActualizar, i])
         if (e.target.name === "") {            
             newFormValues[i]['video'] = e.target.files[0];
             setFormValues(newFormValues);

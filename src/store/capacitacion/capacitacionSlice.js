@@ -22,6 +22,10 @@ export const capacitacionSlice = createSlice({
            state.paraGuardar.push(action.payload)
         },
 
+    //    toUpdateSave: (state, action ) => {
+    //        state.paraGuardar.push(action.payload.)
+    //     },
+
        toUpdate: (state, action ) => {
            state.paraEditar = action.payload
         },
