@@ -4,7 +4,7 @@ import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, on
 
 const endPoint = process.env.REACT_APP_API_URL
 
-console.log('lol')
+console.log(endPoint)
 
 const token = localStorage.getItem('token') || '';
 
