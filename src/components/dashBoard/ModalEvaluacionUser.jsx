@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion}) => {
 
-    const { evaluacion } = useSelector(state => state.ev);
+    // const { evaluacion } = useSelector(state => state.ev);
 
     // const evaluacionUser = evaluacion.filter(evaluacion => evaluacion.usuario === activeUser?.id)
 
