@@ -14,11 +14,11 @@ export const ModalPerfilUser = ({modalShow, setModalShow}) => {
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
 
-    const { evaluacion } = useSelector(state => state.ev);
+    // const { evaluacion } = useSelector(state => state.ev);
 
-    const evaluacionUser = evaluacion.filter(evaluacion => evaluacion.usuario === activeUser?.id)
+    // const evaluacionUser = evaluacion.filter(evaluacion => evaluacion.usuario === activeUser?.id)
 
-    const [completa, mejorar, calificacion] = evaluacionUser;
+    // const [completa, mejorar, calificacion] = evaluacionUser;
 
     const [rating, setRating] = useState(90) // initial rating value
 
