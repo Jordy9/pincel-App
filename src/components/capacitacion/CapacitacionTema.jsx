@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { checkVideoUser } from '../../store/capacitacion/thunk';
+import { checkVideoUser, saveVideoId } from '../../store/capacitacion/thunk';
 
 export const CapacitacionTema = () => {
 
@@ -9,7 +9,7 @@ export const CapacitacionTema = () => {
 
   const { capacitacion, capacitacionActiva } = useSelector(state => state.cp);
 
-  const { uid } = useSelector(state => state.auth);
+  const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const navigate = useNavigate()
 
@@ -17,7 +17,11 @@ export const CapacitacionTema = () => {
 
   useEffect(() => {
     if (capacitacionActiva) {
-      navigate(`?q=${capacitacionActiva?.idVideo}`)
+      navigate(`?q=${capacitacionActiva?.videos?.idVideo || usuarioActivo?.lastVideo}`)      
+    }
+
+    if (capacitacionActiva?.idVideo) {
+      dispatch(saveVideoId(capacitacionActiva?.videos?.idVideo, uid))
     }
   }, [capacitacionActiva])
 
@@ -29,12 +33,12 @@ export const CapacitacionTema = () => {
     const calculoCheckVideo = (duration*80) / 100
 
     if (parseInt(timeUpdate) === parseInt(calculoCheckVideo)) {
-      dispatch(checkVideoUser(capacitacionId, capacitacionActiva?.idVideo, uid))
+      dispatch(checkVideoUser(capacitacionId, capacitacionActiva?.videos?.idVideo, uid))
     }
 
   }, [timeUpdate, dispatch])
   
   return (
-    <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', height: '60vh', borderRadius: '20px', objectFit: 'cover'}} src={capacitacionActiva?.video || capacitacion[0]?.video[0]?.video} />
+    <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', height: '60vh', borderRadius: '20px', objectFit: 'cover'}} src={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
   )
 }

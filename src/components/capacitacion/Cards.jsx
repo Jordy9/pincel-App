@@ -19,7 +19,7 @@ export const Cards = () => {
     const capacitacionfilter = capacitacion?.filter(capacitacion => capacitacion?._id === id)
 
     if (capacitacionfilter?.length !== 0) {
-      dispatch(activeCapacitacion(capacitacionfilter[0]?.video[0]))
+      dispatch(activeCapacitacion({videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas}))
     }
   }
 
@@ -32,10 +32,7 @@ export const Cards = () => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
-        const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
-
-        console.log(porcentaje)
-        
+        const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)        
         return (
           <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
             <div className='bg-transparent d-flex flex-column' style={{borderRadius: '10px'}}>

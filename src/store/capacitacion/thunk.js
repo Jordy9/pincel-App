@@ -1,5 +1,6 @@
 import axios from "axios"
-import { activeCapacitacion, createCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import Swal from "sweetalert2";
+import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -27,7 +28,7 @@ export const obtenerCapacitacion = () => {
                 busquedaFiltrada = capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
-                    dispatch(activeCapacitacion(filtro[0]))
+                    dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas}))
                 }
 
         } catch (error) {
@@ -129,8 +130,25 @@ export const crearCapacitacion = (title, file, video, Preguntas, duracion, team)
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
 
-        } catch (error) {
-            console.log(error)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Capacitación creada correctamente'
+            })
+
+        } catch ({response}) {
+            console.log(response.data.msg)
         }
         
     }
@@ -160,15 +178,49 @@ export const actualizarCapacitacionForm = (title, file, video, Preguntas, duraci
                 const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
-                dispatch(createCapacitacion(resp.data.capacitacion))
+                dispatch(actualizarCapacitacion(resp.data.capacitacion))
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Capacitación actualizada correctamente'
+                })
             } else {
                 const image = file
                 const idImage = paraEditar?.idImage
                 const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
-                dispatch(createCapacitacion(resp.data.capacitacion))
+                dispatch(actualizarCapacitacion(resp.data.capacitacion))
                 dispatch(toUpdateClear())
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Capacitación actualizada correctamente'
+                })
             }
 
         } catch (error) {
@@ -183,5 +235,13 @@ export const checkVideoUser = (id, idVideo, uid) => {
         const { socket } = getState().sk;
 
         socket?.emit('check-video-capacitacion', {id, idVideo, uid})
+    }
+}
+
+export const saveVideoId = (id, uid) => {
+    return (dispatch, getState) => {
+        const { socket } = getState().sk;
+
+        socket?.emit('last-video-save', {id, uid})
     }
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import { MultiSelect } from "react-multi-select-component";
 import { useFormik } from 'formik'
@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { actualizarCapacitacionForm, actualizarVideos, crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { toSave, toSaveClear, toUpdateSave } from '../../store/capacitacion/capacitacionSlice';
+import Slider from "react-slick";
 import { mixed } from 'yup';
 
 const options = [
@@ -28,7 +29,17 @@ export const FormularioVideos = () => {
 
     const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
 
-    const [formEvaluacion, setFormEvaluacion] = useState([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+    const [formEvaluacion, setFormEvaluacion] = useState([{ 
+        pregunta: '', 
+        respuesta1: '', 
+        respuesta2: '', 
+        respuesta3: '', 
+        respuesta4: '',
+        accion1: '', 
+        accion2: '', 
+        accion3: '', 
+        accion4: '' 
+    }])
 
     const [tituloSubida, setTituloSubida] = useState('')
 
@@ -129,7 +140,17 @@ export const FormularioVideos = () => {
                 setFormValuesTitulo('')
                 setimag()
                 setFormValues([{ titulo: '', video: '' }])
-                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+                setFormEvaluacion([{ 
+                    pregunta: '', 
+                    respuesta1: '', 
+                    respuesta2: '', 
+                    respuesta3: '', 
+                    respuesta4: '',
+                    accion1: '', 
+                    accion2: '', 
+                    accion3: '', 
+                    accion4: ''  
+                }])
                 setEquiposCapacitacion([])
                 setindiceActualizar([])
             }
@@ -146,15 +167,21 @@ export const FormularioVideos = () => {
             videos.push({titulo: video.titulo, video: video.video})
         ))
         setFormValues([...videos])
+        let PreguntasArreglo = []
         paraEditar?.Preguntas?.map(preguntas => (
-            setFormEvaluacion([{ 
+            PreguntasArreglo.push({
                 pregunta: preguntas?.pregunta, 
                 respuesta1: preguntas?.respuesta1, 
                 respuesta2: preguntas?.respuesta2, 
                 respuesta3: preguntas?.respuesta3, 
-                respuesta4: preguntas?.respuesta4 
-            }])
+                respuesta4: preguntas?.respuesta4 ,
+                accion1: preguntas?.accion1,
+                accion2: preguntas?.accion2,
+                accion3: preguntas?.accion3,
+                accion4: preguntas?.accion4,
+            })
         ))
+        setFormEvaluacion([...PreguntasArreglo])
         setimag(paraEditar?.image)
         setEquiposCapacitacion([...paraEditar?.team])
         setFormValuesTitulo(paraEditar?.title)
@@ -191,9 +218,22 @@ export const FormularioVideos = () => {
         newFormValues[i][e.target.name] = e.target.value;
         setFormEvaluacion(newFormValues);
      }
+
+     const ref = useRef()
         
     const agregarPregunta = () => {
-        setFormEvaluacion([...formEvaluacion, { pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+        setFormEvaluacion([...formEvaluacion, { 
+            pregunta: '', 
+            respuesta1: '', 
+            respuesta2: '', 
+            respuesta3: '', 
+            respuesta4: '', 
+            accion1: '', 
+            accion2: '', 
+            accion3: '', 
+            accion4: '' 
+        }])
+        ref?.current?.slickNext()
      }
     
     const eliminarPregunta = (i) => {
@@ -208,6 +248,43 @@ export const FormularioVideos = () => {
     // }
 
     const [evaluacionChange, setEvaluacionChange] = useState(false)
+
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              infinite: false,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              initialSlide: 1,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              dots: true
+            }
+          }
+        ]
+    };
 
   return (
     <Sidebar>
@@ -304,40 +381,77 @@ export const FormularioVideos = () => {
                         }
                     </>
                         :
-                    <>
+                    <Slider ref={ref} {...settings}>
                         {
                             formEvaluacion.map((element, index) => {
                                 return (
                                     <Fragment key={element + index}>
-                                        <div className="row">
+                                        <div className="row p-4">
                                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
+                                                <button className='btn btn-primary my-1 mx-1'>{index + 1}</button>
                                                 <label className='form-label'>Pregunta</label>
-                                                <input name='pregunta' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
+                                                <input name='pregunta' value={element.pregunta} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Titulo de la pregunta' className='form-control' />
                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion.pregunta) && errors?.evaluacion?.filter(evaluacion => evaluacion.pregunta) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.pregunta}</span>}
                                             </div>
 
-                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                            <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
                                                 <label className='form-label'>Respuesta</label>
-                                                <input name='respuesta1' value={element.respuesta1} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                <input name='respuesta1' value={element.respuesta1} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta1) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta1) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta1}</span>}
                                             </div>
 
-                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                                <label className='form-label'>Opciones</label>
+                                                <select name="accion1" value={element.accion1} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    <option value=''>Seleccione una opción</option>
+                                                    <option value={true}>Correcta</option>
+                                                    <option value={false}>Incorrecta</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
                                                 <label className='form-label'>Respuesta</label>
-                                                <input name='respuesta2' value={element.respuesta2} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                <input name='respuesta2' value={element.respuesta2} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta2) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta2) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta2}</span>}
                                             </div>
 
-                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                                <label className='form-label'>Opciones</label>
+                                                <select name="accion2" value={element.accion2} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    <option value=''>Seleccione una opción</option>
+                                                    <option value={true}>Correcta</option>
+                                                    <option value={false}>Incorrecta</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
                                                 <label className='form-label'>Respuesta</label>
-                                                <input name='respuesta3' value={element.respuesta3} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                <input name='respuesta3' value={element.respuesta3} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta3) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta3) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta3}</span>}
                                             </div>
 
-                                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 form-group">
+                                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                                <label className='form-label'>Opciones</label>
+                                                <select name="accion3" value={element.accion3} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    <option value=''>Seleccione una opción</option>
+                                                    <option value={true}>Correcta</option>
+                                                    <option value={false}>Incorrecta</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
                                                 <label className='form-label'>Respuesta</label>
-                                                <input name='respuesta4' value={element.respuesta4} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Video de la capacitación' className='form-control' />
+                                                <input name='respuesta4' value={element.respuesta4} onChange = {(e) => handleChangeQuestion(index, e)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion.respuesta4) && errors?.evaluacion?.filter(evaluacion => evaluacion.respuesta4) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta4}</span>}
+                                            </div>
+
+                                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                                <label className='form-label'>Opciones</label>
+                                                <select name="accion4" value={element.accion4} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    <option value=''>Seleccione una opción</option>
+                                                    <option value={true}>Correcta</option>
+                                                    <option value={false}>Incorrecta</option>
+                                                </select>
                                             </div>
 
                                             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 form-group">
@@ -369,7 +483,7 @@ export const FormularioVideos = () => {
                                 )
                             })
                         }
-                    </>
+                    </Slider>
                 }
 
 

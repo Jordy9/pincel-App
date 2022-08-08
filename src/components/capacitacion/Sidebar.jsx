@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { activeCapacitacion } from '../../store/capacitacion/capacitacionSlice';
+import { activeCapacitacion, Mostrar, noMostrar } from '../../store/capacitacion/capacitacionSlice';
 
 export const Sidebar = () => {
 
@@ -14,7 +14,13 @@ export const Sidebar = () => {
 
     const capacitacionFiltrada = capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)
 
-    console.log(capacitacionFiltrada[0]?.video)
+    useEffect(() => {
+      if (capacitacionFiltrada[0]?.video?.filter(video => !video.check.includes(uid))?.length === 0) {
+        dispatch(Mostrar())
+    } else {
+        dispatch(noMostrar())
+      }
+    }, [capacitacionFiltrada[0]])
     
   return (
     <div style={{width: '100%', height: '100vh'}}>
@@ -23,7 +29,7 @@ export const Sidebar = () => {
             capacitacionFiltrada[0]?.video?.map((capacitacion, index) => {
                 const duracion = parseInt(capacitacion.duration / 60)
                 return (
-                    <div onClick={() => dispatch(activeCapacitacion(capacitacion))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion?._id}>
+                    <div onClick={() => dispatch(activeCapacitacion({videos: capacitacion, preguntas: capacitacionFiltrada[0]?.Preguntas}))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva?.videos === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion?._id}>
                         <div className="col-2 d-flex justify-content-center">
                             {
                                 (capacitacion?.check?.includes(uid))
@@ -34,7 +40,7 @@ export const Sidebar = () => {
                             {
                                 (!capacitacion?.check?.includes(uid))
                                    &&
-                                <input defaultChecked = {false} type="checkbox" className='form-check-input' />
+                                <input disabled defaultChecked = {false} type="checkbox" className='form-check-input' />
                             }
                         </div>
 

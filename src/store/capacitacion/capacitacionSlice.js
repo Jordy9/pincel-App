@@ -7,7 +7,8 @@ export const capacitacionSlice = createSlice({
       paraGuardar: [],
       capacitacionActiva: null,
       paraEditar: null,
-      upload: 0
+      upload: 0,
+      noMostrarBoton: true
    },
    reducers: {
        getCapacitacion: (state, action ) => {
@@ -42,6 +43,14 @@ export const capacitacionSlice = createSlice({
            state.capacitacionActiva = (action.payload)
         },
 
+       noMostrar: (state ) => {
+           state.noMostrarBoton = true
+        },
+
+       Mostrar: (state ) => {
+           state.noMostrarBoton = false
+        },
+
        uploadCapacitacion: (state, action ) => {
            state.upload = action.payload
         },
@@ -60,4 +69,4 @@ export const capacitacionSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { getCapacitacion, createCapacitacion, toSave, toUpdate, toSaveClear, toUpdateClear, activeCapacitacion, uploadCapacitacion, uploadFinish, actualizarCapacitacion } = capacitacionSlice.actions;
+export const { getCapacitacion, createCapacitacion, toSave, toUpdate, toSaveClear, toUpdateClear, activeCapacitacion, noMostrar, Mostrar, uploadCapacitacion, uploadFinish, actualizarCapacitacion } = capacitacionSlice.actions;
