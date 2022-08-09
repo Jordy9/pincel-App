@@ -6,19 +6,13 @@ import { modalClose } from '../../store/auth/authSlice'
 import user from '../../heroes/user.webp'
 import { ModalPerfilUser } from './ModalUserPerfil'
 import { ModalUserResena } from './ModalUserResena'
-import { ModalEvaluacionUser } from './ModalEvaluacionUser'
+import { TableModalUserSpreed } from './TableModalUserSpreed'
 
 export const ModalUser = () => {
 
     const dispatch = useDispatch();
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
-
-    // const { evaluacion } = useSelector(state => state.ev);
-
-    // const evaluacionUser = evaluacion?.filter(evaluacion => evaluacion?.usuario === activeUser?.id)
-
-    // const [completa, mejorar, calificacion] = evaluacionUser;
 
     const handleClose = () => {
         dispatch(modalClose())
@@ -28,30 +22,12 @@ export const ModalUser = () => {
 
     const [modalShowResena, setModalShowResena] = useState(false)
 
-    const [modalShowEvaluacion, setModalShowEvaluacion] = useState(false)
-
-    const tooltipArray = [
-        'Malo',
-        'Malo+',
-        'Intermedio',
-        'Bueno',
-        'Excelente',
-      ]
-
-    const fillColorArray = [
-        '#f17a45',
-        '#f17a45',
-        '#f19745',
-        '#f1b345',
-        '#f1d045',
-      ]
-
-      useEffect(() => {
+    useEffect(() => {
         if (modalUser) {
             const span = document.getElementsByClassName('filled-icons')
             span[0]?.removeAttribute("title")
         }
-      }, [modalUser])
+    }, [modalUser])
       
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
@@ -90,46 +66,7 @@ export const ModalUser = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr style={{cursor: 'pointer'}} onDoubleClick={() => setModalShowEvaluacion(true)}>
-                                            <td className='d-flex justify-content-center'>
-                                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                                    <img src={user} className='img-fluid' alt="" />
-                                                </div>
-                                            </td>
-                                            <td>Servicio</td>
-                                            <td>-</td>
-                                            <td>
-                                                <div className="progress my-2">
-                                                    <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className='d-flex justify-content-center'>
-                                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                                    <img src={user} className='img-fluid' alt="" />
-                                                </div>
-                                            </td>
-                                            <td>Servicio</td>
-                                            <td className='text-success'>90</td>
-                                            <td>
-                                                <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className='d-flex justify-content-center'>
-                                                <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                                    <img src={user} className='img-fluid' alt="" />
-                                                </div>
-                                            </td>
-                                            <td>Servicio</td>
-                                            <td>-</td>
-                                            <td>
-                                                <div className="progress my-2">
-                                                    <div className="progress-bar" role="progressbar" style={{width: '75%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">75%</div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <TableModalUserSpreed />
                                     </tbody>
                                 </table>
                             </div>
@@ -144,8 +81,6 @@ export const ModalUser = () => {
         <ModalPerfilUser modalShow = {modalShow} setModalShow = {setModalShow} />
 
         <ModalUserResena modalShowResena = {modalShowResena} setModalShowResena = {setModalShowResena} />
-
-        <ModalEvaluacionUser modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
     </Modal>
   )
 }

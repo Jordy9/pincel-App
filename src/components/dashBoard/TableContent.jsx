@@ -9,12 +9,6 @@ export const TableContent = (props) => {
 
     const { resena } = useSelector(state => state.rs);
 
-    const a = resena.flatMap(n => n)
-
-    const as = [1, 2, [12, [12, [15]]]]
-
-    console.log(resena.flatMap(e => e.calificacion).flat(Infinity))
-
     const {id, name, lastName, date, email, urlImage, role} = props
 
     const handledActive = (user) => {
