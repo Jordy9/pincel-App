@@ -105,6 +105,8 @@ export const FormularioVideos = () => {
         })
     })
 
+    const [evaluacionChange, setEvaluacionChange] = useState(false)
+
     useEffect(() => {
         if (paraGuardar?.length === formValues?.length) {
             console.log(paraGuardar)
@@ -155,6 +157,7 @@ export const FormularioVideos = () => {
                 setindiceActualizar([])
             }
             dispatch(toSaveClear())
+            setEvaluacionChange(false)
         }
     }, [paraGuardar])
     
@@ -246,8 +249,6 @@ export const FormularioVideos = () => {
     // const handleVideo = () => {
     //     document.getElementById('fileVideo').click()
     // }
-
-    const [evaluacionChange, setEvaluacionChange] = useState(false)
 
     const settings = {
         dots: true,

@@ -151,7 +151,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                         </Slider>
                     </>
                         :
-                    <CalificacionEvaluacion calificacionShow = {calificacionShow} />
+                    <CalificacionEvaluacion calificacionShow = {calificacionShow || evaluacionUserComplete[0]?.calificacion} />
                 }
             </div>
         </Modal.Body>

@@ -34,7 +34,7 @@ export const Sidebar = () => {
                             {
                                 (capacitacion?.check?.includes(uid))
                                    &&
-                                <input defaultChecked = {true} type="checkbox" className='form-check-input' />
+                                <input disabled defaultChecked = {true} type="checkbox" className='form-check-input' />
                             }
 
                             {

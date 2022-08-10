@@ -64,9 +64,15 @@ export const capacitacionSlice = createSlice({
                 e => e._id === action.payload._id ? action.payload : e
             );
         },
+
+       deleteCapacitacion: (state, action ) => {
+            state.capacitacion = state.capacitacion.filter(
+                e => e._id !== action.payload._id
+            );
+        },
    }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { getCapacitacion, createCapacitacion, toSave, toUpdate, toSaveClear, toUpdateClear, activeCapacitacion, noMostrar, Mostrar, uploadCapacitacion, uploadFinish, actualizarCapacitacion } = capacitacionSlice.actions;
+export const { getCapacitacion, createCapacitacion, toSave, toUpdate, toSaveClear, toUpdateClear, activeCapacitacion, noMostrar, Mostrar, uploadCapacitacion, uploadFinish, actualizarCapacitacion, deleteCapacitacion } = capacitacionSlice.actions;

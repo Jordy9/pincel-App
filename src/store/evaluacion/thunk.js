@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getEvaluacion } from "./evaluacionSlice";
+import { createEvaluacion, getEvaluacion } from "./evaluacionSlice";
 
 
 const endPoint = process.env.REACT_APP_API_URL
@@ -30,7 +30,7 @@ export const crearEvaluacion = (evaluacion, calificacion) => {
         try {
             const resp = await axios.post(`${endPoint}/evaluacion/new`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})
     
-            dispatch(getEvaluacion(resp.data.evaluacion))
+            dispatch(createEvaluacion(resp.data.evaluacion))
 
         } catch (error) {
         }

@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -56,6 +56,7 @@ export const crearVideos = (video) => {
             dispatch(uploadFinish())
     
         } catch (error) {
+            console.log(error)
         }
         
     }
@@ -178,6 +179,9 @@ export const actualizarCapacitacionForm = (title, file, video, Preguntas, duraci
                 const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
+
+                await axios.delete(`${endPoint}/fileUpload/${paraEditar?.idImage}`, {headers: {'x-token': token}})
+                
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
 
                 const Toast = Swal.mixin({
@@ -225,6 +229,65 @@ export const actualizarCapacitacionForm = (title, file, video, Preguntas, duraci
 
         } catch (error) {
             console.log(error)
+        }
+        
+    }
+}
+
+export const eliminarCapacitacion = (props) => {
+    return async(dispatch, getState) => {
+
+        const { evaluacion } = getState().ev;
+
+        const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === props?._id)
+        
+        try {
+            const resp = await axios.delete(`${endPoint}/capacitacion/delete/${props?._id}`, {headers: {'x-token': token}})
+
+            if (evaluacionFiltrada?.length !== 0) {
+                await axios.post(`${endPoint}/evaluacion/delete`, evaluacionFiltrada, {headers: {'x-token': token}})
+            }
+
+            dispatch(deleteCapacitacion(resp.data.capacitacion))
+
+            dispatch(eliminarCapacitacionVideos(props?.video))
+
+            await axios.delete(`${endPoint}/fileUpload/${props?.idImage}`, {headers: {'x-token': token}})
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Capacitación eliminada correctamente'
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+const eliminarCapacitacionVideos = (videos) => {
+    return async(dispatch) => {
+
+        for (let index = 0; index < videos.length; index++) {
+            const element = videos[index];
+            
+            try {
+    
+                await axios.delete(`${endPoint}/fileUpload/${element?.idVideo}`, {headers: {'x-token': token}})
+            } catch (error) {
+                console.log(error)
+            }
         }
         
     }
