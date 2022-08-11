@@ -23,9 +23,13 @@ export const obtenerEvaluacion = () => {
 export const crearEvaluacion = (evaluacion, calificacion) => {
     return async(dispatch, getState) => {
 
+        const { socket } = getState().sk;
+
         const { uid:idUsuario } = getState().auth;
 
         const idCapacitacion = window.location.pathname.split('/')[2]
+
+        socket?.emit('intento-change', {id: idCapacitacion, uid: idUsuario})
 
         try {
             const resp = await axios.post(`${endPoint}/evaluacion/new`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})

@@ -25,6 +25,10 @@ export const FormularioVideos = () => {
     
     const [formValuesTitulo, setFormValuesTitulo] = useState('')
 
+    const [formValuesDescripcion, setFormValuesDescripcion] = useState('')
+
+    const [formValuesIntentos, setFormValuesIntentos] = useState(1)
+
     const [imag, setimag] = useState()
 
     const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
@@ -51,6 +55,8 @@ export const FormularioVideos = () => {
         initialValues: {
             titulo: formValuesTitulo ,
             image: imag,
+            descripcion: formValuesDescripcion,
+            intentos: formValuesIntentos,
             video: formValues,
             evaluacion: formEvaluacion,
             equipos: equiposCapacitacion
@@ -85,6 +91,12 @@ export const FormularioVideos = () => {
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
             image: Yup.mixed()
+                        .required('Requerido'),
+            descripcion: Yup.string()
+                        .max(200, 'Debe de tener 200 caracteres o menos')
+                        .min(3, 'Debe de tener 3 caracteres o más')
+                        .required('Requerido'),
+            intentos: Yup.number()
                         .required('Requerido'),
             equipos: Yup.array()
                         // .length(1, 'Debe de contener al menos un equipo')
@@ -130,17 +142,21 @@ export const FormularioVideos = () => {
             })
             setTituloSubida('imagen')
             if (!paraEditar) {
-                dispatch(crearCapacitacion(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
+                dispatch(crearCapacitacion(formValuesTitulo, imag, formValuesDescripcion, formValuesIntentos, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
                 setFormValuesTitulo('')
                 setimag()
+                setFormValuesDescripcion('')
+                setFormValuesIntentos(1)
                 setFormValues([{ titulo: '', video: '' }])
-                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '' }])
+                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '', accion1: '', accion2: '', accion3: '', accion4: '' }])
                 setEquiposCapacitacion([])
                 setindiceActualizar([])
             } else {
-                dispatch(actualizarCapacitacionForm(formValuesTitulo, imag, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
+                dispatch(actualizarCapacitacionForm(formValuesTitulo, imag, formValuesDescripcion, formValuesIntentos, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
                 setFormValuesTitulo('')
                 setimag()
+                setFormValuesDescripcion('')
+                setFormValuesIntentos(1)
                 setFormValues([{ titulo: '', video: '' }])
                 setFormEvaluacion([{ 
                     pregunta: '', 
@@ -331,6 +347,20 @@ export const FormularioVideos = () => {
                                     setimag(e.currentTarget.files[0])
                                 }} />
                                 {touched?.image && errors?.image && <span style={{color: 'red'}}>{errors?.image}</span>}
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 col-xxl-7 form-group">
+                                <label className='form-label'>Descripción</label>
+                                <input value={formValuesDescripcion} onChange={({target}) => setFormValuesDescripcion(target.value)} type="text" placeholder='Descripción de la capacitación' className='form-control' />                            
+                                {touched?.descripcion && errors?.descripcion && <span style={{color: 'red'}}>{errors?.descripcion}</span>}
+                            </div>
+
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 form-group">
+                                <label className='form-label'>Intentos</label>
+                                <input value={formValuesIntentos} min = {1} onChange={({target}) => setFormValuesIntentos(target.value)} type="number" placeholder='Intentos de la evaluación' className='form-control' />                            
+                                {touched?.intentos && errors?.intentos && <span style={{color: 'red'}}>{errors?.intentos}</span>}
                             </div>
                         </div>
         

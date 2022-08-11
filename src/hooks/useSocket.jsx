@@ -76,6 +76,12 @@ export const useSocket = ( serverPath ) => {
         })
     }, [ socket, dispatch])
 
+    useEffect(() => {
+        socket?.on('intento-changed', () => {
+            dispatch(obtenerCapacitacion())
+        })
+    }, [ socket, dispatch])
+
     // useEffect(() => {
     //     socket?.on('Deleted-Notifications-count-Admin', (notification) => {
     //         if (notification !== null) {

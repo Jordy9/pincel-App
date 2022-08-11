@@ -8,7 +8,7 @@ import { ModalEvaluacion } from './ModalEvaluacion'
 
 export const VideosComponent = () => {
 
-  const { noMostrarBoton } = useSelector(state => state.cp);
+  const { noMostrarBoton, capacitacionActiva } = useSelector(state => state.cp);
 
   const [modalShowEvaluacion, setModalShowEvaluacion] = useState(false)
 
@@ -23,7 +23,7 @@ export const VideosComponent = () => {
                       <CapacitacionTema />
 
                       <h4 className='p-4'>Descripcion general</h4>
-                      <p className='p-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quas repellat pariatur facere molestias autem ea, nesciunt doloribus expedita qui accusamus magnam itaque aspernatur nisi, ratione exercitationem temporibus quam cumque.</p>
+                      <p className='p-4'>{capacitacionActiva?.descripcion}</p>
                   </div>
 
                   <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
@@ -33,7 +33,12 @@ export const VideosComponent = () => {
           </div>
         </Container>
 
-        <ModalEvaluacion modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
+        {
+          (modalShowEvaluacion)
+            &&
+          <ModalEvaluacion modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
+        }
+
       </>
   )
 }

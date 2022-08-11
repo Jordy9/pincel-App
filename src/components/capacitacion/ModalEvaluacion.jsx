@@ -97,6 +97,8 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         }
     }
 
+    const intentosPermitidos = capacitacionActiva?.usuariosEvaluacion?.filter(capacitacion => capacitacion?.id === uid)
+
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -105,7 +107,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         <Modal.Body>
             <div className="row my-3 p-4">
                 {
-                    (!changeEvaluacionCalificacion && evaluacionUserComplete?.length === 0)
+                    (!changeEvaluacionCalificacion && evaluacionUserComplete?.length === 0 && intentosPermitidos[0]?.intentos !== 0)
                         ?
                     <>
                         <h4>{changeCountResponse}/{capacitacionActiva?.preguntas?.length}</h4>
@@ -167,7 +169,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
             {
                 (changeCountResponse === capacitacionActiva?.preguntas?.length)
                     ?
-                (evaluacionUserComplete?.length === 0)
+                (evaluacionUserComplete?.length === 0 && intentosPermitidos[0]?.intentos !== 0)
                     &&
                 <button onClick={terminar} className='btn btn-primary'>Terminar</button>
                     :

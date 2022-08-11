@@ -28,7 +28,7 @@ export const obtenerCapacitacion = () => {
                 busquedaFiltrada = capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
-                    dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas}))
+                    dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion}))
                 }
 
         } catch (error) {
@@ -107,15 +107,20 @@ export const actualizarVideos = (video, indice, index) => {
     }
 }
 
-export const crearCapacitacion = (title, file, video, Preguntas, duracion, team) => {
-    return async(dispatch) => {
+export const crearCapacitacion = (title, file, descripcion, intentos, video, Preguntas, duracion, team) => {
+    return async(dispatch, getState) => {
+
+        const { usuarios } = getState().auth;
+
+        let usuariosEvaluacion = []
+
+        usuarios?.map(usuario => usuariosEvaluacion?.push({id: usuario?.id, intentos}))
 
         const formData = new FormData()
         formData.append('file', file)
         formData.append('title', title + '123456')
 
         try {
-
 
             const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
                 headers: {'x-token': token},
@@ -126,7 +131,7 @@ export const crearCapacitacion = (title, file, video, Preguntas, duracion, team)
             const idImage = respImage.data.image.id
             const image = respImage.data.image.url
 
-            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
     
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
@@ -155,7 +160,7 @@ export const crearCapacitacion = (title, file, video, Preguntas, duracion, team)
     }
 }
 
-export const actualizarCapacitacionForm = (title, file, video, Preguntas, duracion, team) => {
+export const actualizarCapacitacionForm = (title, file, descripcion, intentos, video, Preguntas, duracion, team) => {
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
@@ -176,7 +181,7 @@ export const actualizarCapacitacionForm = (title, file, video, Preguntas, duraci
                 const idImage = respImage.data.image.id
                 const image = respImage.data.image.url
     
-                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
 
@@ -203,7 +208,7 @@ export const actualizarCapacitacionForm = (title, file, video, Preguntas, duraci
             } else {
                 const image = file
                 const idImage = paraEditar?.idImage
-                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
