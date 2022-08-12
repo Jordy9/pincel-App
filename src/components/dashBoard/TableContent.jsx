@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import user from '../../heroes/user.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalOpen, setActiveUser } from '../../store/auth/authSlice';
@@ -9,7 +9,7 @@ export const TableContent = (props) => {
 
     const { resena } = useSelector(state => state.rs);
 
-    const {id, name, lastName, date, email, urlImage, role} = props
+    const {id, name, lastName, urlImage, role} = props
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))

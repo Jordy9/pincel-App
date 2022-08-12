@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useResponsive } from '../../hooks/useResponsive'
 import { chtClearChatActive } from '../../store/chat/chatSlice'
 import { Navb } from '../navb/Navb'
-import { ModalImage } from './ModalImage'
+// import { ModalImage } from './ModalImage'
 
 export const ChatScreen = () => {
 

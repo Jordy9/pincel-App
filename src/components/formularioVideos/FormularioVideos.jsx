@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { actualizarCapacitacionForm, actualizarVideos, crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
 import { useDispatch, useSelector } from 'react-redux';
-import { toSave, toSaveClear, toUpdateSave } from '../../store/capacitacion/capacitacionSlice';
+import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
 import Slider from "react-slick";
 import { mixed } from 'yup';
 
@@ -51,7 +51,7 @@ export const FormularioVideos = () => {
 
     const [indiceActualizar, setindiceActualizar] = useState([])
 
-    const {handleSubmit, getFieldProps, setFieldValue, touched, errors} = useFormik({
+    const {handleSubmit, touched, errors} = useFormik({
         initialValues: {
             titulo: formValuesTitulo ,
             image: imag,

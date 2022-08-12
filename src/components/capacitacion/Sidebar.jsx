@@ -20,7 +20,7 @@ export const Sidebar = () => {
     } else {
         dispatch(noMostrar())
       }
-    }, [capacitacionFiltrada[0]])
+    }, [dispatch, uid, capacitacionFiltrada])
     
   return (
     <div style={{width: '100%', height: '100vh'}}>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import user from '../../heroes/user.webp'
 import { ModalResenaDetalle } from './ModalResenaDetalle'
 import { TableSpreedListResena } from './TableSpreedListResena'
 

@@ -1,18 +1,15 @@
 import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import { Rating } from 'react-simple-star-rating'
 import { useDispatch, useSelector } from 'react-redux'
-import { modalClose } from '../../store/auth/authSlice'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import user from '../../heroes/user.webp'
 import { iniciarActualizacion } from '../../store/auth/thunk'
 
 export const ModalPerfilUser = ({modalShow, setModalShow}) => {
 
     const dispatch = useDispatch();
 
-    const { modalUser, activeUser } = useSelector(state => state.auth);
+    const { activeUser } = useSelector(state => state.auth);
 
     // const { evaluacion } = useSelector(state => state.ev);
 
@@ -20,7 +17,7 @@ export const ModalPerfilUser = ({modalShow, setModalShow}) => {
 
     // const [completa, mejorar, calificacion] = evaluacionUser;
 
-    const [rating, setRating] = useState(90) // initial rating value
+    // const [rating, setRating] = useState(90) // initial rating value
 
     // Catch Rating value
     // const handleRating = (rate) => {

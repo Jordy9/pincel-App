@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { createAResena } from '../../store/resena/resenaSlice';
 import { crearAResena } from '../../store/resena/thunk';
 import { ModalEvaluacion } from './ModalEvaluacion'
 
@@ -50,7 +49,7 @@ export const Evaluacion = () => {
         </div>
 
         {
-            (AResena?.length !== 0)
+            (modalShow)
                 &&
             <ModalEvaluacion modalShow = {modalShow} setModalShow = {setModalShow} resena = {AResena} />
         }

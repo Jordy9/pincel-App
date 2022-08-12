@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import user from '../../heroes/user.webp'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveResena } from '../../store/resena/resenaSlice';
 import { Rating } from 'react-simple-star-rating';

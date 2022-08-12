@@ -1,10 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
 import { Rating } from 'react-simple-star-rating'
 import Slider from "react-slick";
 import { ModalEvaluacionFront } from './EvaluacionFront'
 
 export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) => {
+
+    const dispatch = useDispatch();
 
     const [setRating] = useState(0)
 
@@ -22,6 +27,19 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
         // other logic
     }
 
+    const {handleSubmit} = useFormik({
+        initialValues: {
+            // calificacion:,
+            // descripcion:
+        },
+        enableReinitialize: true,
+        onSubmit: ({}) => {
+            dispatch()
+        },
+        validationSchema: Yup.object({
+        })
+    })
+
     const handleClose = useCallback(
       () => {
         setModalShow(false)
@@ -29,6 +47,10 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
       [setModalShow],
     )
     
+
+
+    // const [modalShowFront, setModalShowFront] = useState(false)
+
     const settings = {
         dots: true,
         infinite: false,
@@ -139,7 +161,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             
 
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer onSubmit={handleSubmit}>
             <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>

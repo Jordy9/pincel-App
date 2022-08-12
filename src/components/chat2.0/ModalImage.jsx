@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import moment from 'moment'
+import React from 'react'
 // import { ModalImageSendBirthday } from './ModalImageSendBirthday'
 
 export const ModalImage = ({image, perfil, user}) => {
@@ -8,11 +7,11 @@ export const ModalImage = ({image, perfil, user}) => {
 
     // const cumple =  moment(user[0]?.date).format('MM-DD') === moment().format('MM-DD')
 
-    const [openModal, setOpenModal] = useState(false)
+    // const [openModal, setOpenModal] = useState(false)
 
-    const openModalBirthday = () => {
-        setOpenModal(true)
-    }
+    // const openModalBirthday = () => {
+    //     setOpenModal(true)
+    // }
 
     // const fechainicio1 = moment(user[0]?.date, 'YYYY-MM-DD')
     // const fechafin2 = moment()
