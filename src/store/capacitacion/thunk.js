@@ -129,7 +129,7 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
             const idImage = respImage.data.image.id
             const image = respImage.data.image.url
 
-            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
+            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
     
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
@@ -179,7 +179,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
                 const idImage = respImage.data.image.id
                 const image = respImage.data.image.url
     
-                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
 
@@ -206,7 +206,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
             } else {
                 const image = file
                 const idImage = paraEditar?.idImage
-                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))

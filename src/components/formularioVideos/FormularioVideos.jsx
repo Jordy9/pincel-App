@@ -39,10 +39,10 @@ export const FormularioVideos = () => {
         respuesta2: '', 
         respuesta3: '', 
         respuesta4: '',
-        accion1: '', 
-        accion2: '', 
-        accion3: '', 
-        accion4: '' 
+        accion1: 'true', 
+        accion2: 'false', 
+        accion3: 'false', 
+        accion4: 'false' 
     }])
 
     const [tituloSubida, setTituloSubida] = useState('')
@@ -148,7 +148,7 @@ export const FormularioVideos = () => {
                 setFormValuesDescripcion('')
                 setFormValuesIntentos(1)
                 setFormValues([{ titulo: '', video: '' }])
-                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '', accion1: '', accion2: '', accion3: '', accion4: '' }])
+                setFormEvaluacion([{ pregunta: '', respuesta1: '', respuesta2: '', respuesta3: '', respuesta4: '', accion1: 'true', accion2: 'false', accion3: 'false', accion4: 'false' }])
                 setEquiposCapacitacion([])
                 setindiceActualizar([])
             } else {
@@ -164,10 +164,10 @@ export const FormularioVideos = () => {
                     respuesta2: '', 
                     respuesta3: '', 
                     respuesta4: '',
-                    accion1: '', 
-                    accion2: '', 
-                    accion3: '', 
-                    accion4: ''  
+                    accion1: 'true', 
+                    accion2: 'false', 
+                    accion3: 'false', 
+                    accion4: 'false'  
                 }])
                 setEquiposCapacitacion([])
                 setindiceActualizar([])
@@ -202,6 +202,8 @@ export const FormularioVideos = () => {
         ))
         setFormEvaluacion([...PreguntasArreglo])
         setimag(paraEditar?.image)
+        setFormValuesDescripcion(paraEditar?.descripcion)
+        setFormValuesIntentos(paraEditar?.intentos)
         setEquiposCapacitacion([...paraEditar?.team])
         setFormValuesTitulo(paraEditar?.title)
       }
@@ -247,10 +249,10 @@ export const FormularioVideos = () => {
             respuesta2: '', 
             respuesta3: '', 
             respuesta4: '', 
-            accion1: '', 
-            accion2: '', 
-            accion3: '', 
-            accion4: '' 
+            accion1: 'true', 
+            accion2: 'false', 
+            accion3: 'false', 
+            accion4: 'false' 
         }])
         ref?.current?.slickNext()
      }
@@ -433,10 +435,10 @@ export const FormularioVideos = () => {
 
                                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                                 <label className='form-label'>Opciones</label>
-                                                <select name="accion1" value={element.accion1} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
-                                                    <option value=''>Seleccione una opción</option>
+                                                <select disabled name="accion1" value={element.accion1} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    {/* <option value=''>Seleccione una opción</option> */}
                                                     <option value={true}>Correcta</option>
-                                                    <option value={false}>Incorrecta</option>
+                                                    {/* <option value={false}>Incorrecta</option> */}
                                                 </select>
                                             </div>
 
@@ -448,9 +450,9 @@ export const FormularioVideos = () => {
 
                                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                                 <label className='form-label'>Opciones</label>
-                                                <select name="accion2" value={element.accion2} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
-                                                    <option value=''>Seleccione una opción</option>
-                                                    <option value={true}>Correcta</option>
+                                                <select disabled name="accion2" value={element.accion2} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    {/* <option value=''>Seleccione una opción</option> */}
+                                                    {/* <option value={true}>Correcta</option> */}
                                                     <option value={false}>Incorrecta</option>
                                                 </select>
                                             </div>
@@ -463,9 +465,9 @@ export const FormularioVideos = () => {
 
                                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                                 <label className='form-label'>Opciones</label>
-                                                <select name="accion3" value={element.accion3} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
-                                                    <option value=''>Seleccione una opción</option>
-                                                    <option value={true}>Correcta</option>
+                                                <select disabled name="accion3" value={element.accion3} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    {/* <option value=''>Seleccione una opción</option> */}
+                                                    {/* <option value={true}>Correcta</option> */}
                                                     <option value={false}>Incorrecta</option>
                                                 </select>
                                             </div>
@@ -478,9 +480,9 @@ export const FormularioVideos = () => {
 
                                             <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                                 <label className='form-label'>Opciones</label>
-                                                <select name="accion4" value={element.accion4} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
-                                                    <option value=''>Seleccione una opción</option>
-                                                    <option value={true}>Correcta</option>
+                                                <select disabled name="accion4" value={element.accion4} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
+                                                    {/* <option value=''>Seleccione una opción</option> */}
+                                                    {/* <option value={true}>Correcta</option> */}
                                                     <option value={false}>Incorrecta</option>
                                                 </select>
                                             </div>
