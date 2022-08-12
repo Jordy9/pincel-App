@@ -13,7 +13,7 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
                     &&
                     resena?.map(resena => {
                         return (
-                            (resena.calificacion.filter(resena => resena.id === activeUser?.id !== 0))
+                            (resena.calificacion.filter(resena => (resena.id === activeUser?.id) !== 0))
                                 &&
                             <TableContentResena key = {resena?._id} {...resena} setModalShowDetalle = {setModalShowDetalle} />
                         )
