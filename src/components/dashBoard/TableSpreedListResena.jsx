@@ -6,6 +6,8 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
     const { resena } = useSelector(state => state.rs)
 
     const { activeUser } = useSelector(state => state.auth)
+
+    // Si da error, solo hay que quitarle los parentesis a (resena.id === activeUser?.id)
     return (
         <>
             {

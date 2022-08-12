@@ -1,19 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import user from '../../heroes/user.webp'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
 import { Rating } from 'react-simple-star-rating'
-import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
 import Slider from "react-slick";
 import { ModalEvaluacionFront } from './EvaluacionFront'
 
 export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) => {
 
-    const dispatch = useDispatch();
-
-    const [rating, setRating] = useState(0)
+    const [setRating] = useState(0)
 
     const [idUsuarios, setIdUsuarios] = useState([])
 
@@ -29,25 +22,13 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
         // other logic
     }
 
-    const {handleSubmit, getFieldProps, touched, errors} = useFormik({
-        initialValues: {
-            // calificacion:,
-            // descripcion:
-        },
-        enableReinitialize: true,
-        onSubmit: ({}) => {
-            dispatch()
-        },
-        validationSchema: Yup.object({
-        })
-    })
-
-    const handleClose = () => {
+    const handleClose = useCallback(
+      () => {
         setModalShow(false)
-    }
-
-    // const [modalShowFront, setModalShowFront] = useState(false)
-
+      },
+      [setModalShow],
+    )
+    
     const settings = {
         dots: true,
         infinite: false,
@@ -94,7 +75,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             setNext(true)
             setShowModalFront(true)
         }
-      }, [idUsuarios])
+      }, [idUsuarios, resena?.length])
 
       const trueFalse = resena.filter(resena => resena.role === 'Administrador')
 
@@ -115,7 +96,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
       if (resena?.length === 0) {
         handleClose()
       }
-    }, [resena])
+    }, [resena, handleClose])
     
   return (
     <Modal fullscreen show={modalShow} onHide={handleClose}>
@@ -158,7 +139,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             
 
         </Modal.Body>
-        <Modal.Footer onSubmit={handleSubmit}>
+        <Modal.Footer>
             <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>

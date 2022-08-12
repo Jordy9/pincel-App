@@ -109,7 +109,7 @@ export const eliminarResena = (id) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.delete(`${endPoint}/resena/delete/${id}`, {headers: {'x-token': token}})
+            await axios.delete(`${endPoint}/resena/delete/${id}`, {headers: {'x-token': token}})
     
             dispatch(DeleteResena(id))
 

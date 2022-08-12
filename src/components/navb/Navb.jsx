@@ -18,7 +18,7 @@ export const Navb = () => {
     } else {
       setIsRoute(false)
     }
-  }, [])
+  }, [pathname])
   
 
   const goBack = () => {

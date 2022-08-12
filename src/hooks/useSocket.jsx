@@ -1,18 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import io from 'socket.io-client';
-import { actualizarCapacitacion } from '../store/capacitacion/capacitacionSlice';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { UsuariosCargados } from '../store/chat/chatSlice';
 import { NotificacionesCargadas } from '../store/notificaciones/notificacionesSlice';
 import { BorrarNotificaciones } from '../store/notificaciones/thunks';
-// import { NotificationPublicAdmin } from '../action/auth';
-// import { UsuariosCargados } from '../action/chat';
-// import { cargarContactos } from '../action/contact';
-// import { BorrarNotificaciones, NotificacionesCargadas } from '../action/notifications';
-// import { startGetNotificationsAdmin, StartUpdateNotificationAdmin } from '../action/notificationsAdmin';
-// import { cargarPeticiones, cargarPeticionesPastores, cargarPeticionesSinCuenta, startGetPaginatePetitions, startGetPaginatePetitionUser } from '../action/petition';
-
 
 export const useSocket = ( serverPath ) => {
 

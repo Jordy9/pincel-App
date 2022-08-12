@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2";
-import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdateClear, toUpdateSave, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -18,14 +18,12 @@ export const obtenerCapacitacion = () => {
 
             const queryString = window.location.search.split('?q=')[1]
 
-            let busquedaFiltrada
-
             const capacitacionFiltrada = resp.data.capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)
 
             let filtro
 
             if (capacitacionFiltrada?.length !== 0) {
-                busquedaFiltrada = capacitacionFiltrada?.map(capacitacion =>
+                capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
                     dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion}))
