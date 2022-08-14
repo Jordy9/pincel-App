@@ -8,7 +8,8 @@ initialState: {
     usuarioActivo: null,
     activeUser: null,
     usuarios: null,
-    modalUser: false
+    modalUser: false,
+    upload: 0,
 },
 reducers: {
     onGetUsers: (state, action ) => {
@@ -55,6 +56,14 @@ reducers: {
         state.modalUser = true;
     },
 
+    uploadImagePerfil: (state, action ) => {
+        state.upload = action.payload
+     },
+
+    uploadFinish: (state ) => {
+        state.upload = 0
+     },
+
     modalClose: (state) => {
         state.modalUser = false;
         state.activeUser = null;
@@ -72,5 +81,7 @@ export const
         onLogout,
         setActiveUser,
         modalOpen,
-        modalClose
+        modalClose,
+        uploadImagePerfil,
+        uploadFinish
     } = authSlice.actions;

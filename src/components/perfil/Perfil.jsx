@@ -10,7 +10,7 @@ export const Perfil = () => {
 
     const dispatch = useDispatch();
 
-    const { usuarioActivo } = useSelector(state => state.auth);
+    const { usuarioActivo, upload } = useSelector(state => state.auth);
 
     const [imagePerfil, setImagePerfil] = useState()
     
@@ -23,37 +23,36 @@ export const Perfil = () => {
             role: usuarioActivo?.role,
             password: usuarioActivo?.password,
             confirmPassword: usuarioActivo?.password,
-            image: imagePerfil || usuarioActivo?.password?.urlImage
+            image: imagePerfil
         },
         enableReinitialize: true,
         onSubmit: ({name, lastName, date, email, password, role, image}) => {
             dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, date, email.toLowerCase(), password, role, image))
-            console.log('l')
         },
         validationSchema: Yup.object({
-            // name: Yup.string()
-            //             .max(50, 'Debe de tener 50 caracteres o menos')
-            //             .min(3, 'Debe de tener 3 caracteres o más')
-            //             .required('Requerido'),
-            // lastName: Yup.string()
-            //             .max(50, 'Debe de tener 50 caracteres o menos')
-            //             .min(3, 'Debe de tener 3 caracteres o más')
-            //             .required('Requerido'),
-            // date: Yup.string()
-            //             .required('Requerido'),
-            // email: Yup.string()
-            //             .email('La dirección de email no es válida')
-            //             .required('Requerido'),
-            // role: Yup.string()
-            //             .required('Requerido'),
-            // password: Yup.string()
-            //             .min(8, 'Debe de tener 8 caracteres o más')
-            //             .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
-            //             .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
-            //             .required('Requerido'),
-            // confirmPassword: Yup.string()
-            //             .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
-            //             .required('Requerido')
+            name: Yup.string()
+                        .max(50, 'Debe de tener 50 caracteres o menos')
+                        .min(3, 'Debe de tener 3 caracteres o más')
+                        .required('Requerido'),
+            lastName: Yup.string()
+                        .max(50, 'Debe de tener 50 caracteres o menos')
+                        .min(3, 'Debe de tener 3 caracteres o más')
+                        .required('Requerido'),
+            date: Yup.string()
+                        .required('Requerido'),
+            email: Yup.string()
+                        .email('La dirección de email no es válida')
+                        .required('Requerido'),
+            role: Yup.string()
+                        .required('Requerido'),
+            password: Yup.string()
+                        .min(8, 'Debe de tener 8 caracteres o más')
+                        .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
+                        .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
+                        .required('Requerido'),
+            confirmPassword: Yup.string()
+                        .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
+                        .required('Requerido')
         })
     })
 
@@ -109,6 +108,14 @@ export const Perfil = () => {
                             </div>
 
                         </div>
+
+                        {
+                            (upload !== 0)
+                                &&
+                            <div className="progress2 my-2">
+                                <div className="progress-bar" role="progressbar" style={{width: `${upload}%`, backgroundColor: 'rgb(89, 7, 211)', color: 'white', borderRadius: 100}} aria-valuemin="0" aria-valuemax="100">Subiendo foto de perfil {upload}%</div>
+                            </div>
+                        }
                         
                         <div className='d-grid gap-2 col-6 mx-auto'>
                             <button type='submit' className = 'btn btn-primary  my-2'>Guardar</button>

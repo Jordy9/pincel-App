@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2"
-import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate } from "./authSlice"
+import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate, uploadFinish, uploadImagePerfil } from "./authSlice"
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -81,43 +81,82 @@ export const iniciarRegistro = (name, lastName, email, password) => {
 }
 
 export const iniciarActualizacion = (id, name, lastName, date, email, password, role, file) => {
-    return async(dispatch) => {
+    return async(dispatch, getState) => {
 
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('title', name + lastName)
-
-        const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {headers: {'x-token': token}})
-
-        const idImage = respImage.data.image.id
-        const urlImage = respImage.data.image.url
-
-        console.log(respImage)
-
+        const { usuarioActivo } = getState().auth;
+        
         try {
-            const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
-    
-            if (resp.data.ok) {
 
-                dispatch(onUpdate(resp.data.usuario))
+            if (file) {
+
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('title', name + lastName)
+        
+                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
+                    headers: {'x-token': token},
+                    onUploadProgress: (e) =>
+                        {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
+                })
+        
+                const idImage = respImage.data.image.id
+                const urlImage = respImage.data.image.url
     
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                
-                return Toast.fire({
-                    icon: 'success',
-                    title: 'Usuario actualizado correctamente'
-                })
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
+        
+                if (resp.data.ok) {
+    
+                    dispatch(onUpdate(resp.data.usuario))
+    
+                    dispatch(uploadFinish())
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario actualizado correctamente'
+                    })
+                }
+
+            } else {
+                const idImage = usuarioActivo?.idImage
+                const urlImage = usuarioActivo?.image
+
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
+        
+                if (resp.data.ok) {
+    
+                    dispatch(onUpdate(resp.data.usuario))
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario actualizado correctamente'
+                    })
+                }
             }
+
         } catch ({response}) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -137,7 +176,6 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
             })
         }
         
-
     }
 }
 

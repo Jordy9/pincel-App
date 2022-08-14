@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import user from '../../heroes/user.webp'
 import { Rating } from 'react-simple-star-rating'
 import { ModalEvaluacionDescripcion } from './ModalEvaluacionDescripcion'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +11,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     const dispatch = useDispatch();
 
-    const [rating, setRating] = useState(90)
+    const [setRating] = useState(90)
 
         // Catch Rating value
     const handleRating = (rate) => {
@@ -95,7 +94,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
             }
         }
 
-    }, [idUsuarios])
+    }, [idUsuarios, resenaToDesc?.length, resena?.length])
 
     const ref = useRef()
 
@@ -107,9 +106,12 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     useEffect(() => {
         if (resena?.length === 0) {
-          handleClose()
+            setShowModalFront(false)
+            setTimeout(() => {
+                setEvaluateFront(true)
+            }, 500);
         }
-      }, [resena])
+      }, [resena, setShowModalFront])
 
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
