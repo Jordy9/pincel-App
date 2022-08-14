@@ -29,7 +29,7 @@ export const AppRoute = () => {
 
   const { uid, usuarioActivo } = useSelector(state => state.auth);
 
-  const {socket, online, conectarSocket, desconectarSocket} = useSocket('https://gransalonexpressbackend.herokuapp.com')
+  const {socket, online, conectarSocket, desconectarSocket} = useSocket(`${process.env.REACT_APP_API_URL.split('/api')[0]}`)
 
   const token = localStorage.getItem('token')
 
