@@ -35,22 +35,24 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
   return (
     <Modal fullscreen show={modalShowDescripcion} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Evaluando a todo el personal seleccionado</h1></Modal.Title>
+          {/* <Modal.Title><h1></h1></Modal.Title> */}
         </Modal.Header>
         <Modal.Body>
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <form onSubmit={handleSubmit}>
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
-                            <h3 className='d-flex justify-content-center'>Reseña general para el equipo</h3>
+                            <h3 className='d-flex justify-content-center'>¿Algo que podamos hacer mejor?</h3>
                             <textarea type="text" cols={30} rows={10} {...getFieldProps('descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                         </div>
-                        <button type='submit' id='idButtonDesc' hidden></button>
+                        <div className='d-grid gap-2 col-2 mx-auto'>
+                            <button type='submit' className = 'btn btn-primary my-5' style={{height: '50px'}}>Finalizar</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </Modal.Body>
-        <Modal.Footer>
+        {/* <Modal.Footer>
             <button type='submit' onClick={handledButton} className='btn btn-primary'>
                 Guardar
             </button>
@@ -58,7 +60,7 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
             <button onClick={handleClose} className='btn btn-primary'>
                 Cancelar
             </button>
-        </Modal.Footer>
+        </Modal.Footer> */}
     </Modal>
   )
 }

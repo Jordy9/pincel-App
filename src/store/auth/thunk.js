@@ -80,11 +80,22 @@ export const iniciarRegistro = (name, lastName, email, password) => {
     }
 }
 
-export const iniciarActualizacion = (id, name, lastName, date, email, password, role) => {
+export const iniciarActualizacion = (id, name, lastName, date, email, password, role, file) => {
     return async(dispatch) => {
 
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('title', name + lastName)
+
+        const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {headers: {'x-token': token}})
+
+        const idImage = respImage.data.image.id
+        const urlImage = respImage.data.image.url
+
+        console.log(respImage)
+
         try {
-            const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
     
             if (resp.data.ok) {
 

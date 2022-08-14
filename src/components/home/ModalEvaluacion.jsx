@@ -46,13 +46,11 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
       },
       [setModalShow],
     )
-    
-
 
     // const [modalShowFront, setModalShowFront] = useState(false)
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 1,
@@ -65,7 +63,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
               slidesToShow: 1,
               slidesToScroll: 1,
               infinite: false,
-              dots: true
+              initialSlide: 0,
+              dots: false
             }
           },
           {
@@ -73,8 +72,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              initialSlide: 1,
-              dots: true
+              initialSlide: 0,
+              dots: false
             }
           },
           {
@@ -82,7 +81,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              dots: true
+              initialSlide: 0,
+              dots: false
             }
           }
         ]
@@ -94,8 +94,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
 
       useEffect(() => {
         if (idUsuarios?.length === resena?.length) {
-            setNext(true)
-            setShowModalFront(true)
+          setNext(true)
+          setShowModalFront(true)
         }
       }, [idUsuarios, resena?.length])
 
@@ -109,7 +109,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
     const ref = useRef()
 
     useEffect(() => {
-      if (ref?.current) {
+      if (ref?.current && idUsuarios?.length !== 0) {
         ref?.current?.slickNext()
       }
     }, [idUsuarios])
@@ -134,13 +134,12 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                                 resena?.filter(usuario => usuario?.role !== 'Administrador')?.map(usuario => {
                                     return (
                                         <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
-                                            <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} {usuario?.lastName} el día de hoy?</h3>
-                                            <div className='d-flex mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
-                                                <img src={'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
+                                            <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} el día de hoy?</h3>
+                                            <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
+                                                <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                             </div>
                                             <div className='text-center mt-3'>
                                                 <Rating onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
-                                                <span style={{fontSize: '12px'}}></span>
                                             </div>
                                         </div>
                                     )

@@ -12,6 +12,8 @@ export const Perfil = () => {
 
     const { usuarioActivo } = useSelector(state => state.auth);
 
+    const [imagePerfil, setImagePerfil] = useState()
+    
     const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
             name: usuarioActivo?.name ,
@@ -20,36 +22,38 @@ export const Perfil = () => {
             email: usuarioActivo?.email,
             role: usuarioActivo?.role,
             password: usuarioActivo?.password,
-            confirmPassword: usuarioActivo?.password
+            confirmPassword: usuarioActivo?.password,
+            image: imagePerfil || usuarioActivo?.password?.urlImage
         },
         enableReinitialize: true,
-        onSubmit: ({name, lastName, date, email, password, role}) => {
-            dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, date, email.toLowerCase(), password, role))
+        onSubmit: ({name, lastName, date, email, password, role, image}) => {
+            dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, date, email.toLowerCase(), password, role, image))
+            console.log('l')
         },
         validationSchema: Yup.object({
-            name: Yup.string()
-                        .max(50, 'Debe de tener 50 caracteres o menos')
-                        .min(3, 'Debe de tener 3 caracteres o más')
-                        .required('Requerido'),
-            lastName: Yup.string()
-                        .max(50, 'Debe de tener 50 caracteres o menos')
-                        .min(3, 'Debe de tener 3 caracteres o más')
-                        .required('Requerido'),
-            date: Yup.string()
-                        .required('Requerido'),
-            email: Yup.string()
-                        .email('La dirección de email no es válida')
-                        .required('Requerido'),
-            role: Yup.string()
-                        .required('Requerido'),
-            password: Yup.string()
-                        .min(8, 'Debe de tener 8 caracteres o más')
-                        .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
-                        .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
-                        .required('Requerido'),
-            confirmPassword: Yup.string()
-                        .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
-                        .required('Requerido')
+            // name: Yup.string()
+            //             .max(50, 'Debe de tener 50 caracteres o menos')
+            //             .min(3, 'Debe de tener 3 caracteres o más')
+            //             .required('Requerido'),
+            // lastName: Yup.string()
+            //             .max(50, 'Debe de tener 50 caracteres o menos')
+            //             .min(3, 'Debe de tener 3 caracteres o más')
+            //             .required('Requerido'),
+            // date: Yup.string()
+            //             .required('Requerido'),
+            // email: Yup.string()
+            //             .email('La dirección de email no es válida')
+            //             .required('Requerido'),
+            // role: Yup.string()
+            //             .required('Requerido'),
+            // password: Yup.string()
+            //             .min(8, 'Debe de tener 8 caracteres o más')
+            //             .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
+            //             .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
+            //             .required('Requerido'),
+            // confirmPassword: Yup.string()
+            //             .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
+            //             .required('Requerido')
         })
     })
 
@@ -94,7 +98,9 @@ export const Perfil = () => {
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                 <label>Imagen</label>
                                 <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Seleccionar foto de perfil <i className="bi bi-images btn-primary mx-1"></i></button>
-                                <input accept="image/*" id='fileSelector' hidden = {true} type="file" className='form-control bg-transparent text-black' name='image' />
+                                <input accept="image/*" id='fileSelector' hidden = {true} type="file" className='form-control bg-transparent text-black' onChange={(e) => {
+                                    setImagePerfil(e.currentTarget.files[0])
+                                }} />
                             </div>
 
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">

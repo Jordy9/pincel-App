@@ -114,13 +114,13 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Evaluando personal de despacho</h1></Modal.Title>
+          <Modal.Title><h1>Seleccione los coordinadores de servicios que te atendieron hoy</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <h3 hidden = {(evaluateFront === false)} className='text-center my-2'>¿Quién te atendió hoy en el despacho?</h3>
+                    <h3 hidden = {(evaluateFront === false)} className='text-center my-2'>¿Quién te atendió hoy?</h3>
                     <form>
                         <div className="row">
                             {
@@ -135,7 +135,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                         &&
                                                     <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 37}} className="text-primary bi bi-check-circle-fill"></i>
                                                 }
-                                                <img src={'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
+                                                <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
                                             </div>
                                             <h3 className='text-center my-2'>{usuario?.name} {usuario?.lastName}</h3>
                                         </div>
@@ -148,8 +148,8 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                             return (
                                                 <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                                     <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} {usuario?.lastName} el día de hoy?</h3>
-                                                    <div className='d-flex mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
-                                                        <img src={'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
+                                                    <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
+                                                        <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
                                                     <div className='text-center mt-3'>
                                                         <Rating onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
