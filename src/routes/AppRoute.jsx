@@ -5,7 +5,7 @@ import { Login } from '../components/home/Login';
 import { Registro } from '../components/home/Registro';
 import { Notificaciones } from '../components/Notificaciones';
 import { useSelector, useDispatch } from 'react-redux'
-import { iniciarAutenticacion, obtenerUsuarios } from '../store/auth/thunk';
+import { iniciarAutenticacion, obtenerUsuarioActivo, obtenerUsuarios } from '../store/auth/thunk';
 import { Spinner } from '../components/Spinner';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -29,7 +29,7 @@ export const AppRoute = () => {
 
   const { uid, usuarioActivo } = useSelector(state => state.auth);
 
-  const {socket, online, conectarSocket, desconectarSocket} = useSocket('https://gransalonexpressbackend.herokuapp.com')
+  const {socket, online, conectarSocket, desconectarSocket} = useSocket(`${process.env.REACT_APP_API_URL.split('/api')[0]}`)
 
   const token = localStorage.getItem('token')
 
@@ -43,6 +43,12 @@ export const AppRoute = () => {
     dispatch(obtenerEvaluacion())
   }, [dispatch])
 
+  useEffect(() => {
+    if (uid && !usuarioActivo) {
+      dispatch(obtenerUsuarioActivo())
+    }
+  }, [dispatch, uid, usuarioActivo])
+  
   useEffect(() => {
     if (uid) {
       conectarSocket()

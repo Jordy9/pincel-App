@@ -49,6 +49,8 @@ export const crearVideos = (video) => {
                 {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
             })
 
+            console.log(resp)
+
             dispatch(toSave(resp.data.image))
 
             dispatch(uploadFinish())

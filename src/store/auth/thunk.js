@@ -14,7 +14,7 @@ export const obtenerUsuarios = () => {
     
             dispatch(onGetUsers(resp.data.usuarios))
 
-            dispatch(obtenerUsuarioActivo())
+            await dispatch(obtenerUsuarioActivo())
 
         } catch (error) {
         }
@@ -275,9 +275,10 @@ export const obtenerUsuarioActivo = () => {
 
         const { usuarios, uid } = getState().auth
 
-        const usuario = usuarios?.find(usuarios => usuarios.id === uid)
-
-        dispatch(onActiveUser(usuario))
+        if (uid) {
+            const usuario = usuarios?.find(usuarios => usuarios?.id === uid)
+            dispatch(onActiveUser(usuario))
+        }
         
     }
 }

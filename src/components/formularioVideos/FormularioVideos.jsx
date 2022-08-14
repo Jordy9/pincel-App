@@ -121,11 +121,9 @@ export const FormularioVideos = () => {
 
     useEffect(() => {
         if (paraGuardar?.length === formValues?.length) {
-            console.log(paraGuardar)
             let arregloVideo = []
             let SumaDuracion = 0
             paraGuardar?.map(e => {
-                console.log(e)
                 SumaDuracion = SumaDuracion + Number(e?.duration)
                 if (e?.idVideo === undefined) {
                     arregloVideo.push({
