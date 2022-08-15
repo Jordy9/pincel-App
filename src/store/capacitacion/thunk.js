@@ -26,7 +26,7 @@ export const obtenerCapacitacion = () => {
                 capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
-                    dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion}))
+                    dispatch(activeCapacitacion({videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos}))
                 }
 
         } catch (error) {
@@ -164,6 +164,18 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
+
+        let usuariosEvaluacion = []
+
+        if (paraEditar?.intentos !== intentos) {
+            
+            paraEditar?.usuariosEvaluacion?.map(e => (
+                usuariosEvaluacion.push({id: e?.id, intentos})
+            ))
+
+        } else {
+            usuariosEvaluacion = paraEditar?.usuariosEvaluacion
+        }
         
         try {
             if (typeof file !== 'string') {
@@ -181,7 +193,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
                 const idImage = respImage.data.image.id
                 const image = respImage.data.image.url
     
-                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
 
@@ -208,7 +220,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
             } else {
                 const image = file
                 const idImage = paraEditar?.idImage
-                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
@@ -311,5 +323,30 @@ export const saveVideoId = (id, uid) => {
         const { socket } = getState().sk;
 
         socket?.emit('last-video-save', {id, uid})
+    }
+}
+
+export const updateUsuarioIntento = (id, uid) => {
+    return (dispatch, getState) => {
+        const { socket } = getState().sk;
+
+        socket?.emit('update-one-user-evaluacion', {id, uid})
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        
+        return Toast.fire({
+            icon: 'success',
+            title: 'Este usuario tiene un intento adicional'
+        })
     }
 }

@@ -18,9 +18,15 @@ export const evaluacionSlice = createSlice({
        activeEvaluacion: (state, action ) => {
            state.evaluacionActiva = action.payload
         },
+
+       updateEvaluacion: (state, action ) => {
+           state.evaluacion = state.evaluacion.map(e => 
+            ( e._id === action.payload?._id ? action.payload : e
+           ))
+        },
    }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { getEvaluacion, createEvaluacion, activeEvaluacion } = evaluacionSlice.actions;
+export const { getEvaluacion, createEvaluacion, activeEvaluacion, updateEvaluacion } = evaluacionSlice.actions;

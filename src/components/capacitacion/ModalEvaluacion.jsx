@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import Slider from 'react-slick';
-import { crearEvaluacion } from '../../store/evaluacion/thunk';
+import { actualizarEvaluacion, crearEvaluacion } from '../../store/evaluacion/thunk';
 import { CalificacionEvaluacion } from './CalificacionEvaluacion';
 
 export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) => {
@@ -72,7 +72,9 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
     ]
     };
 
-    const [changeEvaluacionCalificacion, setChangeEvaluacionCalificacion] = useState(false)
+    const intentosPermitidos = capacitacionActiva?.usuariosEvaluacion?.filter(capacitacion => capacitacion?.id === uid)
+
+    const [changeEvaluacionCalificacion, setChangeEvaluacionCalificacion] = useState((evaluacionUserComplete?.length === 0 && Number(Number(intentosPermitidos[0]?.intentos)) !== 0) ? false : true)
 
     const [calificacionShow, setcalificacionShow] = useState(0)
 
@@ -80,8 +82,13 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         const calificacion = formValues?.filter(calificacion => calificacion?.correcta === 'true')
         const calificacionFinal = (calificacion?.length / formValues?.length) * 100
         setcalificacionShow((calificacion?.length / formValues?.length) * 100)
+
+        if (capacitacionActiva?.intentos === Number(intentosPermitidos[0]?.intentos)) {
+            dispatch(crearEvaluacion(formValues, calificacionFinal))
+        } else {
+            dispatch(actualizarEvaluacion(formValues, calificacionFinal, evaluacionUserComplete[0]?._id))
+        }
         
-        dispatch(crearEvaluacion(formValues, calificacionFinal))
         setChangeEvaluacionCalificacion(true)
     }
 
@@ -97,7 +104,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         }
     }
 
-    const intentosPermitidos = capacitacionActiva?.usuariosEvaluacion?.filter(capacitacion => capacitacion?.id === uid)
+    const seleccionados = formValues?.filter(form => form?.evaluacion !== null)
 
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
@@ -107,7 +114,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         <Modal.Body>
             <div className="row my-3 p-4">
                 {
-                    (!changeEvaluacionCalificacion && evaluacionUserComplete?.length === 0 && intentosPermitidos[0]?.intentos !== 0)
+                    (!changeEvaluacionCalificacion)
                         ?
                     <>
                         <h4>{changeCountResponse}/{capacitacionActiva?.preguntas?.length}</h4>
@@ -153,7 +160,14 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                         </Slider>
                     </>
                         :
-                    <CalificacionEvaluacion calificacionShow = {calificacionShow || evaluacionUserComplete[0]?.calificacion} />
+                    <CalificacionEvaluacion 
+                        intentos = {Number(intentosPermitidos[0]?.intentos)} 
+                        calificacionShow = {calificacionShow || evaluacionUserComplete[0]?.calificacion} 
+                        setChangeCountResponse = {setChangeCountResponse} 
+                        setChangeEvaluacionCalificacion = {setChangeEvaluacionCalificacion}
+                        evaluacionActiva = {evaluacionUserComplete[0]?.evaluacion}
+                        setFormValues = {setFormValues}
+                    />
                 }
             </div>
         </Modal.Body>
@@ -161,19 +175,19 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         <Modal.Footer>
 
             {
-                (changeCountResponse > 1)
+                (changeCountResponse > 1 && !changeEvaluacionCalificacion)
                     &&
                 <button onClick={anteriorPregunta} className='btn btn-primary'>Anterior</button>
             }
 
             {
-                (changeCountResponse === capacitacionActiva?.preguntas?.length)
+                ((changeCountResponse === capacitacionActiva?.preguntas?.length && formValues?.length === changeCountResponse) || Number(intentosPermitidos[0]?.intentos) === 0)
                     ?
-                (evaluacionUserComplete?.length === 0 && intentosPermitidos[0]?.intentos !== 0)
+                (Number(Number(intentosPermitidos[0]?.intentos)) !== 0 && seleccionados?.length !== 0 && !changeEvaluacionCalificacion)
                     &&
                 <button onClick={terminar} className='btn btn-primary'>Terminar</button>
                     :
-                <button onClick={siguientePregunta} className='btn btn-primary'>Siguiente</button>
+                <button hidden = {(changeEvaluacionCalificacion || changeCountResponse === capacitacionActiva?.preguntas?.length)} onClick={siguientePregunta} className='btn btn-primary'>Siguiente</button>
             }
         </Modal.Footer>
     </Modal>

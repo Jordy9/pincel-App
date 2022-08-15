@@ -1,9 +1,12 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUsuarioIntento } from '../../store/capacitacion/thunk';
 
 export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion}) => {
 
+    const dispatch = useDispatch();
+    
     const { evaluacionActiva } = useSelector(state => state.ev);
 
     const handleClose = () => {
@@ -13,6 +16,10 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
     // const handledButton = () => {
     //     document.getElementById('idButton').click()
     // }
+
+    const permitir = () => {
+        dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
+    }
 
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
@@ -40,6 +47,15 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                             <td>{evaluacion?.evaluacion?.pregunta}</td>
                                             <td>{evaluacion?.respuesta}</td>
                                             <td>{evaluacion?.evaluacion?.respuesta1}</td>
+                                            <td>
+                                                {
+                                                    (evaluacion?.correcta)
+                                                    ?
+                                                    <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
+                                                    :
+                                                    <i style={{fontSize: '25px'}} className="text-danger bi bi-x-octagon"></i>
+                                                }
+                                            </td>
                                         </tr>
                                     )
                                    }) 
@@ -54,7 +70,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
         </Modal.Body>
         
         <Modal.Footer>
-            <button className='btn btn-primary'>Permitir otro intento</button>
+            <button onClick={permitir} className='btn btn-primary'>Permitir otro intento</button>
         </Modal.Footer>
     </Modal>
   )
