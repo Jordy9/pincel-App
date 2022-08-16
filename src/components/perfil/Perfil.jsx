@@ -28,6 +28,7 @@ export const Perfil = () => {
         enableReinitialize: true,
         onSubmit: ({name, lastName, date, email, password, role, image}) => {
             dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, date, email.toLowerCase(), password, role, image))
+            setImagePerfil()
         },
         validationSchema: Yup.object({
             name: Yup.string()
@@ -38,21 +39,11 @@ export const Perfil = () => {
                         .max(50, 'Debe de tener 50 caracteres o menos')
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
-            date: Yup.string()
-                        .required('Requerido'),
             email: Yup.string()
                         .email('La dirección de email no es válida')
                         .required('Requerido'),
             role: Yup.string()
                         .required('Requerido'),
-            password: Yup.string()
-                        .min(8, 'Debe de tener 8 caracteres o más')
-                        .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
-                        .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
-                        .required('Requerido'),
-            confirmPassword: Yup.string()
-                        .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')
-                        .required('Requerido')
         })
     })
 

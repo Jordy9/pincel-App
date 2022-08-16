@@ -46,7 +46,7 @@ export const Sidebar = ({children}) => {
               <div style={{width: '100%', height: '70vh', backgroundColor: 'rgb(10, 25, 45)', color: 'white', borderRadius: '35px'}}>
                 <NavLink className='d-flex justify-content-center p-3' to='/perfil'>
                   <div className='d-flex justify-content-center' style={{width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                    <img src={usuarioActivo?.urlImage} className='img-fluid' alt="" />
+                    <img src={usuarioActivo?.urlImage || "https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg"} className='img-fluid' alt="" />
                   </div>
                 </NavLink>
                 <h5 className='text-center'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h5>
@@ -102,7 +102,7 @@ export const Sidebar = ({children}) => {
                 <ul>
                   <NavLink className='d-flex justify-content-center p-3' to='/perfil'>
                     <div className='d-flex justify-content-center' style={{width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                      <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                      <img src={usuarioActivo?.urlImage || "https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg"} className='img-fluid' alt="" />
                     </div>
                   </NavLink>
 

@@ -91,7 +91,7 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
 
                 const formData = new FormData()
                 formData.append('file', file)
-                formData.append('title', name + lastName)
+                formData.append('title', name + new Date())
         
                 const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
                     headers: {'x-token': token},
@@ -107,6 +107,11 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
                 if (resp.data.ok) {
     
                     dispatch(onUpdate(resp.data.usuario))
+
+                    if (usuarioActivo?.idImage) {
+                        await axios.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${usuarioActivo?.idImage}`, {headers: {'x-token': token}})
+                    }
+
     
                     dispatch(uploadFinish())
         
@@ -306,6 +311,7 @@ export const iniciarAutenticacion = () => {
                 name: resp.data.name
             }))
         } catch (error) {
+            console.log(error)
             localStorage.removeItem('token')
             localStorage.removeItem('token-init-date')
             dispatch(onChecking())

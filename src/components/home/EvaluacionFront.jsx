@@ -6,7 +6,6 @@ import { crearAResena } from '../../store/resena/thunk'
 import Slider from "react-slick";
 import { Modal } from 'react-bootstrap'
 
-
 export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowModalFront, setShowModalFront}) => {
 
     const dispatch = useDispatch();
@@ -116,7 +115,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Seleccione los coordinadores de servicios que te atendieron hoy</h1></Modal.Title>
+          <Modal.Title><h1>{(evaluateFront) ? 'Seleccione los coordinadores de servicios que te atendieron hoy' : 'Evaluando personal'}</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
@@ -128,10 +127,10 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                             {
                                 (evaluateFront)
                                     ?
-                                usuarios?.filter(usuarios => usuarios?.role === 'Administrador')?.map(usuario => {
+                                usuarios?.filter(usuarios => usuarios?.role === 'Administrador' && !usuarios?.name?.includes('Jordy'))?.map(usuario => {
                                     return (
                                         <div hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
-                                            <div className='d-flex mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
+                                            <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                 {
                                                     (resena?.includes(usuario))
                                                         &&
@@ -139,7 +138,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                 }
                                                 <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
                                             </div>
-                                            <h3 className='text-center my-2'>{usuario?.name} {usuario?.lastName}</h3>
+                                            <h3 className='text-center my-2'>{usuario?.name}</h3>
                                         </div>
                                     )
                                 })
@@ -149,7 +148,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                         resena?.filter(usuarios => usuarios?.role === 'Administrador')?.map(usuario => {
                                             return (
                                                 <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
-                                                    <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} {usuario?.lastName} el día de hoy?</h3>
+                                                    <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} el día de hoy?</h3>
                                                     <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                         <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
