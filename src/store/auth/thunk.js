@@ -92,6 +92,7 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
                 const formData = new FormData()
                 formData.append('file', file)
                 formData.append('title', name + new Date())
+                formData.append('title2', name + new Date())
         
                 const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
                     headers: {'x-token': token},

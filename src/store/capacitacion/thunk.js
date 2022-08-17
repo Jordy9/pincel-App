@@ -41,6 +41,7 @@ export const crearVideos = (video) => {
         const formData = new FormData()
         formData.append('file', video.video)
         formData.append('title', video.titulo)
+        formData.append('title2', video.titulo + new Date())
         
         try {
             const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
@@ -88,6 +89,7 @@ export const actualizarVideos = (video, indice, index) => {
                 const formData = new FormData()
                 formData.append('file', video.video)
                 formData.append('title', video.titulo)
+                formData.append('title2', video.titulo + new Date())
                 
                 const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
                     headers: {'x-token': token}, 
@@ -151,7 +153,8 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
 
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('title', title + new Date())
+        formData.append('title', title)
+        formData.append('title2', title + new Date())
 
         try {
 
@@ -215,7 +218,8 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
 
                 const formData = new FormData()
                 formData.append('file', file)
-                formData.append('title', title + new Date())
+                formData.append('title', title)
+                formData.append('title2', title + new Date())
     
                 const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
                     headers: {'x-token': token},
