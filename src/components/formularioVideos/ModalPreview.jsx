@@ -10,7 +10,7 @@ export const ModalPreview = ({modalPreview, setModalPreview, preview, previewVid
     }
 
   return (
-    <Modal size='lg' show={modalPreview} onHide={handleClose}>
+    <Modal size='lg' centered show={modalPreview} onHide={handleClose}>
         <Modal.Body>
             {
                 (previewVideo)
