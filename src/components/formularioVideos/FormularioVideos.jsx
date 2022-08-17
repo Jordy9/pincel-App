@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
 import Slider from "react-slick";
 import { mixed } from 'yup';
+import { ModalPreview } from './ModalPreview';
 
 const options = [
     { label: "Equipo de Servicio", value: "Servicio" },
@@ -303,6 +304,28 @@ export const FormularioVideos = () => {
         ]
     };
 
+    const [previewImage, setPreviewImage] = useState()
+
+    const ImagePreview = (i) => {
+        if (imag) {
+            setPreviewImage(URL.createObjectURL(imag))
+            URL.revokeObjectURL(imag)
+            setModalPreview(true)
+        }
+    }
+
+    const [modalPreview, setModalPreview] = useState(false)
+
+    const [previewVideo, setPreviewVideo] = useState()
+
+    const VideoPreview = (i) => {
+        if (formValues[i]?.video) {
+            setPreviewVideo(URL.createObjectURL(formValues[i].video))
+            URL.revokeObjectURL(formValues[i].video)
+            setModalPreview(true)
+        }
+    }
+    
   return (
     <Sidebar>
         <div className='p-4'>
@@ -348,6 +371,17 @@ export const FormularioVideos = () => {
                                 }} />
                                 {touched?.image && errors?.image && <span style={{color: 'red'}}>{errors?.image}</span>}
                             </div>
+
+                            {
+                                (imag)
+                                    &&
+                                <div className="col-1 d-flex align-items-center mt-3">
+                                    <button type='button' className='btn btn-primary' onClick={ImagePreview}>
+                                        <i className="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            }
+
                         </div>
 
                         <div className="row">
@@ -385,6 +419,14 @@ export const FormularioVideos = () => {
                                                 <label className='form-label'>Acción</label>
                                                 <div className="row">
                                                     <div className="col-12">
+                                                        {
+                                                            (formValues[index]?.video)
+                                                                &&
+                                                            <button type='button' className='btn btn-primary' onClick={() => VideoPreview(index)}>
+                                                                <i className="bi bi-eye"></i>
+                                                            </button>
+                                                        }
+
                                                         {
                                                             (formValues.length === index + 1)
                                                                 &&
@@ -517,8 +559,6 @@ export const FormularioVideos = () => {
                     </Slider>
                 }
 
-
-
                 {
                     (upload !== 0)
                         &&
@@ -532,6 +572,15 @@ export const FormularioVideos = () => {
                 </div>
             </form>
         </div>
+
+        <ModalPreview 
+            modalPreview={modalPreview} 
+            setModalPreview = {setModalPreview} 
+            preview = {previewImage} 
+            previewVideo = {previewVideo} 
+            setPreviewImage = {setPreviewImage}
+            setPreviewVideo = {setPreviewVideo}
+        />
     </Sidebar>
   )
 }

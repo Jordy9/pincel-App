@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { iniciarActualizacion } from '../../store/auth/thunk'
 import { ModalCambPass } from './ModalCambPass'
+import { ModalPreview } from '../formularioVideos/ModalPreview'
 
 export const Perfil = () => {
 
@@ -57,6 +58,18 @@ export const Perfil = () => {
         setShowModal(true)
     }
 
+    const [modalPreview, setModalPreview] = useState(false)
+
+    const [previewImage, setPreviewImage] = useState()
+
+    const ImagePreview = () => {
+        if (imagePerfil) {
+            setPreviewImage(URL.createObjectURL(imagePerfil))
+            URL.revokeObjectURL(imagePerfil)
+            setModalPreview(true)
+        }
+    }
+
   return (
     <Sidebar>
         <div className="row">
@@ -93,7 +106,17 @@ export const Perfil = () => {
                                 }} />
                             </div>
 
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                            {
+                                (imagePerfil)
+                                    &&
+                                <div className="col-1 d-flex align-items-center mt-3" style={{margin: 0, padding: 0}}>
+                                    <button type='button' className='btn btn-primary' onClick={ImagePreview}>
+                                        <i className="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            }
+
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                 <label>Cambiar contraseña</label>
                                 <button onClick={modalOpen} type='button' className = 'btn btn-primary form-control'>Cambiar contraseña</button>
                             </div>
@@ -116,6 +139,14 @@ export const Perfil = () => {
             </div>
         </div>
         <ModalCambPass showModal = {showModal} setShowModal = {setShowModal} />
+        <ModalPreview 
+            modalPreview={modalPreview} 
+            setModalPreview = {setModalPreview} 
+            preview = {previewImage} 
+            previewVideo = {undefined} 
+            setPreviewImage = {setPreviewImage}
+            setPreviewVideo = {undefined}
+        />
     </Sidebar>
   )
 }

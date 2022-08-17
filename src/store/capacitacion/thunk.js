@@ -40,7 +40,7 @@ export const crearVideos = (video) => {
         
         const formData = new FormData()
         formData.append('file', video.video)
-        formData.append('title', video.titulo)
+        formData.append('title', video.titulo + new Date())
         
         try {
             const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
@@ -56,7 +56,23 @@ export const crearVideos = (video) => {
             dispatch(uploadFinish())
     
         } catch (error) {
-            console.log(error)
+            dispatch(uploadFinish())
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
+            })
         }
         
     }
@@ -71,7 +87,7 @@ export const actualizarVideos = (video, indice, index) => {
             if (typeof video?.video !== 'string') {
                 const formData = new FormData()
                 formData.append('file', video.video)
-                formData.append('title', video.titulo)
+                formData.append('title', video.titulo + new Date())
                 
                 const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
                     headers: {'x-token': token}, 
@@ -102,6 +118,23 @@ export const actualizarVideos = (video, indice, index) => {
             dispatch(uploadFinish())
     
         } catch (error) {
+            dispatch(uploadFinish())
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
+            })
         }
         
     }
@@ -118,7 +151,7 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
 
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('title', title + '123456')
+        formData.append('title', title + new Date())
 
         try {
 
@@ -182,7 +215,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
 
                 const formData = new FormData()
                 formData.append('file', file)
-                formData.append('title', title + '123456')
+                formData.append('title', title + new Date())
     
                 const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
                     headers: {'x-token': token},
