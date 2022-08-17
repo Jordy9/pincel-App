@@ -40,7 +40,7 @@ export const crearVideos = (video) => {
         
         const formData = new FormData()
         formData.append('file', video.video)
-        formData.append('title', video.titulo + new Date())
+        formData.append('title', video.titulo)
         
         try {
             const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
@@ -87,7 +87,7 @@ export const actualizarVideos = (video, indice, index) => {
             if (typeof video?.video !== 'string') {
                 const formData = new FormData()
                 formData.append('file', video.video)
-                formData.append('title', video.titulo + new Date())
+                formData.append('title', video.titulo)
                 
                 const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
                     headers: {'x-token': token}, 
