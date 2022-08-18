@@ -36,7 +36,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
     const trueFalse = resena.filter(resena => resena.role === 'Administrador')
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 1,
@@ -49,7 +49,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
               slidesToShow: 1,
               slidesToScroll: 1,
               infinite: false,
-              dots: true
+              dots: false
             }
           },
           {
@@ -58,7 +58,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
               slidesToShow: 1,
               slidesToScroll: 1,
               initialSlide: 1,
-              dots: true
+              dots: false
             }
           },
           {
@@ -66,7 +66,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              dots: true
+              dots: false
             }
           }
         ]
@@ -127,14 +127,14 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                             {
                                 (evaluateFront)
                                     ?
-                                usuarios?.filter(usuarios => usuarios?.role === 'Administrador' && !usuarios?.name?.includes('Jordy'))?.map(usuario => {
+                                usuarios?.filter(usuarios => usuarios?.role === 'Administrador' && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Francis') && !usuarios?.name?.includes('Olfa'))?.map(usuario => {
                                     return (
-                                        <div hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 col-xxl-3 my-4">
+                                        <div hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                 {
                                                     (resena?.includes(usuario))
                                                         &&
-                                                    <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 37}} className="text-primary bi bi-check-circle-fill"></i>
+                                                    <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 130}} className="text-primary bi bi-check-circle-fill"></i>
                                                 }
                                                 <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
                                             </div>

@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
+import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating'
 import Slider from "react-slick";
+import { setClearResena } from '../../store/resena/resenaSlice';
 import { ModalEvaluacionFront } from './EvaluacionFront'
 
 export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) => {
+
+  const dispatch = useDispatch();
 
     const [setRating] = useState(0)
 
@@ -25,6 +29,8 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
     const handleClose = useCallback(
       () => {
         setModalShow(false)
+        setIdUsuarios([])
+        dispatch(setClearResena())
       },
       [setModalShow],
     )
