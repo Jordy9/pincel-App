@@ -307,9 +307,12 @@ export const FormularioVideos = () => {
     const [previewImage, setPreviewImage] = useState()
 
     const ImagePreview = (i) => {
-        if (imag) {
+        if (imag && typeof imag !== 'string') {
             setPreviewImage(URL.createObjectURL(imag))
             URL.revokeObjectURL(imag)
+            setModalPreview(true)
+        } else {
+            setPreviewImage(imag)
             setModalPreview(true)
         }
     }
@@ -319,9 +322,13 @@ export const FormularioVideos = () => {
     const [previewVideo, setPreviewVideo] = useState()
 
     const VideoPreview = (i) => {
-        if (formValues[i]?.video) {
+        console.log(formValues[i]?.video)
+        if (formValues[i]?.video && typeof formValues[i]?.video !== 'string') {
             setPreviewVideo(URL.createObjectURL(formValues[i].video))
             URL.revokeObjectURL(formValues[i].video)
+            setModalPreview(true)
+        } else {
+            setPreviewVideo(formValues[i].video)
             setModalPreview(true)
         }
     }
