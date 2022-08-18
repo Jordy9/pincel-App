@@ -26,14 +26,11 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
         // other logic
     }
 
-    const handleClose = useCallback(
-      () => {
+    const handleClose = () => {
         setModalShow(false)
         setIdUsuarios([])
         dispatch(setClearResena())
-      },
-      [setModalShow],
-    )
+    }
 
     // const [modalShowFront, setModalShowFront] = useState(false)
 
@@ -104,9 +101,9 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
 
     useEffect(() => {
       if (resena?.length === 0) {
-        handleClose()
+        setModalShow(false)
       }
-    }, [resena, handleClose])
+    }, [resena, setModalShow])
     
   return (
     <Modal fullscreen show={modalShow} onHide={handleClose}>
