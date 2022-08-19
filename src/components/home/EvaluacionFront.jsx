@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { crearAResena } from '../../store/resena/thunk'
 import Slider from "react-slick";
 import { Modal } from 'react-bootstrap'
+import { setClearResena } from '../../store/resena/resenaSlice'
 
 export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowModalFront, setShowModalFront}) => {
 
@@ -117,6 +118,30 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
         }
       }, [resena, setShowModalFront])
 
+      const [segundos, setSegundos] = useState(0)
+    const refSegundosFront = useRef()
+
+    useEffect(() => {
+      refSegundosFront.current && clearInterval(refSegundosFront.current)
+      refSegundosFront.current = setInterval(
+         () => (!next) && setSegundos(s => s + 1)
+        , 1000)
+    }, [next])
+
+    useEffect(() => {
+      setSegundos(0)
+    }, [resenaToDesc?.length, evaluateFront, idUsuarios])
+
+    useEffect(() => {
+      if (segundos === 15) {
+        setIdUsuarios([])
+        dispatch(setClearResena())
+      }
+    }, [segundos])
+    
+
+    console.log(segundos, 2)
+
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
@@ -126,7 +151,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
             <div className="row p-4">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                    <h3 hidden = {(evaluateFront === false)} className='text-center my-2'>¿Quién te atendió hoy?</h3>
+                    {/* <h3 hidden = {(evaluateFront === false)} className='text-center my-2'>¿Quién te atendió hoy?</h3> */}
                     <form>
                         <div className="row">
                             {
@@ -187,7 +212,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                 Anterior
             </button>
 
-            <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
+            <button disabled = {(!next)} hidden = {evaluateFront} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>
         </Modal.Footer>

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { crearResena } from '../../store/resena/thunk'
+import { setClearResena } from '../../store/resena/resenaSlice'
 
 export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDescripcion, idUsuarios, setIdUsuarios}) => {
 
@@ -31,6 +32,29 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
     const handledButton = () => {
         document.getElementById('idButtonDesc').click()
     }
+
+    const [segundos, setSegundos] = useState(0)
+    const refSegundosDesc = useRef()
+
+    useEffect(() => {
+      refSegundosDesc.current && clearInterval(refSegundosDesc.current)
+      refSegundosDesc.current = setInterval(
+         () => (modalShowDescripcion) && setSegundos(s => s + 1)
+        , 1000)
+    }, [modalShowDescripcion])
+
+    let descripci = getFieldProps('descripcion')?.value
+
+    useEffect(() => {
+      setSegundos(0)
+    }, [descripci])
+
+    useEffect(() => {
+        if (segundos === 15) {
+          setIdUsuarios([])
+          dispatch(setClearResena())
+        }
+      }, [segundos])
 
   return (
     <Modal fullscreen show={modalShowDescripcion} onHide={handleClose}>
