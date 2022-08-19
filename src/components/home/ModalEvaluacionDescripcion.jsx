@@ -66,7 +66,7 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <form onSubmit={handleSubmit}>
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 shadow p-4 my-auto" style={{borderRadius: '35px'}}>
-                            <h3 className='d-flex justify-content-center'>¿Algo que podamos hacer mejor?</h3>
+                            <h3 className='d-flex justify-content-center'>¿Algo que nos quieras decir?</h3>
                             <textarea type="text" cols={30} rows={10} {...getFieldProps('descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                         </div>
                         <div className='d-grid gap-2 col-2 mx-auto'>
