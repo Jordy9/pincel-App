@@ -173,7 +173,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
 
         </Modal.Body>
         <Modal.Footer>
-            <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
+            <button disabled = {(!next)} hidden = {!next} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>
         </Modal.Footer>
