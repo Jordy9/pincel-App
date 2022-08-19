@@ -74,6 +74,10 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
       const [evaluateFront, setEvaluateFront] = useState(true)
 
+      const handlePrev = () => {
+        setEvaluateFront(true)
+        }
+
       const handleClose = () => {
         setShowModalFront(false)
         setTimeout(() => {
@@ -84,6 +88,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
       const [next, setNext] = useState(false)
 
       const resenaToDesc = resena?.filter(resena => resena?.role === 'Administrador')
+
     useEffect(() => {
 
         if (resenaToDesc?.length !== 0) {
@@ -178,6 +183,10 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
             </div>
         </Modal.Body>
         <Modal.Footer>
+            <button hidden = {(evaluateFront)} type='button' onClick={handlePrev} className='btn btn-primary'>
+                Anterior
+            </button>
+
             <button disabled = {(!next)} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>

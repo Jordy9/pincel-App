@@ -9,6 +9,8 @@ export const TableContent = (props) => {
 
     const { resena } = useSelector(state => state.rs);
 
+    const { capacitacion } = useSelector(state => state.cp);
+
     const {id, name, lastName, urlImage, role} = props
 
     const handledActive = (user) => {
@@ -41,6 +43,8 @@ export const TableContent = (props) => {
         calificacion: parseInt(suma/division) || 0,
         cantidad: division
     }
+
+    // const capacitacionesFiltradasPorVideo = capacitacion?.filter(capacitacion => capacitacion?.video)
 
   return (
     <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">

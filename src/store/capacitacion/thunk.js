@@ -116,7 +116,6 @@ export const actualizarVideos = (video, indice, index) => {
                 dispatch(toSave(paraEditar?.video[index]))
             }
 
-
             dispatch(uploadFinish())
     
         } catch (error) {
@@ -138,7 +137,19 @@ export const actualizarVideos = (video, indice, index) => {
                 title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
             })
         }
-        
+    }
+}
+
+export const eliminarVideoActualizado = (indiceEliminar) => {
+    return async(dispatch, getState) => {
+
+        const { paraEditar } = getState().cp;
+
+        for (let index = 0; index < indiceEliminar.length; index++) {
+            const element = indiceEliminar[index];
+            await axios.delete(`${endPoint}/fileUpload/${paraEditar?.video[element]?.idVideo}`, {headers: {'x-token': token}})
+        }
+
     }
 }
 
@@ -230,7 +241,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
                 const idImage = respImage.data.image.id
                 const image = respImage.data.image.url
     
-                const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
         
                 dispatch(uploadFinish())
 

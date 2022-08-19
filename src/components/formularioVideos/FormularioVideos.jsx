@@ -3,7 +3,7 @@ import { Sidebar } from '../Sidebar'
 import { MultiSelect } from "react-multi-select-component";
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { actualizarCapacitacionForm, actualizarVideos, crearCapacitacion, crearVideos } from '../../store/capacitacion/thunk';
+import { actualizarCapacitacionForm, actualizarVideos, crearCapacitacion, crearVideos, eliminarVideoActualizado } from '../../store/capacitacion/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
 import Slider from "react-slick";
@@ -76,6 +76,9 @@ export const FormularioVideos = () => {
                     dispatch(crearVideos(element))
                 } else {
                     dispatch(actualizarVideos(element, indiceActualizar[index], index))
+                    if (indiceActualizar?.length !== 0) {
+                        dispatch(eliminarVideoActualizado(indiceActualizar))
+                    }
                 }
                 
                 setTituloSubida('videos')
@@ -210,7 +213,9 @@ export const FormularioVideos = () => {
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
-        setindiceActualizar(indiceActualizar => [...indiceActualizar, i])
+        if (paraEditar && paraEditar?.video[i]) {
+            setindiceActualizar(indiceActualizar => [...indiceActualizar, i])
+        }
         if (e.target.name === "") {            
             newFormValues[i]['video'] = e.target.files[0];
             setFormValues(newFormValues);
@@ -411,6 +416,7 @@ export const FormularioVideos = () => {
                                     <Fragment key={element + index}>
                                         <div className="row">
                                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
+                                                <button type='button' className='btn btn-primary my-1 mx-1'>{index + 1}</button>
                                                 <label className='form-label'>Titulo del video</label>
                                                 <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
                                                 {touched?.video?.filter(video => video.titulo) && errors?.video?.filter(video => video.titulo) && <span style={{color: 'red'}}>{errors?.video[index]?.titulo}</span>}
@@ -443,7 +449,7 @@ export const FormularioVideos = () => {
                                                         }
         
                                                         {
-                                                            (index !== 0)
+                                                            (formValues?.length > 1)
                                                                 &&
                                                             <button onClick={() => eliminar(index)} type='button' className='btn btn-primary mx-1'>
                                                                 <i className="bi bi-trash-fill"></i>
@@ -547,7 +553,7 @@ export const FormularioVideos = () => {
                                                         }
 
                                                         {
-                                                            (index !== 0)
+                                                            (formEvaluacion.length > 1)
                                                                 &&
                                                             <button onClick={() => eliminarPregunta(index)} type='button' className='btn btn-primary mx-1'>
                                                                 <i className="bi bi-trash-fill"></i>
