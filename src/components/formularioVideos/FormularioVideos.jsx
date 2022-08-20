@@ -273,7 +273,7 @@ export const FormularioVideos = () => {
     // }
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 1,
@@ -286,7 +286,7 @@ export const FormularioVideos = () => {
               slidesToShow: 1,
               slidesToScroll: 1,
               infinite: false,
-              dots: true
+              dots: false
             }
           },
           {
@@ -295,7 +295,7 @@ export const FormularioVideos = () => {
               slidesToShow: 1,
               slidesToScroll: 1,
               initialSlide: 1,
-              dots: true
+              dots: false
             }
           },
           {
@@ -303,7 +303,7 @@ export const FormularioVideos = () => {
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
-              dots: true
+              dots: false
             }
           }
         ]
@@ -327,7 +327,6 @@ export const FormularioVideos = () => {
     const [previewVideo, setPreviewVideo] = useState()
 
     const VideoPreview = (i) => {
-        console.log(formValues[i]?.video)
         if (formValues[i]?.video && typeof formValues[i]?.video !== 'string') {
             setPreviewVideo(URL.createObjectURL(formValues[i].video))
             URL.revokeObjectURL(formValues[i].video)
@@ -336,6 +335,14 @@ export const FormularioVideos = () => {
             setPreviewVideo(formValues[i].video)
             setModalPreview(true)
         }
+    }
+
+    const onClickVideo = (i) => {
+        document.getElementById(`fileVideo${i}`).click()
+    }
+
+    const onClickImage = () => {
+        document.getElementById('fileImageSelect').click()
     }
     
   return (
@@ -377,7 +384,8 @@ export const FormularioVideos = () => {
         
                             <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                 <label className='form-label'>Imagen</label>
-                                <input accept="image/*" type="file" className='form-control' name='image' onChange={(e) => {
+                                <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Seleccionar imagen <i className="bi bi-images btn-primary mx-1"></i></button>
+                                <input hidden accept="image/*" type="file" id='fileImageSelect' className='form-control' name='image' onChange={(e) => {
                                     // setFieldValue('image', setimag(e.currentTarget.files[0], (e.currentTarget.files[0]) ? setimag(URL.createObjectURL(e.currentTarget.files[0]) || '') : setimag())
                                     setimag(e.currentTarget.files[0])
                                 }} />
@@ -414,9 +422,9 @@ export const FormularioVideos = () => {
                             formValues.map((element, index) => {
                                 return (
                                     <Fragment key={element + index}>
+                                        <button type='button' className='btn btn-primary'>{index + 1}</button>
                                         <div className="row">
                                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
-                                                <button type='button' className='btn btn-primary my-1 mx-1'>{index + 1}</button>
                                                 <label className='form-label'>Titulo del video</label>
                                                 <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
                                                 {touched?.video?.filter(video => video.titulo) && errors?.video?.filter(video => video.titulo) && <span style={{color: 'red'}}>{errors?.video[index]?.titulo}</span>}
@@ -424,7 +432,8 @@ export const FormularioVideos = () => {
         
                                             <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                                 <label className='form-label'>Video</label>
-                                                <input accept="video/*" id='fileVideo' onChange = {(e) => handleChange(index, e)} type="file" className='form-control' />
+                                                <button type='button' onClick={() => onClickVideo(index)} className='btn btn-primary form-control'>Seleccionar video <i className="bi bi-camera-video btn-primary mx-1"></i></button>
+                                                <input hidden accept="video/*" id={`fileVideo${index}`} onChange = {(e) => handleChange(index, e)} type="file" className='form-control' />
                                                 {touched?.video?.filter(video => video.video) && errors?.video?.filter(video => video.video) && <span style={{color: 'red'}}>{errors?.video[index]?.video}</span>}
                                             </div>
         
@@ -455,11 +464,11 @@ export const FormularioVideos = () => {
                                                                 <i className="bi bi-trash-fill"></i>
                                                             </button>
                                                         }
+
                                                     </div>
                                                 </div>
                                                 
                                             </div>
-        
                                         </div>
                                     </Fragment>
                                 )
