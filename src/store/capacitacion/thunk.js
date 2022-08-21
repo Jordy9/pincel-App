@@ -110,8 +110,10 @@ export const actualizarVideos = (video, indice, index) => {
                 }
 
 
-            } else {
+            } else if (paraEditar?.video[index].titulo === video.titulo) {
                 dispatch(toSave(paraEditar?.video[index]))
+            } else {
+                dispatch(toSave({...paraEditar?.video[index], titulo: video.titulo}))
             }
 
             dispatch(uploadFinish())

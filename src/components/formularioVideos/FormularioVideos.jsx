@@ -213,10 +213,10 @@ export const FormularioVideos = () => {
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
-        if (paraEditar && paraEditar?.video[i]) {
-            setindiceActualizar(indiceActualizar => [...indiceActualizar, i])
-        }
         if (e.target.name === "") {            
+            if (paraEditar && paraEditar?.video[i]) {
+                setindiceActualizar(indiceActualizar => [...indiceActualizar, i])
+            }
             newFormValues[i]['video'] = e.target.files[0];
             setFormValues(newFormValues);
         } else {
