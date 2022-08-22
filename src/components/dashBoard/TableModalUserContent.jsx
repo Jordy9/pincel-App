@@ -33,33 +33,41 @@ export const TableModalUserContent = (props) => {
 
     // const porciento = (videosFiltrados?.length/capacitacionFiltrada[0]?.video?.length)*100
 
+  let clicks = []
+  let time = ""
+
   const handledActive = (id) => {
-    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === id)
-    if (evaluacionFiltrada?.length !== 0) {
-      dispatch(activeEvaluacion(evaluacionFiltrada[0]))
-      setModalShowEvaluacion(true)
-    } else {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-    
-      return Toast.fire({
-        icon: 'info',
-        title: 'Este usuario aún no ha sido evaluado'
-      })
-    }
+      clicks.push(new Date().getTime())
+      time = window.setTimeout(() => {
+          if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
+            const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === id)
+            if (evaluacionFiltrada?.length !== 0) {
+              dispatch(activeEvaluacion(evaluacionFiltrada[0]))
+              setModalShowEvaluacion(true)
+            } else {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+            
+              return Toast.fire({
+                icon: 'info',
+                title: 'Este usuario aún no ha sido evaluado'
+              })
+            }
+          }
+      }, 0);
   }
 
   return (
-    <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr style={{cursor: 'pointer'}} onClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={image || user} className='img-fluid' alt="" />

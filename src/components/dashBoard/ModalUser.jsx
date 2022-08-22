@@ -28,6 +28,18 @@ export const ModalUser = () => {
             span[0]?.removeAttribute("title")
         }
     }, [modalUser])
+
+    let clicks = []
+    let time = ""
+
+    const handledActive = () => {
+        clicks.push(new Date().getTime())
+        time = window.setTimeout(() => {
+            if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
+                setModalShowResena(true)
+            }
+        }, 0);
+    }
       
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
@@ -46,7 +58,7 @@ export const ModalUser = () => {
                                 <button onClick={() => setModalShow(true)} type='button' className = 'btn btn-primary my-2'>Editar</button>
                             </div>
                             <h3 className='text-center'>{activeUser?.name} {activeUser?.lastName}</h3>
-                            <div onDoubleClick={() => setModalShowResena(true)} className='text-center' style={{cursor: 'pointer'}}>
+                            <div onClick={handledActive} className='text-center' style={{cursor: 'pointer'}}>
                                 <Rating  allowHalfIcon readonly ratingValue={activeUser?.calificacion} />
                                 <span style={{fontSize: '12px'}}>{activeUser?.cantidad} reseñas</span>
                             </div>

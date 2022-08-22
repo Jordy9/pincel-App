@@ -13,9 +13,17 @@ export const TableContent = (props) => {
 
     const {id, name, lastName, urlImage, role} = props
 
+    let clicks = []
+    let time = ""
+
     const handledActive = (user) => {
-        dispatch(setActiveUser(user))
-        dispatch(modalOpen())
+        clicks.push(new Date().getTime())
+        time = window.setTimeout(() => {
+            if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
+                dispatch(setActiveUser(user))
+                dispatch(modalOpen())
+            }
+        }, 0);
     }
 
     let calificacionFiltrada = []
@@ -47,7 +55,7 @@ export const TableContent = (props) => {
     // const capacitacionesFiltradasPorVideo = capacitacion?.filter(capacitacion => capacitacion?.video)
 
   return (
-    <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr style={{cursor: 'pointer'}} onClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />

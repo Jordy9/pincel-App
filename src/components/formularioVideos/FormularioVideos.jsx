@@ -355,7 +355,13 @@ export const FormularioVideos = () => {
   return (
     <Sidebar>
         <div className='p-4'>
-            <h1>Crear capacitación</h1>
+            {
+                (!paraEditar)
+                    ?
+                <h1>Crear capacitación</h1>
+                    :
+                <h1>Actualizar capacitación</h1>
+            }
 
             <form onSubmit={handleSubmit} className='my-5'>
                 <div className="row">

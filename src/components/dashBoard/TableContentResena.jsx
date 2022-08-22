@@ -13,9 +13,17 @@ export const TableContentResena = (props) => {
 
     const { activeUser } = useSelector(state => state.auth);
 
+    let clicks = []
+    let time = ""
+
     const handledActive = (resena) => {
-        dispatch(setActiveResena(resena))
-        setModalShowDetalle(true)
+        clicks.push(new Date().getTime())
+        time = window.setTimeout(() => {
+            if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
+                dispatch(setActiveResena(resena))
+                setModalShowDetalle(true)
+            }
+        }, 0);
     }
 
     const calificacionFiltrada = calificacion?.filter(calificacion => calificacion?.id === activeUser?.id)
@@ -29,7 +37,7 @@ export const TableContentResena = (props) => {
     }
 
   return (
-    <tr className={`${(!estado) && 'bg-secondary'}`} onDoubleClick={() => handledActive(resenaUsuario)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr className={`${(!estado) && 'bg-secondary'}`} onClick={() => handledActive(resenaUsuario)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
             (calificacionFiltrada[0]?.calificacion > 0)
                 &&
