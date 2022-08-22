@@ -38,19 +38,30 @@ export const obtenerCapacitacion = () => {
 export const crearVideos = (video) => {
     return async(dispatch) => {
         
-        const formData = new FormData()
-        formData.append('file', video.video)
-        formData.append('title', video.titulo)
-        formData.append('title2', video.titulo + new Date())
         
         try {
-            const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
-                headers: {'x-token': token}, 
-                onUploadProgress: (e) =>
-                {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-            })
+            const formData = new FormData()
+            for (let index = 0; index < video.length; index++) {
+                const element = video[index];
 
-            dispatch(toSave(resp.data.image))
+                formData.append('file', element.video)
+                formData.append('title', element.titulo)
+                formData.append('title2', element.titulo + new Date())
+            }
+
+            const resp = await Promise.all([
+                axios.post(`${endPoint}/fileUpload`, formData, {
+                    headers: {'x-token': token}, 
+                    onUploadProgress: (e) =>
+                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+                })
+            ])
+
+            for (let index = 0; index < resp[0].data.image.length; index++) {
+                const element = resp[0].data.image[index];
+
+                dispatch(toSave(element))
+            }
 
             dispatch(uploadFinish())
     
@@ -77,46 +88,66 @@ export const crearVideos = (video) => {
     }
 }
 
-export const actualizarVideos = (video, indice, index) => {
+export const actualizarVideos = (video, indice) => {
     return async(dispatch, getState) => {
 
         const { capacitacion, paraEditar } = getState().cp;
+
+        let ok = false
         
         try {
-            if (typeof video?.video !== 'string') {
-                const formData = new FormData()
-                formData.append('file', video.video)
-                formData.append('title', video.titulo)
-                formData.append('title2', video.titulo + new Date())
+
+            const formData = new FormData()
+
+            for (let index = 0; index < video.length; index++) {
+                const element = video[index];
                 
-                const resp = await axios.post(`${endPoint}/fileUpload`, formData, {
-                    headers: {'x-token': token}, 
-                    onUploadProgress: (e) =>
-                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-                })
+                if (typeof element?.video !== 'string') {
+                    formData.append('file', element.video)
+                    formData.append('title', element.titulo)
+                    formData.append('title2', element.titulo + new Date())
 
-                let nuevo
+                    ok = true
 
-                if (paraEditar?.video[indice]) {
-                    capacitacion?.map(capacitacion => (
-                        capacitacion?.video[indice]?.idVideo === paraEditar?.video[indice]?.idVideo ? nuevo = resp.data.image : capacitacion
-                    ))
-
-                    nuevo.createdAt = paraEditar?.video[indice].createdAt
-        
-                    dispatch(toSave(nuevo))
+                } else if (paraEditar?.video[index].titulo === element.titulo) {
+                    dispatch(toSave(paraEditar?.video[index]))
                 } else {
-                    dispatch(toSave(resp.data.image))
+                    dispatch(toSave({...paraEditar?.video[index], titulo: element.titulo}))
                 }
-
-
-            } else if (paraEditar?.video[index].titulo === video.titulo) {
-                dispatch(toSave(paraEditar?.video[index]))
-            } else {
-                dispatch(toSave({...paraEditar?.video[index], titulo: video.titulo}))
+                    
             }
 
-            dispatch(uploadFinish())
+            let resp
+
+            if (ok) {
+                resp = await Promise.all([
+                    axios.post(`${endPoint}/fileUpload`, formData, {
+                        headers: {'x-token': token}, 
+                        onUploadProgress: (e) =>
+                        {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+                    })
+                ])
+                
+                for (let index = 0; index < resp[0].data.image.length; index++) {
+                    const element = resp[0].data.image[index];
+                    let nuevo
+                    
+                    if (paraEditar?.video[indice[index]]) {
+                        capacitacion?.map(capacitacion => (
+                            capacitacion?.video[indice[index]]?.idVideo === paraEditar?.video[indice[index]]?.idVideo ? nuevo = element : capacitacion
+                        ))
+    
+                        nuevo.createdAt = paraEditar?.video[indice[index]].createdAt
+            
+                        dispatch(toSave(nuevo))
+                    } else {
+                        dispatch(toSave(element))
+                    }
+                }
+    
+                dispatch(uploadFinish())
+            }
+            
     
         } catch (error) {
             dispatch(uploadFinish())

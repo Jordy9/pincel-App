@@ -9,6 +9,7 @@ import { toSaveClear } from '../../store/capacitacion/capacitacionSlice';
 import Slider from "react-slick";
 import { mixed } from 'yup';
 import { ModalPreview } from './ModalPreview';
+import moment from 'moment';
 
 const options = [
     { label: "Equipo de Servicio", value: "Servicio" },
@@ -69,20 +70,20 @@ export const FormularioVideos = () => {
             //     dispatch(toSave(paraEditar?.video))
             // }
 
-            for (let index = 0; index < video.length; index++) {
-                const element = video[index];
+            // for (let index = 0; index < video.length; index++) {
+            //     const element = video[index];
 
                 if (!paraEditar) {
-                    dispatch(crearVideos(element))
+                    dispatch(crearVideos(video))
                 } else {
-                    dispatch(actualizarVideos(element, indiceActualizar[index], index))
+                    dispatch(actualizarVideos(video, indiceActualizar))
                     if (indiceActualizar?.length !== 0) {
                         dispatch(eliminarVideoActualizado(indiceActualizar))
                     }
                 }
                 
                 setTituloSubida('videos')
-            }
+            // }
 
             // image: document.getElementsByName('image').value = ''
 
@@ -142,6 +143,7 @@ export const FormularioVideos = () => {
                     arregloVideo.push(e)
                 }
             })
+            arregloVideo.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
             setTituloSubida('imagen')
             if (!paraEditar) {
                 dispatch(crearCapacitacion(formValuesTitulo, imag, formValuesDescripcion, formValuesIntentos, arregloVideo, formEvaluacion, SumaDuracion, equiposCapacitacion))
@@ -178,6 +180,11 @@ export const FormularioVideos = () => {
             setEvaluacionChange(false)
         }
     }, [paraGuardar])
+
+    useEffect(() => {
+      paraEditar?.video?.map(e => console.log(moment(e.createdAt).format('h:mm:ss a')))
+    }, [paraEditar])
+    
     
     // Contenido de Capacitación de Video
 
