@@ -14,17 +14,9 @@ export const TableContent = (props) => {
     
     const { image, title, createdAt  } = props
 
-    let clicks = []
-    let time = ""
-
     const handledActive = (capacitacion) => {
-        clicks.push(new Date().getTime())
-        time = window.setTimeout(() => {
-            if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
-              dispatch(toUpdate(capacitacion))
-              navigate('/formCapacitaciones')
-            }
-        }, 0);
+      dispatch(toUpdate(capacitacion))
+      navigate('/formCapacitaciones')
     }
 
     const handledDelete = (capacita) => {
@@ -43,7 +35,7 @@ export const TableContent = (props) => {
         }
 
   return (
-    <tr onClick={() => handledActive(props)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
+    <tr onDoubleClick={() => handledActive(props)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={image} className='img-fluid' alt="" />

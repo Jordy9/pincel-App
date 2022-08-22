@@ -21,18 +21,6 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
         dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
     }
 
-    let clicks = []
-    let time = ""
-
-    const handledActive = () => {
-        clicks.push(new Date().getTime())
-        time = window.setTimeout(() => {
-            if (clicks?.length > 1 && (clicks[clicks.length-1] - clicks[clicks.length -2]) < 300) {
-                setModalShowEvaluacion(true)
-            }
-        }, 0);
-    }
-
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -55,7 +43,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                 {
                                    evaluacionActiva?.evaluacion?.map(evaluacion => {
                                     return (
-                                        <tr onClick={handledActive}>
+                                        <tr onDoubleClick={() => setModalShowEvaluacion(true)}>
                                             <td>{evaluacion?.evaluacion?.pregunta}</td>
                                             <td>{evaluacion?.respuesta}</td>
                                             <td>{evaluacion?.evaluacion?.respuesta1}</td>
