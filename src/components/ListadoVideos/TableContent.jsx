@@ -12,7 +12,7 @@ export const TableContent = (props) => {
 
     const navigate = useNavigate()
     
-    const { image, title, createdAt  } = props
+    const { image, title, createdAt, team } = props
 
     const handledActive = (capacitacion) => {
       dispatch(toUpdate(capacitacion))
@@ -24,6 +24,7 @@ export const TableContent = (props) => {
             title: '¿Esta seguro que desea eliminar esta capacitación?',
             icon: 'warning',
             showCancelButton: true,
+            cancelButtonText: 'Cancelar',
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Eliminar'
@@ -43,7 +44,7 @@ export const TableContent = (props) => {
         </td>
         <td>{title}</td>
         <td>{moment(createdAt).format('MMMM Do YYYY')}</td>
-        <td>{moment(createdAt).format('MMMM Do YYYY')}</td>
+        <td>{team?.map(team => team?.label)}</td>
         <td>             
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>
         </td>

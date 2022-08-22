@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap'
 import { Rating } from 'react-simple-star-rating'
 import { useDispatch, useSelector } from 'react-redux'
 import { eliminarResena } from '../../store/resena/thunk'
+import Swal from 'sweetalert2'
 
 export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
 
@@ -15,8 +16,22 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
     }
 
     const handledButton = () => {
-        document.getElementById('idButton').click()
-        dispatch(eliminarResena(activeResena?.id))
+        
+        Swal.fire({
+            title: '¿Esta seguro que desea eliminar esta capacitación?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Eliminar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('idButton').click()
+                dispatch(eliminarResena(activeResena?.id))
+                setModalShowDetalle(false)
+            }
+          })
     }
 
   return (

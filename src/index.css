@@ -5,6 +5,13 @@ body {
     touch-action: manipulation !important;
 }
 
+td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
 #linear {
     background: 
             linear-gradient(217deg, rgba(255, 0, 0, 0.167), rgba(255,0,0,0) 70.71%),
