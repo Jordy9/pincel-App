@@ -18,7 +18,7 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
     const handledButton = () => {
         
         Swal.fire({
-            title: '¿Esta seguro que desea eliminar esta capacitación?',
+            title: '¿Esta seguro que desea eliminar esta reseña?',
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: 'Cancelar',
