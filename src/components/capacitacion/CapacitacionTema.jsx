@@ -30,7 +30,7 @@ export const CapacitacionTema = () => {
   const [timeUpdate, setTimeUpdate] = useState(null)
 
   useEffect(() => {
-    const calculoCheckVideo = (duration*80) / 100
+    const calculoCheckVideo = (duration*95) / 100
 
     if (parseInt(timeUpdate) === parseInt(calculoCheckVideo)) {
       dispatch(checkVideoUser(capacitacionId, capacitacionActiva?.videos?.idVideo, uid))

@@ -125,28 +125,28 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                                         <div className='p-4 text-black'>
                                             <h5>{evaluacion?.pregunta}</h5>
                                             <div className="row p-4 my-5">
-                                                <div className="col-3">
+                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
                                                     <div className="form-check">
                                                         <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta1) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta1, evaluacion?.accion1 )} id="exampleRadios2" value={formValues[index]?.respuesta} />
                                                         <label className="form-check-label">{evaluacion?.respuesta1}</label>
                                                     </div>
                                                 </div>
 
-                                                <div className="col-3">
+                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
                                                     <div className="form-check">
                                                         <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta2) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta2, evaluacion?.accion2 )} id="exampleRadios2" value="option2" />
                                                         <label className="form-check-label">{evaluacion?.respuesta2}</label>
                                                     </div>
                                                 </div>
 
-                                                <div className="col-3">
+                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
                                                     <div className="form-check">
                                                         <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta3) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta3, evaluacion?.accion3 )} id="exampleRadios2" value="option2" />
                                                         <label className="form-check-label">{evaluacion?.respuesta3}</label>
                                                     </div>
                                                 </div>
 
-                                                <div className="col-3">
+                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
                                                     <div className="form-check">
                                                         <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta4) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta4, evaluacion?.accion4 )} id="exampleRadios2" value="option2"/>
                                                         <label className="form-check-label">{evaluacion?.respuesta4}</label>
