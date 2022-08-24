@@ -39,6 +39,6 @@ export const CapacitacionTema = () => {
   }, [timeUpdate, dispatch])
   
   return (
-    <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', height: '60vh', borderRadius: '20px', objectFit: 'cover'}} src={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
+    <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', borderRadius: '20px'}} src={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
   )
 }
