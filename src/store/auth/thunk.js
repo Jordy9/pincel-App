@@ -38,7 +38,7 @@ export const iniciarRegistro = (name, lastName, email, password) => {
                 localStorage.setItem('token', resp.data.token)
                 localStorage.setItem('token-init-date', new Date().getTime());
 
-                dispatch(obtenerUsuarioActivo())
+                await dispatch(obtenerUsuarioActivo())
     
                 const Toast = Swal.mixin({
                     toast: true,

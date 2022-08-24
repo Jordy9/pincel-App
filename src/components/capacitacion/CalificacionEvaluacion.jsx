@@ -34,6 +34,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
             <table className="table borderless">
               <thead>
                 <tr>
+                  <th className='d-flex justify-content-start' scope="col">Número pregunta</th>
                   <th scope="col">Pregunta</th>
                   <th scope="col">Respuesta seleccionada</th>
                   <th scope="col">Respuesta correcta</th>
@@ -44,18 +45,20 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
                     evaluacionActiva?.map((evaluacion, index) => {
                     return (
                       <>
-                        <button className='btn btn-primary my-1 mx-1' style={{position: 'absolute'}}>{index + 1}</button>
                         <tr>
-                            <td>{evaluacion?.evaluacion?.pregunta}</td>
-                            <td>{evaluacion?.respuesta}</td>
-                            <td>{evaluacion?.evaluacion?.respuesta1}</td>
+                            <td className='d-flex justify-content-start'>
+                              <button className='btn btn-primary'>{index + 1}</button>
+                            </td>
+                            <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
+                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
+                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta1}</td>
                             <td>
                               {
-                                (evaluacion?.correcta)
+                                (evaluacion?.correcta === 'true')
                                   ?
                                 <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
                                   :
-                                <i style={{fontSize: '25px'}} className="text-danger bi bi-x-octagon"></i>
+                                <i style={{fontSize: '25px'}} className="text-danger bi bi-x-circle-fill"></i>
                               }
                             </td>
                         </tr>
