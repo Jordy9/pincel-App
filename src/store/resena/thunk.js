@@ -20,7 +20,7 @@ export const obtenerResena = () => {
     }
 }
 
-export const crearResena = (calificacion, descripcion) => {
+export const crearResena = (calificacion, descripcion, handleClose) => {
     return async(dispatch) => {
 
         try {
@@ -31,6 +31,8 @@ export const crearResena = (calificacion, descripcion) => {
             dispatch(setClearResena())
 
             dispatch(comenzarResena(true))
+
+            handleClose()
 
             const Toast = Swal.mixin({
                 toast: true,

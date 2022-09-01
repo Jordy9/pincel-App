@@ -29,6 +29,8 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     const { usuarios } = useSelector(state => state.auth);
 
+    const { comenzar } = useSelector(state => state.rs);
+
     const handledButton = () => {
         document.getElementById('idButton').click()
         setModalShowDescripcion(true)
@@ -81,10 +83,12 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
       const handleClose = () => {
         setShowModalFront(false)
-        setTimeout(() => {
-            setEvaluateFront(true)
-        }, 500);
-      }
+        if (!comenzar) {
+            setTimeout(() => {
+                setEvaluateFront(true)
+            }, 500);
+        }
+    }
 
       const [next, setNext] = useState(false)
 
@@ -112,9 +116,6 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
     useEffect(() => {
         if (resena?.length === 0) {
             setShowModalFront(false)
-            setTimeout(() => {
-                setEvaluateFront(true)
-            }, 500);
         }
       }, [resena, setShowModalFront])
 
