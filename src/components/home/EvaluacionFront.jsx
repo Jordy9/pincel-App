@@ -142,7 +142,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title className="ms-auto"><h1>{(evaluateFront) ? 'Seleccione los coordinadores de servicio que te atendieron hoy' : 'Evaluando personal'}</h1></Modal.Title>
+          <Modal.Title className="ms-auto"><h1>{(evaluateFront) && 'Seleccione los coordinadores de servicio que te atendieron hoy'}</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
