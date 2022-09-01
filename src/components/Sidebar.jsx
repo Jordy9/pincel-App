@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Offcanvas } from 'react-bootstrap'
 import { useResponsive } from '../hooks/useResponsive'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { iniciarLogout } from '../store/auth/thunk'
 
 export const Sidebar = ({children}) => {
 
   const { usuarioActivo } = useSelector(state => state.auth);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate()
 
@@ -22,6 +25,11 @@ export const Sidebar = ({children}) => {
 
   const navigateTo = () => {
     navigate('/perfil')
+  }
+
+  const navigateToEvaluacion = () => {
+    dispatch(iniciarLogout())
+    navigate('/Evaluacion')
   }
 
   const [ respWidth ] = useResponsive()
@@ -76,9 +84,9 @@ export const Sidebar = ({children}) => {
                     <>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                      <NavLink onClick={navigateToEvaluacion} style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Evaluacion'><i style={{fontSize: '25px'}} className="bi bi-clipboard"> </i><span>Evaluación del personal</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de capacitaciones</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
@@ -98,7 +106,7 @@ export const Sidebar = ({children}) => {
           <div className='row my-5'>
 
             <Offcanvas style = {{backgroundColor: 'rgb(10, 25, 45)', color: 'white'}} show={show} onHide={handledClose} >
-              <Offcanvas.Header closeButton><h1>PINCEL TE CAPACITA</h1></Offcanvas.Header>
+              <Offcanvas.Header closeButton><h1>Gran Salón Express</h1></Offcanvas.Header>
                 <ul>
                   <NavLink className='d-flex justify-content-center p-3' to='/perfil'>
                     <div className='d-flex justify-content-center' style={{width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
@@ -106,21 +114,44 @@ export const Sidebar = ({children}) => {
                     </div>
                   </NavLink>
 
-                  <Offcanvas.Title><h5 className='text-center'>Maria Rodriguez</h5></Offcanvas.Title>
+                  <Offcanvas.Title><h5 className='text-center'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h5></Offcanvas.Title>
                   <div className='d-flex justify-content-center'>
                     <button onClick={navigateTo} className='btn btn-primary text-white'>Ver perfil</button>
                   </div>
                 </ul>
               <Offcanvas.Body className='mt-3 secondary'>
                 <ul className='list-group list-group-flush'>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
-                  <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+
+                  {
+                    (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
+                      &&
+                    <>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink> */}
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/formCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-textarea-resize"> </i><span>Crear capacitación</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListVideos'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de videos</span></NavLink> */}
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicadoUser'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink> */}
+                    </>
+                  }
+
+                  {
+                    (usuarioActivo?.role && usuarioActivo?.role === 'Administrador')
+                      &&
+                    <>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
+                      <NavLink onClick={navigateToEvaluacion} style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Evaluacion'><i style={{fontSize: '25px'}} className="bi bi-clipboard"> </i><span>Evaluación del personal</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de capacitaciones</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                    </>
+                  }
                 </ul>
               </Offcanvas.Body>
             </Offcanvas>

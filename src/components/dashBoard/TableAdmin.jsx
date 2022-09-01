@@ -3,10 +3,13 @@ import { ModalUser } from './ModalUser'
 import { TableSpreedList } from './TableSpreedList';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useResponsive } from '../../hooks/useResponsive';
 
 export const TableAdmin = () => {
 
     const percentage = 66;
+
+    const [ respWidth ] = useResponsive()
 
   return (
     <>
@@ -22,13 +25,14 @@ export const TableAdmin = () => {
                 <table className="table borderless">
                     <thead>
                         <tr>
-                            <th scope="col">Foto</th>
+                            {
+                                (respWidth > 992)
+                                    &&
+                                <th scope="col">Foto</th>
+                            }
                             <th scope="col">Nombre</th>
-                            <th scope="col">Apellido</th>
                             <th scope="col">Promedio de las evaluaciones</th>
                             <th scope="col">Promedio de las reseñas</th>
-                            <th scope="col">Capacitaciones en curso</th>
-                            <th scope="col">Rol</th>
                         </tr>
                     </thead>
                     <tbody>

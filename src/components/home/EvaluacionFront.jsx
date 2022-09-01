@@ -138,14 +138,11 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
         dispatch(setClearResena())
       }
     }, [segundos])
-    
-
-    console.log(segundos, 2)
 
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
-        <Modal.Header className={`${(trueFalse?.length !== 0) && 'mt-3'}`} style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>{(evaluateFront) ? 'Seleccione los coordinadores de servicios que te atendieron hoy' : 'Evaluando personal'}</h1></Modal.Title>
+        <Modal.Header style={{border: 'none'}} closeButton>
+          <Modal.Title className="ms-auto"><h1>{(evaluateFront) ? 'Seleccione los coordinadores de servicio que te atendieron hoy' : 'Evaluando personal'}</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
@@ -183,7 +180,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                         <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
                                                     <div className='text-center mt-3'>
-                                                        <Rating onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                        <Rating emptyColor='#828282' onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
                                                         <span style={{fontSize: '12px'}}></span>
                                                     </div>
                                                 </div>
@@ -196,8 +193,11 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                         </div>
                         <button onClick={handledButton} type='button' id='idButton' hidden></button>
                     </form>
-                    <div className='d-flex justify-content-center'>
-                        <button hidden = {(trueFalse?.length === 0 || !evaluateFront)} onClick={() => setEvaluateFront(false)} className='btn btn-primary form-control' style={{position: 'fixed', zIndex: 1045, top: 0}}>Evaluar</button>
+
+                    <div className="row">
+                        <div className='d-grid gap-2 col-2 mx-auto'>
+                            <button type='button' hidden = {(trueFalse?.length === 0 || !evaluateFront)} onClick={() => setEvaluateFront(false)} className = 'btn btn-primary btn-lg' style={{height: '50px', marginTop: '140px'}}>Evaluar</button>
+                        </div>
                     </div>
                 </div>
                 {

@@ -39,7 +39,12 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
 
         </Modal.Body>
 
+        {
+          (modalShowDetalle)
+            &&
         <ModalResenaDetalle modalShowDetalle = {modalShowDetalle} setModalShowDetalle = {setModalShowDetalle} />
+        }
+
     </Modal>
   )
 }

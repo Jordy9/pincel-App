@@ -55,7 +55,7 @@ export const actualizarEvaluacion = (evaluacion, calificacion, id) => {
         socket?.emit('intento-change', {id: idCapacitacion, uid: idUsuario})
 
         try {
-            const resp = await axios.post(`${endPoint}/evaluacion/update/${id}`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${endPoint}/evaluacion/update/${id}`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})
     
             dispatch(updateEvaluacion(resp.data.evaluacion))
 

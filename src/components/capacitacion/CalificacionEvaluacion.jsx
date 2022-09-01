@@ -51,7 +51,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
                             </td>
                             <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
                             <td className='no-elipsis'>{evaluacion?.respuesta}</td>
-                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta1}</td>
+                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0].respuesta}</td>
                             <td>
                               {
                                 (evaluacion?.correcta === 'true')

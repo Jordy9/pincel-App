@@ -35,154 +35,155 @@ export const obtenerCapacitacion = () => {
     }
 }
 
-export const crearVideos = (video) => {
-    return async(dispatch) => {
+// export const crearVideos = (video) => {
+//     return async(dispatch) => {
         
         
-        try {
-            const formData = new FormData()
-            for (let index = 0; index < video.length; index++) {
-                const element = video[index];
+//         try {
+//             const formData = new FormData()
+//             for (let index = 0; index < video.length; index++) {
+//                 const element = video[index];
 
-                formData.append('file', element.video)
-                formData.append('title', element.titulo)
-                formData.append('title2', element.titulo + new Date())
-            }
+//                 formData.append('file', element.video)
+//                 formData.append('title', element.titulo)
+//                 formData.append('title2', element.titulo + new Date())
+//             }
 
-            const resp = await Promise.all([
-                axios.post(`${endPoint}/fileUpload`, formData, {
-                    headers: {'x-token': token}, 
-                    onUploadProgress: (e) =>
-                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-                })
-            ])
+//             const resp = await Promise.all([
+//                 axios.post(`${endPoint}/fileUpload`, formData, {
+//                     headers: {'x-token': token}, 
+//                     onUploadProgress: (e) =>
+//                     {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+//                 })
+//             ])
 
-            for (let index = 0; index < resp[0].data.image.length; index++) {
-                const element = resp[0].data.image[index];
+//             for (let index = 0; index < resp[0].data.image.length; index++) {
+//                 const element = resp[0].data.image[index];
 
-                dispatch(toSave(element))
-            }
+//                 dispatch(toSave(element))
+//             }
 
-            dispatch(uploadFinish())
+//             dispatch(uploadFinish())
     
-        } catch (error) {
-            dispatch(uploadFinish())
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
+//         } catch (error) {
+//             dispatch(uploadFinish())
+//             const Toast = Swal.mixin({
+//                 toast: true,
+//                 position: 'top-end',
+//                 showConfirmButton: false,
+//                 timer: 5000,
+//                 timerProgressBar: true,
+//                 didOpen: (toast) => {
+//                 toast.addEventListener('mouseenter', Swal.stopTimer)
+//                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+//                 }
+//             })
             
-            return Toast.fire({
-                icon: 'error',
-                title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
-            })
-        }
+//             return Toast.fire({
+//                 icon: 'error',
+//                 title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
+//             })
+//         }
         
-    }
-}
+//     }
+// }
 
-export const actualizarVideos = (video, indice) => {
-    return async(dispatch, getState) => {
 
-        const { capacitacion, paraEditar } = getState().cp;
+// export const actualizarVideos = (video, indice) => {
+//     return async(dispatch, getState) => {
 
-        let ok = false
+//         const { capacitacion, paraEditar } = getState().cp;
+
+//         let ok = false
         
-        try {
+//         try {
 
-            const formData = new FormData()
+//             const formData = new FormData()
 
-            for (let index = 0; index < video.length; index++) {
-                const element = video[index];
+//             for (let index = 0; index < video.length; index++) {
+//                 const element = video[index];
                 
-                if (typeof element?.video !== 'string') {
-                    formData.append('file', element.video)
-                    formData.append('title', element.titulo)
-                    formData.append('title2', element.titulo + new Date())
+//                 if (typeof element?.video !== 'string') {
+//                     formData.append('file', element.video)
+//                     formData.append('title', element.titulo)
+//                     formData.append('title2', element.titulo + new Date())
 
-                    ok = true
+//                     ok = true
 
-                } else if (paraEditar?.video[index].titulo === element.titulo) {
-                    dispatch(toSave(paraEditar?.video[index]))
-                } else {
-                    dispatch(toSave({...paraEditar?.video[index], titulo: element.titulo}))
-                }
+//                 } else if (paraEditar?.video[index].titulo === element.titulo) {
+//                     dispatch(toSave(paraEditar?.video[index]))
+//                 } else {
+//                     dispatch(toSave({...paraEditar?.video[index], titulo: element.titulo}))
+//                 }
                     
-            }
+//             }
 
-            let resp
+//             let resp
 
-            if (ok) {
-                resp = await Promise.all([
-                    axios.post(`${endPoint}/fileUpload`, formData, {
-                        headers: {'x-token': token}, 
-                        onUploadProgress: (e) =>
-                        {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-                    })
-                ])
+//             if (ok) {
+//                 resp = await Promise.all([
+//                     axios.post(`${endPoint}/fileUpload`, formData, {
+//                         headers: {'x-token': token}, 
+//                         onUploadProgress: (e) =>
+//                         {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
+//                     })
+//                 ])
                 
-                for (let index = 0; index < resp[0].data.image.length; index++) {
-                    const element = resp[0].data.image[index];
-                    let nuevo
+//                 for (let index = 0; index < resp[0].data.image.length; index++) {
+//                     const element = resp[0].data.image[index];
+//                     let nuevo
                     
-                    if (paraEditar?.video[indice[index]]) {
-                        capacitacion?.map(capacitacion => (
-                            capacitacion?.video[indice[index]]?.idVideo === paraEditar?.video[indice[index]]?.idVideo ? nuevo = element : capacitacion
-                        ))
+//                     if (paraEditar?.video[indice[index]]) {
+//                         capacitacion?.map(capacitacion => (
+//                             capacitacion?.video[indice[index]]?.idVideo === paraEditar?.video[indice[index]]?.idVideo ? nuevo = element : capacitacion
+//                         ))
     
-                        nuevo.createdAt = paraEditar?.video[indice[index]].createdAt
+//                         nuevo.createdAt = paraEditar?.video[indice[index]].createdAt
             
-                        dispatch(toSave(nuevo))
-                    } else {
-                        dispatch(toSave(element))
-                    }
-                }
+//                         dispatch(toSave(nuevo))
+//                     } else {
+//                         dispatch(toSave(element))
+//                     }
+//                 }
     
-                dispatch(uploadFinish())
-            }
+//                 dispatch(uploadFinish())
+//             }
             
     
-        } catch (error) {
-            dispatch(uploadFinish())
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
+//         } catch (error) {
+//             dispatch(uploadFinish())
+//             const Toast = Swal.mixin({
+//                 toast: true,
+//                 position: 'top-end',
+//                 showConfirmButton: false,
+//                 timer: 5000,
+//                 timerProgressBar: true,
+//                 didOpen: (toast) => {
+//                 toast.addEventListener('mouseenter', Swal.stopTimer)
+//                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+//                 }
+//             })
             
-            return Toast.fire({
-                icon: 'error',
-                title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
-            })
-        }
-    }
-}
+//             return Toast.fire({
+//                 icon: 'error',
+//                 title: 'Hubo un problema al subir este video, verifique que el video funcione correctamente'
+//             })
+//         }
+//     }
+// }
 
-export const eliminarVideoActualizado = (indiceEliminar) => {
-    return async(dispatch, getState) => {
+// export const eliminarVideoActualizado = (indiceEliminar) => {
+//     return async(dispatch, getState) => {
 
-        const { paraEditar } = getState().cp;
+//         const { paraEditar } = getState().cp;
 
-        for (let index = 0; index < indiceEliminar.length; index++) {
-            const element = indiceEliminar[index];
-            await axios.delete(`${endPoint}/fileUpload/${paraEditar?.video[element]?.idVideo}`, {headers: {'x-token': token}})
-        }
+//         for (let index = 0; index < indiceEliminar.length; index++) {
+//             const element = indiceEliminar[index];
+//             await axios.delete(`${endPoint}/fileUpload/${paraEditar?.video[element]?.idVideo}`, {headers: {'x-token': token}})
+//         }
 
-    }
-}
+//     }
+// }
 
 export const crearCapacitacion = (title, file, descripcion, intentos, video, Preguntas, duracion, team) => {
     return async(dispatch, getState) => {
@@ -303,7 +304,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
         
                 dispatch(uploadFinish())
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
-                dispatch(toUpdateClear())
+                // dispatch(toUpdateClear())
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -330,6 +331,53 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
     }
 }
 
+export const publicarCapacitacion = (capacitacion, publicar) => {
+    return async(dispatch) => {
+
+        const resp = await axios.put(`${endPoint}/capacitacion/update/${capacitacion?._id}`, {...capacitacion, publicar}, {headers: {'x-token': token}})
+        dispatch(actualizarCapacitacion(resp.data.capacitacion))
+
+        if (publicar) {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Capacitación publicada correctamente'
+            })
+
+        } else {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Capacitación Oculta'
+            })
+        }
+    }
+}
+
 export const eliminarCapacitacion = (props) => {
     return async(dispatch, getState) => {
 
@@ -345,8 +393,6 @@ export const eliminarCapacitacion = (props) => {
             }
 
             dispatch(deleteCapacitacion(resp.data.capacitacion))
-
-            dispatch(eliminarCapacitacionVideos(props?.video))
 
             await axios.delete(`${endPoint}/fileUpload/${props?.idImage}`, {headers: {'x-token': token}})
 
@@ -372,22 +418,22 @@ export const eliminarCapacitacion = (props) => {
     }
 }
 
-const eliminarCapacitacionVideos = (videos) => {
-    return async(dispatch) => {
+// const eliminarCapacitacionVideos = (videos) => {
+//     return async(dispatch) => {
 
-        for (let index = 0; index < videos.length; index++) {
-            const element = videos[index];
+//         for (let index = 0; index < videos.length; index++) {
+//             const element = videos[index];
             
-            try {
+//             try {
     
-                await axios.delete(`${endPoint}/fileUpload/${element?.idVideo}`, {headers: {'x-token': token}})
-            } catch (error) {
-                console.log(error)
-            }
-        }
+//                 await axios.delete(`${endPoint}/fileUpload/${element?.idVideo}`, {headers: {'x-token': token}})
+//             } catch (error) {
+//                 console.log(error)
+//             }
+//         }
         
-    }
-}
+//     }
+// }
 
 export const checkVideoUser = (id, idVideo, uid) => {
     return (dispatch, getState) => {

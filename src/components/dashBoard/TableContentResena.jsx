@@ -20,12 +20,15 @@ export const TableContentResena = (props) => {
 
     const calificacionFiltrada = calificacion?.filter(calificacion => calificacion?.id === activeUser?.id)
 
+    // const calificacionFiltradaSinActivo = calificacion?.filter(calificacion => calificacion?.id !== activeUser?.id)
+
     const calificacionArgumento = calificacionFiltrada[0]?.calificacion
 
     const resenaUsuario = {
         id: props?._id,
         calificacion: calificacionArgumento || 0,
-        descripcion
+        descripcion,
+        usuarios: calificacion
     }
 
   return (
@@ -36,7 +39,7 @@ export const TableContentResena = (props) => {
                 <>
                     <td>{<Rating size={20} readonly ratingValue={calificacionFiltrada[0]?.calificacion} />}</td>
                     <td>{descripcion}</td>
-                    <td>{moment(createdAt).format('MMMM Do YYYY')}</td>
+                    <td>{moment(createdAt).format('MM/DD/YYYY, h:mm a')}</td>
                     <td>             
                         <button onClick={() => dispatch(actualizarResena(props))} className='btn mx-1 my-1'><i style={{fontSize: '23px'}} className="bi bi-x-circle-fill text-danger"></i></button>
                     </td>

@@ -47,7 +47,7 @@ export const ModalUser = () => {
                             </div>
                             <h3 className='text-center'>{activeUser?.name} {activeUser?.lastName}</h3>
                             <div onDoubleClick={() => setModalShowResena(true)} className='text-center' style={{cursor: 'pointer'}}>
-                                <Rating  allowHalfIcon readonly ratingValue={activeUser?.calificacion} />
+                                <Rating allowHalfIcon readonly ratingValue={activeUser?.calificacion} />
                                 <span style={{fontSize: '12px'}}>{activeUser?.cantidad} reseñas</span>
                             </div>
                         </div>
@@ -61,8 +61,7 @@ export const ModalUser = () => {
                                         <tr>
                                             <th scope="col">Imagen</th>
                                             <th scope="col">Titulo</th>
-                                            <th scope="col">Completa</th>
-                                            <th scope="col">En curso</th>
+                                            <th scope="col">Progreso</th>
                                         </tr>
                                     </thead>
                                     <tbody>

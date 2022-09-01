@@ -2,6 +2,8 @@ import React from 'react'
 import user from '../../heroes/user.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalOpen, setActiveUser } from '../../store/auth/authSlice';
+import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
+import { useResponsive } from '../../hooks/useResponsive';
 
 export const TableContent = (props) => {
 
@@ -46,23 +48,26 @@ export const TableContent = (props) => {
 
     // const capacitacionesFiltradasPorVideo = capacitacion?.filter(capacitacion => capacitacion?.video)
 
+    const [ respWidth ] = useResponsive()
+
   return (
     <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
-        <td className='d-flex justify-content-center'>
-            <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
-            </div>
-        </td>
+        {
+            (respWidth > 992)
+                &&
+            <td className='d-flex justify-content-center'>
+                <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                    <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
+                </div>
+            </td>
+        }
         <td>{name}</td>
-        <td>{lastName}</td>
-        <td>10</td>
-        <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseañas`}>{parseInt(suma/division) || 0}</td>
-        <td>
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" className="progress my-2">
-              <div className="progress-bar" role="progressbar" style={{width: '25%', backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+        <td className='d-flex justify-content-center mx-auto'>
+            <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados">
+                <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={10} text={`${10}%`} />
             </div>
         </td>
-        <td className={`${(role === 'Usuario') ? 'text-primary' : 'text-success'}`}>{role}</td>
+        <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseañas`}>{parseInt(suma/division) || 0}</td>
     </tr>
   )
 }

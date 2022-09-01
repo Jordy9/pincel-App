@@ -28,7 +28,7 @@ export const Cards = () => {
   return (
     <>
     {
-      capacitacion?.map(({title, _id, image, duracion, video}) => {
+      capacitacion?.filter(capacitacion => capacitacion?.publicar === true)?.map(({title, _id, image, duracion, video}) => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 

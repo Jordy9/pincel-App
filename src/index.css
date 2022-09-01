@@ -152,6 +152,7 @@ td {
 .slick-prev {
   left: 0% !important;
   z-index: 1;
+  font-size: 50px !important;
 }
 .slick-next {
   right: 0% !important;
@@ -160,9 +161,11 @@ td {
 
 .slick-prev:before {
   color: black;
+  font-size: 30px !important;
 }
 .slick-next:before {
   color: black;
+  font-size: 30px !important;
 }
 
 .rdt_TableRow {

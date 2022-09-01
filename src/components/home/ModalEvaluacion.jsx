@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating'
@@ -145,7 +145,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                                                 <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                             </div>
                                             <div className='text-center mt-3'>
-                                                <Rating onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                <Rating emptyColor='#828282' onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
                                             </div>
                                         </div>
                                     )

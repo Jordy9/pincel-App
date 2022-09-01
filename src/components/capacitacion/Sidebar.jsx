@@ -15,7 +15,7 @@ export const Sidebar = () => {
     const capacitacionFiltrada = capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)
 
     useEffect(() => {
-      if (capacitacionFiltrada[0]?.video?.filter(video => !video.check.includes(uid))?.length === 0) {
+      if (capacitacionFiltrada[0]?.video?.filter(video => !video.check?.includes(uid))?.length === 0) {
         dispatch(Mostrar())
     } else {
         dispatch(noMostrar())

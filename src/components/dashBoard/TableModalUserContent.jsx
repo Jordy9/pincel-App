@@ -3,6 +3,7 @@ import user from '../../heroes/user.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import { activeEvaluacion } from '../../store/evaluacion/evaluacionSlice';
 import { ModalEvaluacionUser } from './ModalEvaluacionUser';
+import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import Swal from 'sweetalert2';
 
 export const TableModalUserContent = (props) => {
@@ -58,6 +59,8 @@ export const TableModalUserContent = (props) => {
     }
   }
 
+  const porcientoVideos = (calificacionEvaluacion[0]?.calificacion) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+
   return (
     <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         <td className='d-flex justify-content-center'>
@@ -66,17 +69,10 @@ export const TableModalUserContent = (props) => {
             </div>
         </td>
         <td>{title}</td>
-        <td className='text-success'>{calificacionEvaluacion[0]?.calificacion || '-'}</td>
-        <td>
-          {
-            (calificacionEvaluacion[0]?.calificacion)
-              ?
-            <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
-              :
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos`} className="progress my-2">
-              <div className="progress-bar" role="progressbar" style={{width: `${porciento}%`, backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{porciento}%</div>
-            </div>
-          }
+        <td className='d-flex justify-content-center mx-auto'>
+          <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos y ${(calificacionEvaluacion[0]?.calificacion) ? '1 evaluación' : '0 evaluación' }`}>
+              <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${calificacionEvaluacion[0]?.calificacion || '-'}%`} />
+          </div>
         </td>
         <ModalEvaluacionUser modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
     </tr>

@@ -1,7 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import Slider from 'react-slick';
 import { actualizarEvaluacion, crearEvaluacion } from '../../store/evaluacion/thunk';
 import { CalificacionEvaluacion } from './CalificacionEvaluacion';
 
@@ -31,47 +30,6 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
 
   const [changeCountResponse, setChangeCountResponse] = useState(1)
 
-  const ref = useRef()
-
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    afterChange: (index) => {
-        setChangeCountResponse(index + 1);},
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: false,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false
-        }
-      }
-    ]
-    };
-
     const intentosPermitidos = capacitacionActiva?.usuariosEvaluacion?.filter(capacitacion => capacitacion?.id === uid)
 
     const [changeEvaluacionCalificacion, setChangeEvaluacionCalificacion] = useState((evaluacionUserComplete?.length === 0 && Number(Number(intentosPermitidos[0]?.intentos)) !== 0) ? false : true)
@@ -94,17 +52,23 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
 
     const siguientePregunta = () => {
         if (changeCountResponse <= capacitacionActiva?.preguntas?.length) {
-            ref?.current?.slickNext()
+            setChangeCountResponse(changeCountResponse + 1)
         }
     }
 
     const anteriorPregunta = () => {
         if (changeCountResponse > 1) {
-            ref?.current?.slickPrev()
+            setChangeCountResponse(changeCountResponse - 1)
         }
     }
 
     const seleccionados = formValues?.filter(form => form?.evaluacion !== null)
+
+    // let PreguntaAleatoria = useMemo(() => capacitacionActiva?.preguntas?.map(pregunta => pregunta).sort(() => Math.random() - 0.5), [])
+
+    let PreguntaAleatoria = capacitacionActiva?.preguntas
+
+    let arregloRespuestasAleatorias = useMemo(() => PreguntaAleatoria[changeCountResponse - 1].respuesta?.map(respuesta => respuesta)?.sort(() => Math.random() - 0.5), [changeCountResponse - 1])
 
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
@@ -118,46 +82,24 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                         ?
                     <>
                         <h4>{changeCountResponse}/{capacitacionActiva?.preguntas?.length}</h4>
-                        <Slider arrows = {false} ref={ref} {...settings}>
-                            {
-                                capacitacionActiva?.preguntas?.map((evaluacion, index) => {
-                                    return (            
-                                        <div className='p-4 text-black'>
-                                            <h5>{evaluacion?.pregunta}</h5>
-                                            <div className="row p-4 my-5">
-                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
-                                                    <div className="form-check">
-                                                        <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta1) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta1, evaluacion?.accion1 )} id="exampleRadios2" value={formValues[index]?.respuesta} />
-                                                        <label className="form-check-label">{evaluacion?.respuesta1}</label>
-                                                    </div>
-                                                </div>
 
-                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
-                                                    <div className="form-check">
-                                                        <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta2) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta2, evaluacion?.accion2 )} id="exampleRadios2" value="option2" />
-                                                        <label className="form-check-label">{evaluacion?.respuesta2}</label>
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
-                                                    <div className="form-check">
-                                                        <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta3) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta3, evaluacion?.accion3 )} id="exampleRadios2" value="option2" />
-                                                        <label className="form-check-label">{evaluacion?.respuesta3}</label>
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
-                                                    <div className="form-check">
-                                                        <input checked = {(formValues[index]?.respuesta === evaluacion?.respuesta4) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(index, evaluacion, evaluacion?.respuesta4, evaluacion?.accion4 )} id="exampleRadios2" value="option2"/>
-                                                        <label className="form-check-label">{evaluacion?.respuesta4}</label>
-                                                    </div>
+                        <div className='p-4 text-black'>
+                            <h5>{PreguntaAleatoria[changeCountResponse - 1]?.pregunta}</h5>
+                            <div className="row p-4 my-5">
+                                {
+                                    arregloRespuestasAleatorias?.map((evaluacionResp, index) => {
+                                        return (
+                                            <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
+                                                <div className="form-check">
+                                                    <input checked = {(formValues[changeCountResponse - 1]?.respuesta === evaluacionResp?.respuesta) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(changeCountResponse - 1, capacitacionActiva?.preguntas[changeCountResponse - 1], evaluacionResp?.respuesta, evaluacionResp?.accion )} id="exampleRadios2" value="option2" />
+                                                    <label className="form-check-label">{evaluacionResp?.respuesta}</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </Slider>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     </>
                         :
                     <CalificacionEvaluacion 
