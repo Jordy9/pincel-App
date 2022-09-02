@@ -4,9 +4,26 @@ import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'
 
-export const CardsAdmin = () => {
+export const CardsAdmin = ( { resenasFiltradas, mes } ) => {
 
   const [show, setShow] = useState(true)
+
+  // console.log(resenasFiltradas)
+
+  const FiltroCalificacionResena = resenasFiltradas.reduce(
+    (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
+    ['Alphabet'],
+  );
+
+  const sinAlphabet = FiltroCalificacionResena.slice(1)
+
+  let suma = 0
+
+  sinAlphabet?.map(resena => suma = suma + resena?.calificacion)
+
+  const totalSumado = suma/sinAlphabet?.length
+
+  const porcentage = (5*totalSumado) / 100
 
   const options = {
     responsive: true,
@@ -139,7 +156,10 @@ export const CardsAdmin = () => {
     }
   };
 
+  
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  
+  const labels3 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   const labels2 = ['Julio'];
 
@@ -157,11 +177,11 @@ export const CardsAdmin = () => {
   };
 
   const data2 = {
-    labels,
+    labels: [labels3[mes - 1]],
     datasets: [
       {
         label: 'Reseñas',
-        data: [5, 1, 3, 1, 4, 5, 1, 0, 4.5, 3.2, 1.5, 2],
+        data: [porcentage?.toFixed(1)],
         backgroundColor: 'blue',
       },
     ],
