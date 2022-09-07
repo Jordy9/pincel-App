@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { checkVideoUser, saveVideoId } from '../../store/capacitacion/thunk';
 import ReactPlayer from 'react-player'
-import YouTube from 'react-youtube';
 
 export const CapacitacionTema = () => {
 
@@ -27,26 +26,23 @@ export const CapacitacionTema = () => {
     }
   }, [capacitacionActiva])
 
-  const [duration, setDuration] = useState(0)
+  // const [duration, setDuration] = useState(0)
 
-  const [timeUpdate, setTimeUpdate] = useState(null)
+  const [end, setEnd] = useState('no')
 
   useEffect(() => {
-    const calculoCheckVideo = (duration*95) / 100
+    // const calculoCheckVideo = (duration*95) / 100
 
-    if (parseInt(timeUpdate) === parseInt(calculoCheckVideo)) {
+    if (end === undefined) {
       dispatch(checkVideoUser(capacitacionId, capacitacionActiva?.videos?.idVideo, uid))
     }
 
-  }, [timeUpdate, dispatch])
-
-  // console.log(timeUpdate)
+  }, [end, dispatch])
 
   // console.log(duration)
   
   return (
     // <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', borderRadius: '20px'}} src={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
-    // <ReactPlayer onDuration={(e) => setDuration(e)} onProgress={console.log()} on width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
-    <YouTube onEnd={(e) => console.log(e)} videoId={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
+    <ReactPlayer onEnded = {(e) => setEnd(e)} width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
   )
 }

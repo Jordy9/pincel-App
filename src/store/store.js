@@ -3,6 +3,7 @@ import { authSlice } from './auth/authSlice'
 import { capacitacionSlice } from './capacitacion/capacitacionSlice'
 import { chatSlice } from './chat/chatSlice'
 import { comunicadoSlice } from './comunicado/comunicadoSlice'
+import { equipoSlice } from './equipo/equipoSlice'
 import { evaluacionSlice } from './evaluacion/evaluacionSlice'
 import { messageSlice } from './message/messageSlice'
 import { notificacionesSlice } from './notificaciones/notificacionesSlice'
@@ -20,5 +21,6 @@ export const store = configureStore({
     cp: capacitacionSlice.reducer,
     co: comunicadoSlice.reducer,
     ev: evaluacionSlice.reducer,
+    eq: equipoSlice.reducer,
   },
 })

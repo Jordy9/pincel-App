@@ -21,6 +21,7 @@ import { AdminRoute } from './AdminRoute';
 import { Evaluacion } from '../components/home/Evaluacion';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { obtenerEvaluacion } from '../store/evaluacion/thunk';
+import { obtenerEquipo } from '../store/equipo/thunk';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -41,6 +42,7 @@ export const AppRoute = () => {
     dispatch(obtenerCapacitacion())
     dispatch(obtenerComunicados())
     dispatch(obtenerEvaluacion())
+    dispatch(obtenerEquipo())
   }, [dispatch])
 
   useEffect(() => {

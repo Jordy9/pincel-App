@@ -7,6 +7,7 @@ import { actualizarCapacitacionForm, crearCapacitacion } from '../../store/capac
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from "react-slick";
 import { ModalPreview } from './ModalPreview';
+import Swal from 'sweetalert2';
 
 const options = [
     { label: "Equipo de Servicio", value: "Servicio" },
@@ -76,14 +77,37 @@ export const FormularioVideos = () => {
                     const normalUrl = element?.video?.split('?v=')
                     const urlAlter = normalUrl[1]?.slice(0, 11)
                     const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                    video[index] = {...video[index], video: urlAlter, duration: 0, videoAlter: urlModif}
-                }
-                
-                if (element?.video?.includes('youtu.be')) {
+                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+
+                } else if (element?.video?.includes('youtu.be')) {
                     const normalUrl = element?.video?.split('/')
                     const urlAlter = normalUrl[3]
                     const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                    video[index] = {...video[index], video: urlAlter, duration: 0, videoAlter: urlModif}
+                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+
+                } else if (element?.video?.includes('embed')) {
+                    const normalUrl = element?.video?.split('/')
+                    const urlAlter = normalUrl[4]
+                    const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+
+                } else {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'error',
+                        title: 'Link de youtube incorrecto'
+                    })
                 }
 
             }

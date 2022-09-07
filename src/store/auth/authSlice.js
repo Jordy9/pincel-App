@@ -33,6 +33,11 @@ reducers: {
         state.usuarioActivo = action.payload;
     },
 
+    onUpdateTeam: (state, action ) => {
+        state.usuarios = state.usuarios.map(
+            e => (e.id === action.payload.id) ? action.payload : e);
+    },
+
     onActiveUser: (state, action ) => {
         state.usuarioActivo = action.payload;
     },
@@ -76,6 +81,7 @@ export const
         onLogin, 
         onRegister,
         onUpdate,
+        onUpdateTeam,
         onActiveUser, 
         onChecking, 
         onLogout,
