@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { TableContentResena } from './TableContentResena'
@@ -13,7 +14,7 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
             {
                 (resena)
                     &&
-                    resena?.map(resena => {
+                    resena?.filter(resena => moment(resena?.createdAt).format('M') === moment().format('M'))?.map(resena => {
                         return (
                             (resena.calificacion.filter(resena => (resena.id === activeUser?.id) !== 0))
                                 &&

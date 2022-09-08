@@ -159,6 +159,16 @@ td {
   z-index: 1;
 }
 
+.containerColum {
+  margin: 8px;
+  border-radius: 2px;
+  border: 1px solid lightgrey;
+  display: flex;
+  flex-direction: column;
+  width: 230px;
+  background: white;
+}
+
 .isDragging {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;

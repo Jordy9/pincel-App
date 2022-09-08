@@ -17,13 +17,13 @@ export const DashboardAdmin = () => {
 
   const { greet } = useGreeting()
 
-  const [modalTeam, setModalTeam] = useState(false)
+  // const [modalTeam, setModalTeam] = useState(false)
 
   return (
     <Sidebar>
         <div className='text-black p-4'>
         <h1>{greet}, <span className='text-muted'>{name}</span></h1>
-          <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary d-flex ml-auto'>Equipos</button>
+          {/* <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary d-flex ml-auto'>Equipos</button> */}
           <div className="row my-3">
             <CardsAdmin resenasFiltradas = {resenasFiltradas} mes = {moment().format('M')} />
           </div>
@@ -33,11 +33,11 @@ export const DashboardAdmin = () => {
           </div>
       </div>
 
-      {
+      {/* {
         (modalTeam)
           &&
         <ModalTeam modalTeam  = {modalTeam} setModalTeam = {setModalTeam}  />
-      }
+      } */}
     </Sidebar>
   )
 }

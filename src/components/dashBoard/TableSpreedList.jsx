@@ -9,7 +9,7 @@ export const TableSpreedList = () => {
             {
                 (usuarios)
                     &&
-                    usuarios?.filter(usuarios => usuarios?.id !== uid)?.map(usuario => {
+                    usuarios?.filter(usuarios => usuarios?.id !== uid && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Mariela') && !usuarios?.name?.includes('Lorena'))?.map(usuario => {
                         return (
                             <TableContent key = {usuario?.id} {...usuario} />
                         )

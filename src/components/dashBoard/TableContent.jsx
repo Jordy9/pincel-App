@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { modalOpen, setActiveUser } from '../../store/auth/authSlice';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import { useResponsive } from '../../hooks/useResponsive';
+import moment from 'moment';
 
 export const TableContent = (props) => {
 
@@ -22,7 +23,7 @@ export const TableContent = (props) => {
 
     let calificacionFiltrada = []
 
-    resena?.filter(resena => resena?.estado !== false)?.map(resena => {
+    resena?.filter(resena => resena?.estado !== false && moment(resena?.createdAt).format('M') === moment().format('M'))?.map(resena => {
         return (
             (resena?.calificacion?.filter(resena => resena?.id === id))
                 &&

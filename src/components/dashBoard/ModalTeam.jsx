@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { actualizarColumnas, actualizarColumnasInicio, crearEquipo } from '../../store/equipo/thunk'
 import { useDispatch } from 'react-redux'
 import uuid from "uuid/v4";
+import user from '../../heroes/user.webp'
 import { useSelector } from 'react-redux'
 import { DroppableTeam } from './DroppableTeam'
 
@@ -50,13 +51,14 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
     
     const arregNuevo = Object.assign({}, ...arreg)
 
-      const columnsFromBackend = {
-        [uuid()]: {
+      const columnsFromBackend = [
+        {
+          _id: uuid(),
           name: "Sin equipo",
           items: itemsFromBackend
         },
-        ...arregNuevo
-      };
+        ...equipos
+      ];
 
       const [moveColumns, setMoveColumns] = useState()
       
@@ -64,38 +66,42 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
 
       const onDragEnd = (result, columns, setColumns) => {
         if (!result.destination) return;
-        const { source, destination } = result;
+        const { source, destination, type } = result;
+
+        if (type === 'column') {
+          // const copiedColumns = [...columns]
+          // const [removed] = copiedColumns.splice(source.index, 1);
+          // copiedColumns.splice(destination.index, 0, removed);
+          // setColumns(
+          //   copiedColumns
+          // )
+          return
+        }
       
         if (source.droppableId !== destination.droppableId) {
-          const sourceColumn = columns[source.droppableId];
-          const destColumn = columns[destination.droppableId];
+          const sourceColumn = columns.find(columns => columns._id === source.droppableId);
+          // const indexStart = columns.indexOf(sourceColumn)
+          const destColumn = columns.find(columns => columns._id === destination.droppableId);
           const sourceItems = [...sourceColumn.items];
           const destItems = [...destColumn.items];
           const [removed] = sourceItems.splice(source.index, 1);
           destItems.splice(destination.index, 0, removed);
-          setColumns({
-            ...columns,
-            [source.droppableId]: {
-              ...sourceColumn,
-              items: sourceItems
-            },
-            [destination.droppableId]: {
-              ...destColumn,
-              items: destItems
-            }
-          });
+          const newColumn = columns.map(e => (e._id === sourceColumn._id ? {...sourceColumn, items: sourceItems} : e))
+          setColumns(
+            newColumn.map(e => (
+              e._id === destColumn._id ? {...destColumn, items: destItems} : e
+            ))
+          )
         } else {
-          const column = columns[source.droppableId];
+          const column = columns.find(columns => columns._id === source.droppableId);
           const copiedItems = [...column.items];
           const [removed] = copiedItems.splice(source.index, 1);
           copiedItems.splice(destination.index, 0, removed);
-          setColumns({
-            ...columns,
-            [source.droppableId]: {
-              ...column,
-              items: copiedItems
-            }
-          });
+          setColumns(
+            columns.map(e => (
+              e._id === source.droppableId ? {...column, items: copiedItems} : e
+            ))
+          );
         }
         setMoveColumns([destination.droppableId, destination.index])
         setMoveColumnsStart(source.droppableId)
@@ -103,24 +109,24 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
       
       const [columns, setColumns] = useState(columnsFromBackend);
 
-      useEffect(() => {
-        if (moveColumns && moveColumnsStart) {
-          if (moveColumns === moveColumnsStart) {
-            dispatch(actualizarColumnas([...moveColumns, columns[moveColumns[0]]]))
-          } else {
-            dispatch(actualizarColumnas([...moveColumns, columns[moveColumns[0]]]))
-            dispatch(actualizarColumnasInicio([moveColumnsStart, columns[moveColumnsStart]]))
-          }
-        }
-      }, [moveColumns, columns, dispatch, moveColumnsStart])
+      // useEffect(() => {
+      //   if (moveColumns && moveColumnsStart) {
+      //     if (moveColumns[0] === moveColumnsStart) {
+      //       dispatch(actualizarColumnas([...moveColumns, columns?.find(col => col._id === moveColumns[0])]))
+      //     } else {
+      //       dispatch(actualizarColumnas([...moveColumns, columns?.find(col => col._id === moveColumns[0])]))
+      //       dispatch(actualizarColumnasInicio([moveColumnsStart, columns?.find(col => col._id === moveColumnsStart)]))
+      //     }
+      //   }
+      // }, [moveColumns, columns, dispatch, moveColumnsStart])
 
-      useEffect(() => {
-        if (changeColumns) {
-          setColumns(columnsFromBackend)
-          setchangeColumns(false)
-        }
+      // useEffect(() => {
+      //   if (changeColumns) {
+      //     setColumns(columnsFromBackend)
+      //     setchangeColumns(false)
+      //   }
 
-      }, [changeColumns])      
+      // }, [changeColumns])  
 
   return (
     <Modal fullscreen show={modalTeam} onHide={handleClose}>
@@ -138,26 +144,60 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
           </div>
         </div>
 
-        <div className='row' style={{ height: "100%" }}>
-          <DragDropContext
-            onDragEnd={result => onDragEnd(result, columns, setColumns)}
-          >
-            {Object.entries(columns).map(([columnId, column], index) => {
-              return (
-                <div
-                  className='col-3'
-                  key={columnId}
+        {/* <div className='row' style={{ height: "100%" }}> */}
+          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+            <Droppable droppableId="all-column" type="column" direction="horizontal">
+              {(provided, snapshot) => (
+                <div 
+                  className="d-flex"
+                  isDraggingOver={snapshot.isDraggingOver}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
                 >
-                  <h2 className='text-center'>{column.name}</h2>
-                  <div className='d-flex justify-content-center' style={{ margin: 8 }}>
-                    <DroppableTeam column={column} columnId = {columnId} />
-                  </div>
+                  {columns.map((e, index) => {
+                    const columnId = e._id
+                    const column = {items: e.items, name: e.name}
+
+                    return (
+                      <DroppableTeam columnId={columnId} column = {column} index = {index}/>
+                    );
+                  })}
+                  {provided.placeholder}
                 </div>
-              );
-            })}
+              )}
+            </Droppable>
           </DragDropContext>
-        </div>
+        {/* </div> */}
       </Modal.Body>
     </Modal>
   )
 }
+
+{/* <Droppable droppableId="all-column" type="column" direction="horizontal">
+              {(provided, snapshot) => (
+                <div
+                  className='d-flex'
+                  // isDraggingOver={snapshot.isDraggingOver}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {columns.map((e, index) => {
+                    const columnId = e._id
+                    const column = {items: e.items, name: e.name}
+                    
+                    return (
+                      // <div
+                      //   className='col-3'
+                      //   key={columnId}
+                      // >
+                      //   <h2 className='text-center'>{column.name}</h2>
+                        // <div className='d-flex justify-content-center' style={{ margin: 8 }}>
+                          <DroppableTeam columnId={columnId} column = {column} index = {index} />
+                        // </div>
+                      // {/* </div>
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable> */}
