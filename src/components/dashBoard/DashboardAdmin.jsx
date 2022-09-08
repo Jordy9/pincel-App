@@ -13,7 +13,9 @@ export const DashboardAdmin = () => {
 
   const { resena } = useSelector(state => state.rs);
 
-  const resenasFiltradas = resena?.filter(resena => moment(resena?.createdAt).format('M') === moment().format('M'))
+  const resenasFiltradas = resena?.filter(resena => moment(resena?.createdAt).format('M') === moment().format('M') && resena?.estado === true)
+
+  const resenasFiltradasmesPasado = resena?.filter(resena => moment(resena?.createdAt).format('M') === '8')
 
   const { greet } = useGreeting()
 
@@ -25,7 +27,7 @@ export const DashboardAdmin = () => {
         <h1>{greet}, <span className='text-muted'>{name}</span></h1>
           {/* <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary d-flex ml-auto'>Equipos</button> */}
           <div className="row my-3">
-            <CardsAdmin resenasFiltradas = {resenasFiltradas} mes = {moment().format('M')} />
+            <CardsAdmin resenasFiltradas = {resenasFiltradas} mes = {moment().format('M')} resenasFiltradasmesPasado = {resenasFiltradasmesPasado} />
           </div>
 
           <div className="row">

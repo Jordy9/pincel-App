@@ -14,7 +14,7 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
             {
                 (resena)
                     &&
-                    resena?.filter(resena => moment(resena?.createdAt).format('M') === moment().format('M'))?.map(resena => {
+                    resena?.map(resena => {
                         return (
                             (resena.calificacion.filter(resena => (resena.id === activeUser?.id) !== 0))
                                 &&

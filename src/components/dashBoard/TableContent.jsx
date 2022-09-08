@@ -23,7 +23,7 @@ export const TableContent = (props) => {
 
     let calificacionFiltrada = []
 
-    resena?.filter(resena => resena?.estado !== false && moment(resena?.createdAt).format('M') === moment().format('M'))?.map(resena => {
+    resena?.filter(resena => resena?.estado !== false)?.map(resena => {
         return (
             (resena?.calificacion?.filter(resena => resena?.id === id))
                 &&

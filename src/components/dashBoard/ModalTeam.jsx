@@ -69,12 +69,15 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
         const { source, destination, type } = result;
 
         if (type === 'column') {
-          // const copiedColumns = [...columns]
-          // const [removed] = copiedColumns.splice(source.index, 1);
-          // copiedColumns.splice(destination.index, 0, removed);
-          // setColumns(
-          //   copiedColumns
-          // )
+          const copiedColumns = [...columns]
+          const [removed] = copiedColumns.splice(source.index, 1);
+          copiedColumns.splice(destination.index, 0, removed);
+          console.log(result)
+          setColumns(
+            copiedColumns.map(e => (
+              e._id === result.draggableId ? {...copiedColumns, removed} : e
+            ))
+          )
           return
         }
       
