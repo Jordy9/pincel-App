@@ -6,11 +6,16 @@ export const resenaSlice = createSlice({
       resena: [],
       AResena: [],
       activeResena: '',
-      comenzar: true
+      comenzar: true,
+      toResena: []
    },
    reducers: {
        getResena: (state, action ) => {
            state.resena = action.payload;
+        },
+
+       getToResena: (state, action ) => {
+           state.toResena = action.payload;
         },
 
        createResena: (state, action ) => {
@@ -55,4 +60,4 @@ export const resenaSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { getResena, createResena, createAResena, setActiveResena, setClearResena, deleteAResena, UpdateResena, comenzarResena, DeleteResena } = resenaSlice.actions;
+export const { getResena, getToResena, createResena, createAResena, setActiveResena, setClearResena, deleteAResena, UpdateResena, comenzarResena, DeleteResena } = resenaSlice.actions;

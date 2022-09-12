@@ -1,10 +1,10 @@
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd';
-import { DraggableTeam } from './DraggableTeam';
+import { DraggableOrder } from './DraggableOrder';
 
-export const DroppableTeam = ({column, columnId, index}) => {
+export const DroppableOrder = ({column, columnId}) => {
   return (
-    <Droppable droppableId={columnId} key={columnId}>
+    <Droppable direction='horizontal' droppableId={columnId} key={columnId}>
         {(provided, snapshot) => {
         return (
             <div
@@ -15,14 +15,16 @@ export const DroppableTeam = ({column, columnId, index}) => {
                 ? "lightblue"
                 : "lightgrey",
                 padding: 4,
-                width: 250,
-                height: (index === 0 || column?.items?.length === 0) ? 500 : 450,
-                overflow: 'auto'
+                width: '100%',
+                height: 130,
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                display: 'flex'
             }}
             >
-            {column.items.map((item, index) => {
+            {column?.items?.map((item, index) => {
                 return (
-                    <DraggableTeam item={item} index={index} name = {column.name} />
+                    <DraggableOrder item={item} index={index} />
                 );
             })}
             {provided.placeholder}

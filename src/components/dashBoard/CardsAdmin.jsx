@@ -8,9 +8,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
 
   const [show, setShow] = useState(true)
 
-  console.log(resenasFiltradasmesPasado)
-
-  const FiltroCalificacionResena = resenasFiltradas.reduce(
+  const FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas.reduce(
     (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
     ['Alphabet'],
   );
@@ -202,8 +200,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
       },
     ],
   };
-
-  console.log(porcentage2)
 
   const data2 = {
     // labels: [labels3[mes - 1]],

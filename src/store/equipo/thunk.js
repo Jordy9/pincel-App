@@ -2,6 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { onUpdateTeam } from "../auth/authSlice";
 import { obtenerUsuarios } from "../auth/thunk";
+import { obtenerToResena } from "../resena/thunk";
 import { createTeam, deleteTeam, getTeam, updateTeam } from "./equipoSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
@@ -56,14 +57,15 @@ export const crearEquipo = (name, items, setchangeColumns) => {
     }
 }
 
-export const actualizarEquipo = (props) => {
+export const actualizarEquipo = (props, name2) => {
     return async(dispatch) => {
-        const {_id, name, items} = props
+        const {_id} = props
 
         try {
-            const resp = await axios.put(`${endPoint}/equipos/update/${_id}`, {name, items}, {headers: {'x-token': token}})
+            await axios.put(`${endPoint}/equipos/update/${_id}`, {...props, name2}, {headers: {'x-token': token}})
     
-            dispatch(updateTeam(resp.data.equipo))
+            dispatch(obtenerUsuarios())
+            dispatch(obtenerEquipo())
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -110,6 +112,27 @@ export const actualizarColumnas = (equipos) => {
     }
 }
 
+export const actualizarColumnasOrdenar = (equipos) => {
+    return async (dispatch, getState) => {
+        const { socket } = getState().sk;
+
+        if (equipos[2].name === 'Desactivados para reseñas') {
+            const usuarioId = equipos[2].items[equipos[1]].id
+            socket?.emit('update-user-team-order', { payload: usuarioId })
+            socket?.on('user-updated', (usuario) => {
+                dispatch(onUpdateTeam(usuario))
+            })
+            return 
+        }
+        
+        socket?.emit('update-team-order', { payload: equipos })
+        socket?.on('user-updated-team-order', () => {
+            dispatch(obtenerUsuarios())
+            dispatch(obtenerToResena())
+        })
+    }
+}
+
 export const actualizarColumnasInicio = (equipos) => {
     return async (dispatch, getState) => {
         const { socket } = getState().sk;
@@ -124,13 +147,29 @@ export const actualizarColumnasInicio = (equipos) => {
     }
 }
 
-export const eliminarEquipo = (id) => {
+export const actualizarColumnasInicioOrder = (equipos) => {
+    return async (dispatch, getState) => {
+        const { socket } = getState().sk;
+
+        if (equipos[1].name === 'Desactivados para reseñas') return
+
+        socket?.emit('update-team-start-order', { payload: equipos })
+        socket?.on('user-updated-team-start-order', () => {
+            dispatch(obtenerUsuarios())
+            dispatch(obtenerToResena())
+        })
+    }
+}
+
+export const eliminarEquipo = (props) => {
     return async(dispatch) => {
 
         try {
-            await axios.delete(`${endPoint}/equipo/delete/${id}`, {headers: {'x-token': token}})
+            await axios.delete(`${endPoint}/equipos/delete/${props._id}`, {headers: {'x-token': token}, data: {props}})
     
-            dispatch(deleteTeam(id))
+            dispatch(deleteTeam(props._id))
+            dispatch(obtenerUsuarios())
+            dispatch(obtenerEquipo())
 
             const Toast = Swal.mixin({
                 toast: true,

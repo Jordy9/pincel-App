@@ -5,7 +5,7 @@ import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useResponsive } from '../../hooks/useResponsive';
 
-export const TableAdmin = () => {
+export const TableAdmin = ({usuarioFiltrado}) => {
 
     const percentage = 66;
 
@@ -36,7 +36,7 @@ export const TableAdmin = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <TableSpreedList />
+                        <TableSpreedList usuarioFiltrado = {usuarioFiltrado} />
                     </tbody>
                 </table>
             </div>
