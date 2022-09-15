@@ -21,7 +21,7 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
         },
         enableReinitialize: true,
         onSubmit: ({calificacion, descripcion}) => {
-            dispatch(crearResena(calificacion, descripcion, handleClose))
+            dispatch(crearResena(calificacion, descripcion, handleClose, setIdUsuarios))
             setIdUsuarios([])
         },
         validationSchema: Yup.object({

@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Bar } from "react-chartjs-2";
 import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import star from '../../heroes/star.png'
+import star from '../../heroes/star.png'  
 
-export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado } ) => {
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) => {
 
   const [show, setShow] = useState(true)
 
@@ -13,30 +13,16 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
     ['Alphabet'],
   );
 
-  const FiltroCalificacionResenaMesPasado = resenasFiltradasmesPasado.reduce(
-    (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
-    ['Alphabet'],
-  );
-
-  const sinAlphabet = FiltroCalificacionResena.slice(1)
-
-  const sinAlphabet2 = FiltroCalificacionResenaMesPasado.slice(1)
+  const sinAlphabet = (resenasFiltradas) ? FiltroCalificacionResena.slice(1) : []
 
   let suma = 0
 
-  let suma2 = 0
-
   sinAlphabet?.map(resena => suma = suma + resena?.calificacion)
-
-  sinAlphabet2?.map(resena => suma2 = suma2 + resena?.calificacion)
 
   const totalSumado = suma/sinAlphabet?.length
 
-  const totalSumado2 = suma2/sinAlphabet2?.length
-
   const porcentage = (5*totalSumado) / 100
 
-  const porcentage2 = (5*totalSumado2) / 100
 
   const options = {
     responsive: true,
@@ -184,11 +170,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
   
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
-  const labels3 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-  const labels2 = ['Julio'];
-
-  const labels = (show) ? labels2 : labels1
+  const labels = (show) ? [labels1[mes - 1]] : labels1
 
   const data = {
     labels,
@@ -202,16 +184,11 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
   };
 
   const data2 = {
-    // labels: [labels3[mes - 1]],
+    labels,
     datasets: [
       {
-        label: 'Agosto',
-        data: [porcentage2?.toFixed(1)],
-        backgroundColor: 'blue',
-      },
-      {
-        label: 'Septiembre',
-        data: [porcentage?.toFixed(1)],
+        label: 'Promedio',
+        data: (show) ? [porcentage?.toFixed(1)] : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
@@ -234,7 +211,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, resenasFiltradasmesPasado }
             <button disabled = {(show === false)} className='btn btn-primary mr-1' onClick={() => setShow(false)}>Todos los meses</button>
             <button disabled = {show} className='btn btn-primary ml-1' onClick={() => setShow(true)}>Mes actual</button>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
-            <h6 className='text-center'>Total de reseñas {resenasFiltradas?.length + resenasFiltradasmesPasado?.length}</h6>
+            <h6 className='text-center'>Total de reseñas {resenasFiltradas?.length}</h6>
             <Bar options={options2} data={data2} plugins = {ChartDataLabels} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" />
           </div>
         </div>

@@ -34,36 +34,59 @@ export const obtenerToResena = () => {
     }
 }
 
-export const crearResena = (calificacion, descripcion, handleClose) => {
+export const crearResena = (calificacion, descripcion, handleClose, setIdUsuarios) => {
     return async(dispatch) => {
 
+        console.log(calificacion?.length)
+
         try {
-            const resp = await axios.post(`${endPoint}/resena/new`, {calificacion, descripcion}, {headers: {'x-token': token}})
+            if (calificacion?.length !== 0) {
+
+                const resp = await axios.post(`${endPoint}/resena/new`, {calificacion, descripcion}, {headers: {'x-token': token}})
+        
+                dispatch(createResena(resp.data.resena))
     
-            dispatch(createResena(resp.data.resena))
+                dispatch(setClearResena())
+    
+                dispatch(comenzarResena(true))
+    
+                handleClose()
 
-            dispatch(setClearResena())
+                setIdUsuarios([])
+    
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Reseña creada correctamente'
+                })
+            } else {
+                Swal.fire(
+                    'Asegúrese de que haya seleccionado y calificacdo al personal de forma correcta',
+                    'intente evaluar nuevamente por favor.',
+                    'error'
+                )
 
-            dispatch(comenzarResena(true))
+                dispatch(setClearResena())
+    
+                dispatch(comenzarResena(true))
+    
+                handleClose()
 
-            handleClose()
+                setIdUsuarios([])
 
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-            
-            return Toast.fire({
-                icon: 'success',
-                title: 'Reseña creada correctamente'
-            })
+                return
+            }
 
         } catch (error) {
             console.log(error)

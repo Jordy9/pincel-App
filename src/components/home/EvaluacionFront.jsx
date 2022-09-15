@@ -11,7 +11,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     const dispatch = useDispatch();
 
-    const [setRating] = useState(90)
+    const [rating, setRating] = useState(90)
 
         // Catch Rating value
     const handleRating = (rate) => {
@@ -157,7 +157,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     ?
                                 usuarios?.filter(usuarios => usuarios?.role === 'Administrador' && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Francis') && !usuarios?.name?.includes('Olfa'))?.map(usuario => {
                                     return (
-                                        <div hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
+                                        <div key={usuario?.id} hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                 {
                                                     (resena?.includes(usuario))
@@ -175,7 +175,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     {
                                         resena?.filter(usuarios => usuarios?.role === 'Administrador')?.map(usuario => {
                                             return (
-                                                <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
+                                                <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                                     <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} el día de hoy?</h3>
                                                     <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                         <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />

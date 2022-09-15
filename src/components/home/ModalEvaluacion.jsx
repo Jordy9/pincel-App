@@ -10,7 +10,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
 
   const dispatch = useDispatch();
 
-    const [setRating] = useState(0)
+    const [rating, setRating] = useState(0)
 
     const [idUsuarios, setIdUsuarios] = useState([])
 
@@ -139,7 +139,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                             {
                                 resena?.filter(usuario => usuario?.role !== 'Administrador')?.map(usuario => {
                                     return (
-                                        <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
+                                        <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                             <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} hoy?</h3>
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                 <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />

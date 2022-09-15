@@ -59,7 +59,7 @@ export const Evaluacion = () => {
                         {
                             usuarios?.filter(usuarios => usuarios?.role === 'Usuario' && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Mariela') && !usuarios?.name?.includes('Lorena') && !usuarios?.name?.includes('Joanny') && !usuarios?.name?.includes('Laury'))?.map(usuario => {
                                 return (
-                                    <div className="col-xs-12 col-sm-12 col-md-6 col-lg-1 col-xl-1 col-xxl-1 d-flex" style={{marginLeft: '40px', marginRight: '40px'}}>
+                                    <div key={usuario?.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-1 col-xl-1 col-xxl-1 d-flex" style={{marginLeft: '40px', marginRight: '40px'}}>
                                         <div onClick={() => dispatch(crearAResena(usuario))} className='bg-transparent d-flex flex-column mx-auto align-items-center' style={{width: 'auto', height: 'auto', borderRadius: '10px'}}>
                                             {
                                                 (AResena?.includes(usuario))
