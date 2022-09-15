@@ -159,6 +159,13 @@ td {
   z-index: 1;
 }
 
+.rdrDateRangePickerWrapper {
+  position: absolute;
+  border: 1px solid black;
+  z-index: 1045;
+  margin-top: 50px;
+}
+
 .containerColum {
   margin: 8px;
   border-radius: 2px;

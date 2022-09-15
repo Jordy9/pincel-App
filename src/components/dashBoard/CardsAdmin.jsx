@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Bar } from "react-chartjs-2";
 import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) => {
-
-  const [show, setShow] = useState(true)
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show } ) => {
 
   const FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas.reduce(
     (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
@@ -170,7 +168,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) =>
   
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
-  const labels = (show) ? [labels1[mes - 1]] : labels1
+  const labels = (!show) ? [labels1[mes - 1]] : labels1
 
   const data = {
     labels,
@@ -188,7 +186,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) =>
     datasets: [
       {
         label: 'Promedio',
-        data: (show) ? [porcentage?.toFixed(1)] : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        data: (!show) ? [porcentage?.toFixed(1)] : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
@@ -198,8 +196,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) =>
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
           <div className="shadow p-4" style={{borderRadius: '35px'}}>
-            <button disabled = {(show === false)} className='btn btn-primary mr-1' onClick={() => setShow(false)}>Todos los meses</button>
-            <button disabled = {show} className='btn btn-primary ml-1' onClick={() => setShow(true)}>Mes actual</button>
             <h6 className='text-center my-1'>Evaluaciones de los empleados</h6>
             <h6 className='text-center'>Total 0</h6>
             <Bar options={options} data={data} />
@@ -208,8 +204,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses } ) =>
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
           <div className="shadow p-4" style={{borderRadius: '35px'}}>
-            <button disabled = {(show === false)} className='btn btn-primary mr-1' onClick={() => setShow(false)}>Todos los meses</button>
-            <button disabled = {show} className='btn btn-primary ml-1' onClick={() => setShow(true)}>Mes actual</button>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
             <h6 className='text-center'>Total de reseñas {resenasFiltradas?.length}</h6>
             <Bar options={options2} data={data2} plugins = {ChartDataLabels} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" />
