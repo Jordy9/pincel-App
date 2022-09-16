@@ -59,7 +59,6 @@ export const DashboardAdmin = () => {
   usuarioFiltrado = usuarios?.filter(usuario => FiltroChange.some(FiltroChange => usuario?.id?.includes(FiltroChange.value)))
 
   // Filtro de las reseñas por usuario o equipos
-
   
   let resenasFilterArrayDateAndEstado = []
 
@@ -76,9 +75,9 @@ export const DashboardAdmin = () => {
       ||
     (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDateRange, 'Y/M/D')))
       :
-    moment(resena?.createdAt).format('Y/M/D') === moment(changeDate).format('Y/M/D')
+    moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    moment(resena?.createdAt).format('Y/M') === moment().format('Y/M')
+    moment(resena?.createdAt, 'Y/M').isSame(moment().format('Y/M'))
     
     )
 
@@ -123,7 +122,7 @@ export const DashboardAdmin = () => {
     resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
       (resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
         &&
-      (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt).format('Y') === moment(changeDate).format('Y'))
+      (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
         ?
       calificacionPorMesesDeEquipos[index] = MonthFilterTeam(resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
         :
@@ -142,9 +141,9 @@ export const DashboardAdmin = () => {
       ||
     (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDateRange, 'Y/M/D')))
       :
-    moment(resena?.createdAt).format('Y/M/D') === moment(changeDate).format('Y/M/D')
+    moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    moment(resena?.createdAt).format('Y/M') === moment().format('Y/M')
+    moment(resena?.createdAt, 'Y/M').isSame(moment().format('Y/M'))
   )
 
   const resenasFiltradas = resenasFiltradasPorRango?.filter(
@@ -165,7 +164,7 @@ export const DashboardAdmin = () => {
       ['Alphabet'],
     )
 
-    const sinAlphabet = filtroPorMes.slice(1)
+    const sinAlphabet = filtroPorMes.splice(1)
 
     let suma = 0
 
@@ -184,7 +183,7 @@ export const DashboardAdmin = () => {
     SumaResenasPorMes = []
 
     resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
-      (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt).format('Y') === moment(changeDate).format('Y'))
+      (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
         ?
       calificacionPorMeses[index] = MonthFilter(resena)
         :
@@ -339,14 +338,14 @@ export const DashboardAdmin = () => {
           }
 
           <div className='my-1' style={{justifyContent: 'space-between', display: 'flex'}}>
-            <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>Filtrar</button>
+            <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar' : 'Cerrar ventana de filtro'}</button>
             <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
           </div>
 
           <div className="row my-3">
             <CardsAdmin 
               resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
-              mes = {moment().format('M')} 
+              mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
               calificacionPorMeses = {(usuarioFiltrado?.length !== 0) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
               show = {showAllMonth}
             />

@@ -74,7 +74,7 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
                             <textarea autoFocus type="text" cols={30} rows={10} {...getFieldProps('descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                         </div>
                         <div className='d-grid gap-2 col-2 mx-auto'>
-                            <button type='submit' className = 'btn btn-primary my-5 btn-lg' style={{height: '50px'}}>Finalizar</button>
+                            <button disabled = {(idUsuarios?.length === 0)} type='submit' className = 'btn btn-primary my-5 btn-lg' style={{height: '50px'}}>Finalizar</button>
                         </div>
                     </form>
                 </div>
