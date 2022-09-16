@@ -7,7 +7,7 @@ import moment from 'moment'
 import { useGreeting } from '../../hooks/useGreeting'
 import { ModalTeam } from './ModalTeam'
 import { MultiSelect } from 'react-multi-select-component'
-import { createStaticRanges, DateRangePicker } from 'react-date-range';
+import { createStaticRanges, DateRange, DateRangePicker, DefinedRange } from 'react-date-range';
 import { es } from 'react-date-range/dist/locale'
 import { 
   addDays,
@@ -24,6 +24,7 @@ import {
   addYears,
   endOfYear,
  } from 'date-fns'
+import { useResponsive } from '../../hooks/useResponsive'
 
 export const DashboardAdmin = () => {
   
@@ -309,6 +310,8 @@ export const DashboardAdmin = () => {
 
   const [showFilter, setShowFilter] = useState(false)
 
+  const [ respWidth ] = useResponsive()
+
   return (
     <Sidebar>
         <div className='text-black p-4'>
@@ -326,7 +329,7 @@ export const DashboardAdmin = () => {
           }
 
           {
-            (showFilter)
+            (showFilter && respWidth >= 610)
               &&
             <DateRangePicker
               staticRanges={staticRanges}
@@ -341,6 +344,27 @@ export const DashboardAdmin = () => {
             <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar' : 'Cerrar ventana de filtro'}</button>
             <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
           </div>
+
+          {
+            (showFilter && respWidth <= 609)
+              &&
+            <>
+              <DateRange
+                direction='vertical'
+                editableDateInputs={true}
+                onChange={(range) => handledRange(range.selection)}
+                moveRangeOnFirstSelection={false}
+                ranges={[selectRange]}
+              />
+
+              <DefinedRange
+                staticRanges={staticRanges}
+                ranges={[selectRange]}
+                inputRanges = {[]}
+                onChange={(range) => handledRange(range.selection)}
+              />
+            </>
+          }
 
           <div className="row my-3">
             <CardsAdmin 

@@ -176,6 +176,24 @@ td {
   background: white;
 }
 
+@media (max-width: 609px) {
+  .rdrDefinedRangesWrapper  {
+    bottom: -350px;
+    position: relative;
+    border: 1px solid black;
+    z-index: 1045;
+    margin-top: 9px;
+  }
+
+  .rdrCalendarWrapper  {
+    position: absolute;
+    border: 1px solid black;
+    z-index: 1045;
+    margin-top: 10px;
+  }
+}
+
+
 .isDragging {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;

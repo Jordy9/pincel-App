@@ -10,6 +10,7 @@ import { DroppableTeam } from './DroppableTeam'
 import { DroppableOrder } from './DroppableOrder'
 import { ModalEdit } from './ModalEdit'
 import Swal from 'sweetalert2'
+import { useResponsive } from '../../hooks/useResponsive'
 
 export const ModalTeam = ({modalTeam, setModalTeam}) => {
 
@@ -32,8 +33,10 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
     const [modalEdit, setModalEdit] = useState(false)
 
     const createEq = () => {
-      dispatch(crearEquipo(crearEquipoState, undefined, setchangeColumns))
-      setCrearEquipoState('')
+      if (crearEquipoState?.trim()?.length > 2) {
+        dispatch(crearEquipo(crearEquipoState, undefined, setchangeColumns))
+        setCrearEquipoState('')
+      }
     }
 
     const itemsFromBackend = usuarios?.filter(usuarios => usuarios?.id !== uid && usuarios.team === 'Sin equipo' && !usuarios?.name.includes('Jordy') && !usuarios?.name.includes('Francis'))?.map(usuarios => (
@@ -215,6 +218,8 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
         setColumns(columnsFromBackend)
       }, [modalEdit])
 
+      const [ respWidth ] = useResponsive()
+
   return (
     <Modal fullscreen show={modalTeam} onHide={handleClose}>
       <Modal.Header style={{border: 'none'}} closeButton>
@@ -227,13 +232,13 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
           (!changeToOrder)
             ?
           <>
-            <div className="row">
-              <div className='col-2'>
-                <input value={crearEquipoState} onChange = {({target}) => setCrearEquipoState(target.value)} type="text" className='form-control'/>
+            <div className="row mb-2">
+              <div className='col-xs-8 col-sm-10 col-md-6 col-lg-5 col-xl-3 col-xxl-3'>
+                <input value={crearEquipoState} placeholder = 'Agregar equipo' onChange = {({target}) => setCrearEquipoState(target.value)} type="text" className='form-control'/>
               </div>
 
-              <div className='col'>
-                <button type='button' onClick={createEq} className='btn btn-primary'>Agregar</button>
+              <div className={`col-xs-4 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-xxl-2 ${(respWidth < 720) && 'my-1'}`}>
+                <button type='button' onClick={createEq} className={`btn btn-primary ${(respWidth < 720) && 'form-control'}`}>Agregar</button>
               </div>
             </div>
 
@@ -245,7 +250,7 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
                   
                   return (
                     <div
-                      className='col-3'
+                      className='col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3'
                       key={columnId}
                     >
                       {
