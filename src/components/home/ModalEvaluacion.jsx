@@ -137,7 +137,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                     <div className="row">
                         <Slider ref={ref} {...settings}>
                             {
-                                resena?.filter(usuario => usuario?.role !== 'Administrador')?.map(usuario => {
+                                resena?.filter(usuario => usuario?.toResena === 'Activos')?.map(usuario => {
                                     return (
                                         <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                             <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} hoy?</h3>

@@ -98,17 +98,10 @@ export const actualizarColumnas = (equipos) => {
         if (equipos[2].name === 'Sin equipo') {
             const usuarioId = equipos[2].items[equipos[1]].id
             socket?.emit('update-user-team', { payload: usuarioId })
-            socket?.on('user-updated', (usuario) => {
-                dispatch(onUpdateTeam(usuario))
-            })
             return 
         }
         
         socket?.emit('update-team', { payload: equipos })
-        socket?.on('user-updated-team', () => {
-            dispatch(obtenerUsuarios())
-            dispatch(obtenerEquipo())
-        })
     }
 }
 
@@ -119,17 +112,12 @@ export const actualizarColumnasOrdenar = (equipos) => {
         if (equipos[2].name === 'Desactivados para reseñas') {
             const usuarioId = equipos[2].items[equipos[1]].id
             socket?.emit('update-user-team-order', { payload: usuarioId })
-            socket?.on('user-updated', (usuario) => {
-                dispatch(onUpdateTeam(usuario))
-            })
             return 
         }
+
+        equipos[2].items[equipos[1]] = {...equipos[2].items[equipos[1]], toResena: equipos[2].name}
         
         socket?.emit('update-team-order', { payload: equipos })
-        socket?.on('user-updated-team-order', () => {
-            dispatch(obtenerUsuarios())
-            dispatch(obtenerToResena())
-        })
     }
 }
 
@@ -140,10 +128,6 @@ export const actualizarColumnasInicio = (equipos) => {
         if (equipos[1].name === 'Sin equipo') return
 
         socket?.emit('update-team-start', { payload: equipos })
-        socket?.on('user-updated-team-start', () => {
-            dispatch(obtenerUsuarios())
-            dispatch(obtenerEquipo())
-        })
     }
 }
 
@@ -154,10 +138,6 @@ export const actualizarColumnasInicioOrder = (equipos) => {
         if (equipos[1].name === 'Desactivados para reseñas') return
 
         socket?.emit('update-team-start-order', { payload: equipos })
-        socket?.on('user-updated-team-start-order', () => {
-            dispatch(obtenerUsuarios())
-            dispatch(obtenerToResena())
-        })
     }
 }
 

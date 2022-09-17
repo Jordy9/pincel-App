@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { actualizarColumnas, actualizarColumnasInicio, actualizarColumnasInicioOrder, actualizarColumnasOrdenar, crearEquipo } from '../../store/equipo/thunk'
+import { actualizarColumnas, actualizarColumnasInicio, actualizarColumnasInicioOrder, actualizarColumnasOrdenar, crearEquipo, obtenerEquipo } from '../../store/equipo/thunk'
 import { useDispatch } from 'react-redux'
 import uuid from "uuid/v4";
 import user from '../../heroes/user.webp'
@@ -11,14 +11,19 @@ import { DroppableOrder } from './DroppableOrder'
 import { ModalEdit } from './ModalEdit'
 import Swal from 'sweetalert2'
 import { useResponsive } from '../../hooks/useResponsive'
+import { obtenerUsuarios } from '../../store/auth/thunk'
+import { obtenerToResena } from '../../store/resena/thunk'
 
 export const ModalTeam = ({modalTeam, setModalTeam}) => {
 
+    const dispatch = useDispatch();
+
     const handleClose = () => {
       setModalTeam(false)
+      dispatch(obtenerUsuarios())
+      dispatch(obtenerToResena())
+      dispatch(obtenerEquipo())
     }
-    
-    const dispatch = useDispatch();
 
     const { usuarios, uid } = useSelector(state => state.auth);
 

@@ -29,7 +29,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     const { usuarios } = useSelector(state => state.auth);
 
-    const { comenzar } = useSelector(state => state.rs);
+    const { comenzar, toResena } = useSelector(state => state.rs);
 
     const handledButton = () => {
         document.getElementById('idButton').click()
@@ -155,7 +155,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                             {
                                 (evaluateFront)
                                     ?
-                                usuarios?.filter(usuarios => usuarios?.role === 'Administrador' && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Francis') && !usuarios?.name?.includes('Olfa'))?.map(usuario => {
+                                toResena[1]?.items?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map(usuario => {
                                     return (
                                         <div key={usuario?.id} hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
@@ -173,7 +173,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     :
                                 <Slider ref={ref} {...settings}>
                                     {
-                                        resena?.filter(usuarios => usuarios?.role === 'Administrador')?.map(usuario => {
+                                        resena?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map(usuario => {
                                             return (
                                                 <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                                     <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} el día de hoy?</h3>

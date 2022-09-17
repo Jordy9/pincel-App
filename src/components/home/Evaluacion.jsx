@@ -9,9 +9,7 @@ export const Evaluacion = () => {
 
     const dispatch = useDispatch();
 
-    const { usuarios } = useSelector(state => state.auth);
-
-    const { AResena, comenzar } = useSelector(state => state.rs);
+    const { AResena, comenzar, toResena } = useSelector(state => state.rs);
     
     const [modalShow, setModalShow] = useState(false)
 
@@ -57,7 +55,7 @@ export const Evaluacion = () => {
                     <h1 className='text-black text-center mt-5 mb-3'>Seleccione el personal que le atendió el día de hoy</h1>
                     <div className="row p-2 my-2">
                         {
-                            usuarios?.filter(usuarios => usuarios?.role === 'Usuario' && !usuarios?.name?.includes('Jordy') && !usuarios?.name?.includes('Mariela') && !usuarios?.name?.includes('Lorena') && !usuarios?.name?.includes('Joanny') && !usuarios?.name?.includes('Laury'))?.map(usuario => {
+                            toResena[0]?.items?.filter(usuarios => usuarios?.toResena === 'Activos')?.map(usuario => {
                                 return (
                                     <div key={usuario?.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-1 col-xl-1 col-xxl-1 d-flex" style={{marginLeft: '40px', marginRight: '40px'}}>
                                         <div onClick={() => dispatch(crearAResena(usuario))} className='bg-transparent d-flex flex-column mx-auto align-items-center' style={{width: 'auto', height: 'auto', borderRadius: '10px'}}>
