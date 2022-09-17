@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import { CardsAdmin } from './CardsAdmin'
 import { TableAdmin } from './TableAdmin'
@@ -34,6 +34,10 @@ export const DashboardAdmin = () => {
   const { name, usuarios } = useSelector(state => state.auth);
 
   const { equipos } = useSelector(state => state.eq);
+
+  const [showThreeMonth, setShowThreeMonth] = useState(false)
+
+  const [showThreeMonths, setShowThreeMonths] = useState(false)
 
   // useState Para Manejar los filtros
 
@@ -97,7 +101,7 @@ export const DashboardAdmin = () => {
 
   let SumaResenasPorTodosLosMeses = []
 
-  const MonthFilterTeam = ([resena]) => {
+  const MonthFilterTeam = (index, [resena]) => {
 
     if (resena !== undefined) {
       SumaResenasPorTodosLosMeses.push(resena)
@@ -111,7 +115,7 @@ export const DashboardAdmin = () => {
 
     const porcentage = (5*totalSumado) / 100
 
-    return porcentage
+    return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? porcentage : 0 : porcentage
 
   }
 
@@ -125,7 +129,7 @@ export const DashboardAdmin = () => {
         &&
       (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
         ?
-      calificacionPorMesesDeEquipos[index] = MonthFilterTeam(resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
+      calificacionPorMesesDeEquipos[index] = MonthFilterTeam(index, resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
         :
       null
     ))
@@ -157,7 +161,7 @@ export const DashboardAdmin = () => {
 
   let SumaResenasPorMes = []
   
-  const MonthFilter = (resena) => {
+  const MonthFilter = (index, resena) => {
 
     SumaResenasPorMes.push(resena)
     const filtroPorMes = SumaResenasPorMes.reduce(
@@ -175,10 +179,18 @@ export const DashboardAdmin = () => {
 
     const porcentage = (5*totalSumado) / 100
 
-    return porcentage
+    return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? porcentage : 0 : porcentage
   }
 
   let calificacionPorMeses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  useEffect(() => {
+
+    if (showThreeMonth) {
+      setShowThreeMonths([moment(changeDate).format('M'), moment(changeDateRange).format('M')])
+    }
+    
+  }, [showThreeMonth, changeDate, changeDateRange])
 
   for (let index = 0; index < 12; index++) {
     SumaResenasPorMes = []
@@ -186,7 +198,7 @@ export const DashboardAdmin = () => {
     resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
       (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
         ?
-      calificacionPorMeses[index] = MonthFilter(resena)
+      calificacionPorMeses[index] = MonthFilter(index, resena)
         :
       null
     ))
@@ -222,7 +234,8 @@ export const DashboardAdmin = () => {
       startDate: defineds.startOfMonth,
       endDate: defineds.endOfMonth,
       key: 'selection',
-      AllMonth: false
+      AllMonth: false,
+      ThreeMonth: false
     }
   )
 
@@ -232,7 +245,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfToday,
         endDate: defineds.endOfToday,
-        AllMonth: false
+        AllMonth: false,
+        ThreeMonth: false
       }),
     },
     {
@@ -240,7 +254,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfWeek,
         endDate: defineds.endOfWeek,
-        AllMonth: false
+        AllMonth: false,
+        ThreeMonth: false
       }),
     },
     {
@@ -248,7 +263,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfLastWeek,
         endDate: defineds.endOfLastWeek,
-        AllMonth: false
+        AllMonth: false,
+        ThreeMonth: false
       }),
     },
     {
@@ -256,7 +272,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfMonth,
         endDate: defineds.endOfMonth,
-        AllMonth: false
+        AllMonth: false,
+        ThreeMonth: false
       }),
     },
     {
@@ -264,7 +281,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfLastMonth,
         endDate: defineds.endOfLastMonth,
-        AllMonth: false
+        AllMonth: false,
+        ThreeMonth: false
       }),
     },
     {
@@ -272,7 +290,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfLastThreeMonths,
         endDate: defineds.endOfLastThreeMonths,
-        AllMonth: false
+        AllMonth: true,
+        ThreeMonth: true
       }),
     },
     {
@@ -280,7 +299,8 @@ export const DashboardAdmin = () => {
       range: () => ({
         startDate: defineds.startOfYear,
         endDate: defineds.endOfYear,
-        AllMonth: true
+        AllMonth: true,
+        ThreeMonth: false
       })
     },
     {
@@ -294,7 +314,8 @@ export const DashboardAdmin = () => {
           .subtract(1, "years")
           .endOf("year")
           .toDate(),
-        AllMonth: true
+        AllMonth: true,
+        ThreeMonth: false
       })
     }
   ]);
@@ -306,7 +327,16 @@ export const DashboardAdmin = () => {
     setChangeDate(range.startDate)
     setChangeDateRange(range.endDate)
     setShowAllMonth(range.AllMonth)
+    setShowThreeMonth(range.ThreeMonth)
   }
+
+  useEffect(() => {
+    if (!showAllMonth && moment(changeDate).format('M') !== moment(changeDateRange).format('M')) {
+      setShowAllMonth(true)
+      setShowThreeMonth(true)
+    }
+  }, [showAllMonth, changeDate, changeDateRange])
+  
 
   const [showFilter, setShowFilter] = useState(false)
 
@@ -332,6 +362,7 @@ export const DashboardAdmin = () => {
             (showFilter && respWidth >= 610)
               &&
             <DateRangePicker
+              weekStartsOn={0}
               staticRanges={staticRanges}
               inputRanges = {[]}
               locale={es}
