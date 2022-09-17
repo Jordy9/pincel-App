@@ -26,6 +26,25 @@ import {
  } from 'date-fns'
 import { useResponsive } from '../../hooks/useResponsive'
 
+const defineds = {
+  startOfWeek: startOfWeek(new Date()),
+  endOfWeek: endOfWeek(new Date()),
+  startOfLastWeek: startOfWeek(addDays(new Date(), -7)),
+  endOfLastWeek: endOfWeek(addDays(new Date(), -7)),
+  startOfToday: startOfDay(new Date()),
+  endOfToday: endOfDay(new Date()),
+  startOfYesterday: startOfDay(addDays(new Date(), -1)),
+  endOfYesterday: endOfDay(addDays(new Date(), -1)),
+  startOfMonth: startOfMonth(new Date()),
+  endOfMonth: endOfMonth(new Date()),
+  startOfLastMonth: startOfMonth(addMonths(new Date(), -1)),
+  endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
+  startOfLastThreeMonths: startOfMonth(addMonths(new Date(), -3)),
+  endOfLastThreeMonths: endOfMonth(addMonths(new Date(), -1)),
+  startOfYear: startOfYear(addYears(new Date(), 0)),
+  endOfYear: endOfYear(addYears(new Date(), 0)),
+};
+
 export const DashboardAdmin = () => {
   
   // Importacion de estados
@@ -38,6 +57,16 @@ export const DashboardAdmin = () => {
   const [showThreeMonth, setShowThreeMonth] = useState(false)
 
   const [showThreeMonths, setShowThreeMonths] = useState(false)
+
+  const [selectRange, setSelectRange] = useState(
+    {
+      startDate: defineds.startOfMonth,
+      endDate: defineds.endOfMonth,
+      key: 'selection',
+      AllMonth: false,
+      ThreeMonth: false
+    }
+  )
 
   // useState Para Manejar los filtros
 
@@ -59,9 +88,9 @@ export const DashboardAdmin = () => {
 
   (FiltroChange?.some(filtro => filtro?.team === true)) 
     ?
-  usuarioFiltrado = usuarios?.filter(usuario => FiltroChange.some(FiltroChange => usuario?.team?.includes(FiltroChange.value)))
+  usuarioFiltrado = usuarios?.filter(usuario => FiltroChange?.some(FiltroChange => usuario?.team?.includes(FiltroChange?.value)))
     :
-  usuarioFiltrado = usuarios?.filter(usuario => FiltroChange.some(FiltroChange => usuario?.id?.includes(FiltroChange.value)))
+  usuarioFiltrado = usuarios?.filter(usuario => FiltroChange?.some(FiltroChange => usuario?.id?.includes(FiltroChange?.value)))
 
   // Filtro de las reseñas por usuario o equipos
   
@@ -74,7 +103,7 @@ export const DashboardAdmin = () => {
   resenasFilterArrayDateAndEstado = resena.filter(
     resena => (changeDate) 
       ?
-    (changeDateRange && changeDate) 
+    (changeDateRange && changeDate)
       ? 
     (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDateRange, 'Y/M/D')))
       ||
@@ -82,16 +111,17 @@ export const DashboardAdmin = () => {
       :
     moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    moment(resena?.createdAt, 'Y/M').isSame(moment().format('Y/M'))
-    
-    )
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.endDate, 'Y/M/D')))
+      ||
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.endDate, 'Y/M/D')))
+  )
 
     resenasFilterArrayDateAndEstado.filter(
       resena => resena?.estado === true 
         && 
       resena?.calificacion?.length !== 0
-    ).map(resena => (
-      [ArregloFilterDate] = resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))),
+    )?.map(resena => (
+      [ArregloFilterDate] = resena?.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))),
       (ArregloFilterDate !== undefined)
         &&
       resenasFilterArray.push({calificacion: [ArregloFilterDate]})
@@ -125,11 +155,11 @@ export const DashboardAdmin = () => {
     SumaResenasPorTodosLosMeses = []
 
     resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
-      (resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
+      (resena.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))))
         &&
       (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
         ?
-      calificacionPorMesesDeEquipos[index] = MonthFilterTeam(index, resena.calificacion.filter(calificacion => usuarioFiltrado.some(usuario => calificacion.id.includes(usuario.id))))
+      calificacionPorMesesDeEquipos[index] = MonthFilterTeam(index, resena.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))))
         :
       null
     ))
@@ -140,7 +170,7 @@ export const DashboardAdmin = () => {
   const resenasFiltradasPorRango = resena?.filter(
     resena => (changeDate) 
       ?
-    (changeDateRange && changeDate) 
+    (changeDateRange && changeDate)
       ? 
     (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDateRange, 'Y/M/D')))
       ||
@@ -148,7 +178,9 @@ export const DashboardAdmin = () => {
       :
     moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    moment(resena?.createdAt, 'Y/M').isSame(moment().format('Y/M'))
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.endDate, 'Y/M/D')))
+      ||
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.endDate, 'Y/M/D')))
   )
 
   const resenasFiltradas = resenasFiltradasPorRango?.filter(
@@ -209,35 +241,6 @@ export const DashboardAdmin = () => {
   const { greet } = useGreeting()
 
   const [modalTeam, setModalTeam] = useState(false)
-
-  const defineds = {
-    startOfWeek: startOfWeek(new Date()),
-    endOfWeek: endOfWeek(new Date()),
-    startOfLastWeek: startOfWeek(addDays(new Date(), -7)),
-    endOfLastWeek: endOfWeek(addDays(new Date(), -7)),
-    startOfToday: startOfDay(new Date()),
-    endOfToday: endOfDay(new Date()),
-    startOfYesterday: startOfDay(addDays(new Date(), -1)),
-    endOfYesterday: endOfDay(addDays(new Date(), -1)),
-    startOfMonth: startOfMonth(new Date()),
-    endOfMonth: endOfMonth(new Date()),
-    startOfLastMonth: startOfMonth(addMonths(new Date(), -1)),
-    endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
-    startOfLastThreeMonths: startOfMonth(addMonths(new Date(), -3)),
-    endOfLastThreeMonths: endOfMonth(addMonths(new Date(), -1)),
-    startOfYear: startOfYear(addYears(new Date(), 0)),
-    endOfYear: endOfYear(addYears(new Date(), 0)),
-  };
-
-  const [selectRange, setSelectRange] = useState(
-    {
-      startDate: defineds.startOfMonth,
-      endDate: defineds.endOfMonth,
-      key: 'selection',
-      AllMonth: false,
-      ThreeMonth: false
-    }
-  )
 
   const staticRanges = createStaticRanges([
     {
