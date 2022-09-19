@@ -16,8 +16,8 @@ export const DroppableTeam = ({column, columnId, index}) => {
                 : "lightgrey",
                 padding: 4,
                 width: 250,
-                height: (index === 0 || column?.items?.length === 0) ? 500 : 450,
-                overflow: 'auto'
+                height: (index === 0 || column?.items?.length === 0) ? 'auto' : 'auto',
+                // overflow: 'auto'
             }}
             >
             {column.items.map((item, index) => {

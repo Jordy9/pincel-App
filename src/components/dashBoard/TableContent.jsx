@@ -5,6 +5,7 @@ import { modalOpen, setActiveUser } from '../../store/auth/authSlice';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import { useResponsive } from '../../hooks/useResponsive';
 import moment from 'moment';
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableContent = (props) => {
 
@@ -52,7 +53,7 @@ export const TableContent = (props) => {
     const [ respWidth ] = useResponsive()
 
   return (
-    <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
             (respWidth > 992)
                 &&

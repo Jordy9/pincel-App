@@ -325,12 +325,18 @@ export const DashboardAdmin = () => {
 
   const [showAllMonth, setShowAllMonth] = useState(false)
 
+  const [showFilter, setShowFilter] = useState(false)
+
   const handledRange = (range) => {
     setSelectRange(range)
     setChangeDate(range.startDate)
     setChangeDateRange(range.endDate)
     setShowAllMonth(range.AllMonth)
     setShowThreeMonth(range.ThreeMonth)
+
+    if (range.startDate !== range.endDate) {
+      setShowFilter(false)
+    }
   }
 
   useEffect(() => {
@@ -339,9 +345,6 @@ export const DashboardAdmin = () => {
       setShowThreeMonth(true)
     }
   }, [showAllMonth, changeDate, changeDateRange])
-  
-
-  const [showFilter, setShowFilter] = useState(false)
 
   const [ respWidth ] = useResponsive()
 
@@ -349,34 +352,39 @@ export const DashboardAdmin = () => {
     <Sidebar>
         <div className='text-black p-4'>
           <h1>{greet}, <span className='text-muted'>{name}</span></h1>
-          {
-            (usuariosToFilter)
-              &&
-            <MultiSelect
-              options={usuariosToFilter}
-              value={FiltroChange}
-              onChange={setFiltroChange}
-              labelledBy="Select"
-              hasSelectAll = {false}
-            />
-          }
+          <div className='shadow p-2 my-1' style={{borderRadius: '35px'}}>
 
-          {
-            (showFilter && respWidth >= 610)
-              &&
-            <DateRangePicker
-              weekStartsOn={0}
-              staticRanges={staticRanges}
-              inputRanges = {[]}
-              locale={es}
-              ranges={[selectRange]}
-              onChange={(range) => handledRange(range.selection)}
-            />
-          }
+            {
+              (usuariosToFilter)
+                &&
+                <MultiSelect
+                  options={usuariosToFilter}
+                  value={FiltroChange}
+                  onChange={setFiltroChange}
+                  labelledBy="Select"
+                  hasSelectAll = {false}
+                />
+            }
 
-          <div className='my-1' style={{justifyContent: 'space-between', display: 'flex'}}>
-            <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar' : 'Cerrar ventana de filtro'}</button>
-            <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
+            {
+              (showFilter && respWidth >= 610)
+                &&
+              <div>
+                <DateRangePicker
+                  weekStartsOn={0}
+                  staticRanges={staticRanges}
+                  inputRanges = {[]}
+                  locale={es}
+                  ranges={[selectRange]}
+                  onChange={(range) => handledRange(range.selection)}
+                />
+              </div>
+            }
+
+            <div className='p-1 my-2' style={{justifyContent: 'space-between', display: 'flex'}}>
+              <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar' : 'Cerrar ventana de filtro'}</button>
+              <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
+            </div>
           </div>
 
           {
@@ -406,6 +414,7 @@ export const DashboardAdmin = () => {
               mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
               calificacionPorMeses = {(usuarioFiltrado?.length !== 0) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
               show = {showAllMonth}
+              respWidth = { respWidth }
             />
           </div>
 

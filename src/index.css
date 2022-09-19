@@ -16,6 +16,11 @@ td {
   max-width: 100%;
 }
 
+.rmsc {
+  --rmsc-radius: 35px !important;
+  --rmsc-p: 20px !important;
+}
+
 #linear {
     background: 
             linear-gradient(217deg, rgba(255, 0, 0, 0.167), rgba(255,0,0,0) 70.71%),

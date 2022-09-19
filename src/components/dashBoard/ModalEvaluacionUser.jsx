@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { onDoubleTap } from '../../helper/onDoubleTap';
 import { updateUsuarioIntento } from '../../store/capacitacion/thunk';
 
 export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion}) => {
@@ -19,6 +20,10 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
 
     const permitir = () => {
         dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
+    }
+
+    const onShow = () => {
+        setModalShowEvaluacion(true)
     }
 
   return (
@@ -43,7 +48,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                 {
                                    evaluacionActiva?.evaluacion?.map(evaluacion => {
                                     return (
-                                        <tr onDoubleClick={() => setModalShowEvaluacion(true)}>
+                                        <tr onTouchStart={(e) => onDoubleTap(e, onShow)} onDoubleClick={onShow}>
                                             <td>{evaluacion?.evaluacion?.pregunta}</td>
                                             <td>{evaluacion?.respuesta}</td>
                                             <td>{evaluacion?.evaluacion?.respuesta1}</td>

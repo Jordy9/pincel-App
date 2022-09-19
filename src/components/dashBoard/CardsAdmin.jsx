@@ -4,7 +4,7 @@ import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show } ) => {
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth } ) => {
 
   const FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas.reduce(
     (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
@@ -195,18 +195,18 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show 
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-          <div className="shadow p-4" style={{borderRadius: '35px'}}>
+          <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'} p-4`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Evaluaciones de los empleados</h6>
             <h6 className='text-center'>Total 0</h6>
-            <Bar options={options} data={data} />
+            <Bar options={options} data={data} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
           </div>
         </div>
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-          <div className="shadow p-4" style={{borderRadius: '35px'}}>
+          <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
             <h6 className='text-center'>Total de reseñas {resenasFiltradas?.length}</h6>
-            <Bar options={options2} data={data2} plugins = {ChartDataLabels} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados" />
+            <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
           </div>
         </div>
     </>

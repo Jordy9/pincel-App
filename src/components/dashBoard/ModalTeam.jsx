@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 import { useResponsive } from '../../hooks/useResponsive'
 import { obtenerUsuarios } from '../../store/auth/thunk'
 import { obtenerToResena } from '../../store/resena/thunk'
+import { onDoubleTap } from '../../helper/onDoubleTap'
 
 export const ModalTeam = ({modalTeam, setModalTeam}) => {
 
@@ -268,7 +269,8 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
                           <h5 className='mr-auto'>Lider</h5>
                         </div>
                       }
-                      <h2 
+                      <h2
+                        onTouchStart={(event) => onDoubleTap(event, openModalEdit, e)}
                         onDoubleClick={() => openModalEdit(e)} 
                         className='text-center'
                         data-bs-toggle="tooltip" data-bs-placement="left" title="Al hacer click sobre el título, podrá editar la información de este equipo"

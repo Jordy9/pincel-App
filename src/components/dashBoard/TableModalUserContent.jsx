@@ -5,6 +5,7 @@ import { activeEvaluacion } from '../../store/evaluacion/evaluacionSlice';
 import { ModalEvaluacionUser } from './ModalEvaluacionUser';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import Swal from 'sweetalert2';
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableModalUserContent = (props) => {
 
@@ -64,7 +65,7 @@ export const TableModalUserContent = (props) => {
   const porcientoVideos = (calificacionFiltradaPorUsuario[0]?.calificacion) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
 
   return (
-    <tr style={{cursor: 'pointer'}} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, _id)} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={image || user} className='img-fluid' alt="" />

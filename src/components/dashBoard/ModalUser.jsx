@@ -7,6 +7,7 @@ import user from '../../heroes/user.webp'
 import { ModalPerfilUser } from './ModalUserPerfil'
 import { ModalUserResena } from './ModalUserResena'
 import { TableModalUserSpreed } from './TableModalUserSpreed'
+import { onDoubleTap } from '../../helper/onDoubleTap'
 
 export const ModalUser = () => {
 
@@ -28,6 +29,10 @@ export const ModalUser = () => {
             span[0]?.removeAttribute("title")
         }
     }, [modalUser])
+
+    const onShow = () => {
+        setModalShowResena(true)
+    }
       
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
@@ -46,7 +51,7 @@ export const ModalUser = () => {
                                 <button onClick={() => setModalShow(true)} type='button' className = 'btn btn-primary my-2'>Editar</button>
                             </div>
                             <h3 className='text-center'>{activeUser?.name} {activeUser?.lastName}</h3>
-                            <div onDoubleClick={() => setModalShowResena(true)} className='text-center' style={{cursor: 'pointer'}}>
+                            <div onTouchStart={(e) => onDoubleTap(e, onShow)} onDoubleClick={onShow} className='text-center' style={{cursor: 'pointer'}}>
                                 <Rating allowHalfIcon readonly ratingValue={activeUser?.calificacion} />
                                 <span style={{fontSize: '12px'}}>{activeUser?.cantidad} reseñas</span>
                             </div>

@@ -4,6 +4,7 @@ import { setActiveResena } from '../../store/resena/resenaSlice';
 import { Rating } from 'react-simple-star-rating';
 import moment from 'moment';
 import { actualizarResena } from '../../store/resena/thunk';
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableContentResena = (props) => {
 
@@ -32,7 +33,7 @@ export const TableContentResena = (props) => {
     }
 
   return (
-    <tr className={`${(!estado) && 'bg-secondary'}`} onDoubleClick={() => handledActive(resenaUsuario)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr className={`${(!estado) && 'bg-secondary'}`} onTouchStart = {(e) => onDoubleTap(e, handledActive, resenaUsuario)} onDoubleClick={() => handledActive(resenaUsuario)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
             (calificacionFiltrada[0]?.calificacion > 0)
                 &&
