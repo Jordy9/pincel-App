@@ -348,11 +348,31 @@ export const DashboardAdmin = () => {
 
   const [ respWidth ] = useResponsive()
 
+  const [showFloat, setShowFloat] = useState(false)
+
+  const [showTransp, setShowTransp] = useState(false)
+
   return (
     <Sidebar>
         <div className='text-black p-4'>
           <h1>{greet}, <span className='text-muted'>{name}</span></h1>
-          <div className='shadow p-2 my-1' style={{borderRadius: '35px'}}>
+          <div className='shadow p-2 my-1' id={`${(showFloat) && 'floatFilter'}`} style={{borderRadius: '35px', backgroundColor: (showTransp) ? 'transparent' : 'white'}}>
+
+            <div className='d-flex justify-content-end mr-2' style={{display: 'inline-flex'}}>
+              <div class="form-check">
+                <input class="form-check-input" onClick={() => setShowFloat(!showFloat)} type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label mr-4" for="flexCheckDefault">
+                  Activar barra flotante
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" onClick={() => setShowTransp(!showTransp)} type="checkbox" value="" id="flexCheckChecked" />
+                <label class="form-check-label" for="flexCheckChecked">
+                  Activar transparencia
+                </label>
+              </div>
+            </div>
 
             {
               (usuariosToFilter)
@@ -367,7 +387,7 @@ export const DashboardAdmin = () => {
             }
 
             {
-              (showFilter && respWidth >= 610)
+              (showFilter)
                 &&
               <div>
                 <DateRangePicker
@@ -387,7 +407,7 @@ export const DashboardAdmin = () => {
             </div>
           </div>
 
-          {
+          {/* {
             (showFilter && respWidth <= 609)
               &&
             <>
@@ -406,9 +426,9 @@ export const DashboardAdmin = () => {
                 onChange={(range) => handledRange(range.selection)}
               />
             </>
-          }
+          } */}
 
-          <div className="row my-3">
+          <div className={`row ${(showFloat) ? 'mb-3' : 'my-3'}`} style = {{marginTop: (showFloat) && '165px'}}>
             <CardsAdmin 
               resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
               mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 

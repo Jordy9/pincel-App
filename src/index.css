@@ -63,6 +63,12 @@ td {
     border: none;
   }
 
+  #floatFilter {
+    position: fixed;
+    z-index: 1045;
+    width: 75%;
+  }
+
   .btn-danger {
     border-radius: 50px;
   }
@@ -171,7 +177,7 @@ td {
   margin-top: 50px;
 }
 
-.containerColum {
+/* .containerColum {
   margin: 8px;
   border-radius: 2px;
   border: 1px solid lightgrey;
@@ -179,22 +185,54 @@ td {
   flex-direction: column;
   width: 230px;
   background: white;
-}
+} */
 
 @media (max-width: 609px) {
-  .rdrDefinedRangesWrapper  {
-    bottom: -350px;
-    position: relative;
-    border: 1px solid black;
-    z-index: 1045;
-    margin-top: 9px;
+  .rdrDateRangePickerWrapper {
+    display: block !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    flex-direction: column !important;
   }
 
-  .rdrCalendarWrapper  {
-    position: absolute;
-    border: 1px solid black;
-    z-index: 1045;
-    margin-top: 10px;
+  .rdrDefinedRangesWrapper {
+    overflow-x: auto !important;
+    font-size: 12px !important;
+    overflow-y: hidden !important;
+    display: flex;
+    width: 350px !important;
+    border-right: solid 1px #eff2f7 !important;
+    background: #fff !important;
+    height: 70px !important;
+  }
+
+  .rdrStaticRanges {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-direction: inherit !important;
+  }
+
+  .rdrStaticRange {
+    border: 0 !important;
+    display: block !important;
+    outline: 0 !important;
+    border-bottom: 1px solid #eff2f7 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    width: auto !important;
+    height: 50px !important;
+  }
+
+  .rdrStaticRangeLabel {
+    display: block;
+    outline: 0;
+    line-height: 18px;
+    padding: 0;
+    text-align: center;
+    margin: 10px;
+    width: max-content;
   }
 }
 
