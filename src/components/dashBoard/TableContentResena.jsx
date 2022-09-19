@@ -38,7 +38,7 @@ export const TableContentResena = (props) => {
             (calificacionFiltrada[0]?.calificacion > 0)
                 &&
                 <>
-                    <td>{<Rating size={20} readonly ratingValue={calificacionFiltrada[0]?.calificacion} />}</td>
+                    <td>{<Rating size={19} readonly ratingValue={calificacionFiltrada[0]?.calificacion} />}</td>
                     <td>{descripcion}</td>
                     <td>{moment(createdAt).format('MM/DD/YYYY, h:mm a')}</td>
                     <td>             
