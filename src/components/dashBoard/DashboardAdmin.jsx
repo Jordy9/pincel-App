@@ -426,7 +426,7 @@ export const DashboardAdmin = () => {
                   staticRanges?.map((e) => {
                     return (
                       <div>
-                        <button style={{opacity: (e.label === markButton) && 0.5, width: '135px'}} className='btn btn-primary mx-1' onClick={() => handledRange(e.range(), e.label)}>
+                        <button style={{opacity: (e.label === markButton) && 0.5, width: (e.label === 'Semana pasada') ? '150px' :  '135px'}} className='btn btn-primary mx-1' onClick={() => handledRange(e.range(), e.label)}>
                           {e.label}
                         </button>
                       </div>
