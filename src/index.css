@@ -63,6 +63,13 @@ td {
     border: none;
   }
 
+  .rdrCalendarWrapper  {
+    position: absolute;
+    border: 1px solid black;
+    z-index: 1045;
+    margin-top: 110px;
+  }
+
   #floatFilter {
     position: fixed;
     z-index: 1045;
@@ -233,6 +240,13 @@ td {
     text-align: center;
     margin: 10px;
     width: max-content;
+  }
+
+  .rdrCalendarWrapper  {
+    position: absolute;
+    border: 1px solid black;
+    z-index: 1045;
+    margin-top: 160px;
   }
 }
 

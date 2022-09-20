@@ -4,18 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { modalOpen, setActiveUser } from '../../store/auth/authSlice';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import { useResponsive } from '../../hooks/useResponsive';
-import moment from 'moment';
 import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableContent = (props) => {
 
     const dispatch = useDispatch();
 
-    const { resena } = useSelector(state => state.rs);
+    const { resenaFilterSlice } = useSelector(state => state.rs);
 
-    const { capacitacion } = useSelector(state => state.cp);
+    // const { capacitacion } = useSelector(state => state.cp);
 
-    const {id, name, lastName, urlImage, role} = props
+    const { id, name, urlImage } = props
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
@@ -24,7 +23,7 @@ export const TableContent = (props) => {
 
     let calificacionFiltrada = []
 
-    resena?.filter(resena => resena?.estado !== false)?.map(resena => {
+    resenaFilterSlice?.filter(resena => resena?.estado !== false)?.map(resena => {
         return (
             (resena?.calificacion?.filter(resena => resena?.id === id))
                 &&

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from "sweetalert2"
-import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
+import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, filterResenaSlice, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -13,6 +13,7 @@ export const obtenerResena = () => {
             const resp = await axios.get(`${endPoint}/resena`, {headers: {'x-token': token}})
     
             dispatch(getResena(resp.data.resena))
+            dispatch(filterResenaSlice(resp.data.resena))
 
         } catch (error) {
         }

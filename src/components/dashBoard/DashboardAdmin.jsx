@@ -25,6 +25,8 @@ import {
   endOfYear,
  } from 'date-fns'
 import { useResponsive } from '../../hooks/useResponsive'
+import { useDispatch } from 'react-redux'
+import { filterResenaSlice } from '../../store/resena/resenaSlice'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -46,6 +48,8 @@ const defineds = {
 };
 
 export const DashboardAdmin = () => {
+
+  const dispatch = useDispatch()
   
   // Importacion de estados
   const { resena } = useSelector(state => state.rs);
@@ -305,21 +309,6 @@ export const DashboardAdmin = () => {
         AllMonth: true,
         ThreeMonth: false
       })
-    },
-    {
-      label: "Año pasado",
-      range: () => ({
-        startDate: moment()
-          .subtract(1, "years")
-          .startOf("year")
-          .toDate(),
-        endDate: moment()
-          .subtract(1, "years")
-          .endOf("year")
-          .toDate(),
-        AllMonth: true,
-        ThreeMonth: false
-      })
     }
   ]);
 
@@ -327,7 +316,9 @@ export const DashboardAdmin = () => {
 
   const [showFilter, setShowFilter] = useState(false)
 
-  const handledRange = (range) => {
+  const [markButton, setMarkButton ] = useState('Este mes')
+
+  const handledRange = (range, label) => {
     setSelectRange(range)
     setChangeDate(range.startDate)
     setChangeDateRange(range.endDate)
@@ -336,6 +327,10 @@ export const DashboardAdmin = () => {
 
     if (range.startDate !== range.endDate) {
       setShowFilter(false)
+    }
+
+    if (label) {
+      setMarkButton(label)
     }
   }
 
@@ -352,6 +347,12 @@ export const DashboardAdmin = () => {
 
   const [showTransp, setShowTransp] = useState(false)
 
+  useEffect(() => {
+
+    dispatch(filterResenaSlice(resenasFiltradas))
+    
+  }, [changeDate, changeDateRange, dispatch])
+  
   return (
     <Sidebar>
         <div className='text-black p-4'>
@@ -366,12 +367,17 @@ export const DashboardAdmin = () => {
                 </label>
               </div>
 
-              <div class="form-check">
-                <input class="form-check-input" onClick={() => setShowTransp(!showTransp)} type="checkbox" value="" id="flexCheckChecked" />
-                <label class="form-check-label" for="flexCheckChecked">
-                  Activar transparencia
-                </label>
-              </div>
+              {
+                (showFloat)
+                  &&
+                <div class="form-check">
+                  <input class="form-check-input" onClick={() => setShowTransp(!showTransp)} type="checkbox" value="" id="flexCheckChecked" />
+                  <label class="form-check-label" for="flexCheckChecked">
+                    Activar transparencia
+                  </label>
+                </div>
+              }
+
             </div>
 
             {
@@ -389,10 +395,20 @@ export const DashboardAdmin = () => {
             {
               (showFilter)
                 &&
+              // <div>
+              //   <DateRangePicker
+              //     weekStartsOn={0}
+              //     staticRanges={[]}
+              //     inputRanges = {[]}
+              //     locale={es}
+              //     ranges={[selectRange]}
+              //     onChange={(range) => handledRange(range.selection)}
+              //   />
+
               <div>
-                <DateRangePicker
+                <DateRange
                   weekStartsOn={0}
-                  staticRanges={staticRanges}
+                  staticRanges={[]}
                   inputRanges = {[]}
                   locale={es}
                   ranges={[selectRange]}
@@ -401,34 +417,26 @@ export const DashboardAdmin = () => {
               </div>
             }
 
-            <div className='p-1 my-2' style={{justifyContent: 'space-between', display: 'flex'}}>
-              <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar' : 'Cerrar ventana de filtro'}</button>
+            <div className='p-1 mt-2' style={{justifyContent: 'space-between', display: 'flex'}}>
+              <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar por rango' : 'Cerrar ventana de filtro'}</button>
               <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
+            </div>
+            <div div className='p-1 my-2' style={{justifyContent: 'space-between', display: 'flex', overflowX: 'auto'}}>
+                {
+                  staticRanges?.map((e) => {
+                    return (
+                      <div>
+                        <button style={{opacity: (e.label === markButton) && 0.5, width: '135px'}} className='btn btn-primary mx-1' onClick={() => handledRange(e.range(), e.label)}>
+                          {e.label}
+                        </button>
+                      </div>
+                    )
+                  })
+                }
             </div>
           </div>
 
-          {/* {
-            (showFilter && respWidth <= 609)
-              &&
-            <>
-              <DateRange
-                direction='vertical'
-                editableDateInputs={true}
-                onChange={(range) => handledRange(range.selection)}
-                moveRangeOnFirstSelection={false}
-                ranges={[selectRange]}
-              />
-
-              <DefinedRange
-                staticRanges={staticRanges}
-                ranges={[selectRange]}
-                inputRanges = {[]}
-                onChange={(range) => handledRange(range.selection)}
-              />
-            </>
-          } */}
-
-          <div className={`row ${(showFloat) ? 'mb-3' : 'my-3'}`} style = {{marginTop: (showFloat) && '165px'}}>
+          <div className={`row ${(showFloat) ? 'mb-3' : 'my-3'}`} style = {{marginTop: (showFloat) && '220px'}}>
             <CardsAdmin 
               resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
               mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
