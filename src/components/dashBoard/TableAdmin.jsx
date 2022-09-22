@@ -5,7 +5,7 @@ import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useResponsive } from '../../hooks/useResponsive';
 
-export const TableAdmin = ({usuarioFiltrado}) => {
+export const TableAdmin = ({usuarioFiltrado, changeDate, changeDateRange}) => {
 
     const percentage = 66;
 

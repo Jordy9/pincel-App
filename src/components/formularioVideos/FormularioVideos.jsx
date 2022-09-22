@@ -9,19 +9,23 @@ import Slider from "react-slick";
 import { ModalPreview } from './ModalPreview';
 import Swal from 'sweetalert2';
 
-const options = [
-    { label: "Equipo de Servicio", value: "Servicio" },
-    { label: "Equipo de Shamponier", value: "Shamponier" },
-    { label: "Equipo de Uñas", value: "Unas"},
-    { label: "Equipo de Estilistas", value: "Estilista"},
-    { label: "Administrador", value: "Administrador"},
-  ];
-
 export const FormularioVideos = () => {
 
     const dispatch = useDispatch();
 
     const { upload, paraEditar } = useSelector(state => state.cp);
+
+    const { equipos } = useSelector(state => state.eq);
+    
+    const { usuarios } = useSelector(state => state.auth);
+
+    let arregloEquipos = []
+
+    equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
+
+    usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => arregloEquipos.push({ label: e?.name, value: e?.id, team: false }))
+
+    const options = arregloEquipos
     
     const [formValuesTitulo, setFormValuesTitulo] = useState('')
 
@@ -73,42 +77,48 @@ export const FormularioVideos = () => {
             for (let index = 0; index < video.length; index++) {
                 const element = video[index];
 
-                if (element?.video?.includes('?v=')) {
-                    const normalUrl = element?.video?.split('?v=')
-                    const urlAlter = normalUrl[1]?.slice(0, 11)
-                    const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
-
-                } else if (element?.video?.includes('youtu.be')) {
-                    const normalUrl = element?.video?.split('/')
-                    const urlAlter = normalUrl[3]
-                    const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
-
-                } else if (element?.video?.includes('embed')) {
-                    const normalUrl = element?.video?.split('/')
-                    const urlAlter = normalUrl[4]
-                    const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                    video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
-
+                if (element.video === paraEditar?.video[index]?.video) {
+                    video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                 } else {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 5000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-                    
-                    return Toast.fire({
-                        icon: 'error',
-                        title: 'Link de youtube incorrecto'
-                    })
+
+                    if (element?.video?.includes('?v=')) {
+                        const normalUrl = element?.video?.split('?v=')
+                        const urlAlter = normalUrl[1]?.slice(0, 11)
+                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+    
+                    } else if (element?.video?.includes('youtu.be')) {
+                        const normalUrl = element?.video?.split('/')
+                        const urlAlter = normalUrl[3]
+                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+    
+                    } else if (element?.video?.includes('embed')) {
+                        const normalUrl = element?.video?.split('/')
+                        const urlAlter = normalUrl[4]
+                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+    
+                    } else {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 5000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                        
+                        return Toast.fire({
+                            icon: 'error',
+                            title: 'Link de youtube incorrecto'
+                        })
+                    }
                 }
+
 
             }
 
@@ -252,7 +262,6 @@ export const FormularioVideos = () => {
      }
     
     const eliminar = (i) => {
-        console.log(i)
         let newFormValues = [...formValues];
         newFormValues.splice(i, 1);
         setFormValues(newFormValues)
@@ -298,6 +307,17 @@ export const FormularioVideos = () => {
             ]
         }])
         ref?.current?.slickNext()
+     }
+
+    const agregarRespuesta = (i) => {
+        let nuevasPreguntas = [...formEvaluacion[i].respuesta, {respuesta: '', accion: "false"}]
+        setFormEvaluacion([{...formEvaluacion[i], respuesta: nuevasPreguntas}])
+     }
+
+    const eliminarRespuesta = (index, i) => {
+        let nuevasPreguntas = [...formEvaluacion[index].respuesta]
+        nuevasPreguntas.splice(i, 1)
+        setFormEvaluacion([{...formEvaluacion[i], respuesta: nuevasPreguntas}])
      }
     
     const eliminarPregunta = (i) => {
@@ -530,21 +550,42 @@ export const FormularioVideos = () => {
                                             </div>
 
                                             {
-                                                element?.respuesta?.map((element, index2) => {
+                                                element?.respuesta?.map((elemento, index2) => {
                                                     return (
                                                         <>
-                                                            <div key={element + index2} className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
+                                                            <div key={elemento + index2} className="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8 form-group">
                                                                 <label className='form-label'>Respuesta</label>
-                                                                <input name='respuesta' value={element.respuesta} onChange = {(e) => handleChangeQuestion(index, e, index2)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
+                                                                <input name='respuesta' value={elemento.respuesta} onChange = {(e) => handleChangeQuestion(index, e, index2)} type="text" placeholder='Respuesta de la pregunta' className='form-control' />
                                                                 {touched?.evaluacion?.filter(evaluacion => evaluacion?.respuesta[index]?.respuesta[index2]) && errors?.evaluacion?.filter(evaluacion => evaluacion?.respuesta[index]?.respuesta[index2]) && <span style={{color: 'red'}}>{errors?.evaluacion[index]?.respuesta[index2]?.respuesta}</span>}
                                                             </div>
 
-                                                            <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                                            <div className="col-xs-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 col-xxl-1 text-center">
                                                                 <label className='form-label'>Opciones</label>
-                                                                <select disabled name="accion" value={element.accion} className='form-control' onChange={(e) => handleChangeQuestion(index, e)}>
-                                                                    <option value={true}>Correcta</option>
-                                                                    <option value={false}>Incorrecta</option>
-                                                                </select>
+                                                                {
+                                                                    (elemento.accion === 'true')
+                                                                        ?
+                                                                    <i style={{fontSize: '23px'}} className="text-success bi bi-check-circle-fill"></i> 
+                                                                        :
+                                                                    <i style={{fontSize: '23px'}} className="bi bi-x-circle-fill text-danger"></i> 
+                                                                }
+                                                            </div>
+
+                                                            <div className="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2 d-flex align-items-center mt-3">
+                                                                {
+                                                                    (element?.respuesta?.length === index2 + 1)
+                                                                        &&
+                                                                    <button onClick={() => agregarRespuesta(index)} type='button' className='btn btn-primary mx-1'>
+                                                                        <i className="bi bi-plus-lg"></i>
+                                                                    </button>  
+                                                                }
+                
+                                                                {
+                                                                    (element?.respuesta?.length > 1 && index2 > 0)
+                                                                        &&
+                                                                    <button onClick={() => eliminarRespuesta(index, index2)} type='button' className='btn btn-primary mx-1'>
+                                                                        <i className="bi bi-trash-fill"></i>
+                                                                    </button>
+                                                                }
                                                             </div>
                                                         </>
                                                     )

@@ -16,14 +16,13 @@ export const VideosComponent = () => {
       <>
       <Navb />
         <Container className='my-4'>
-          <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary form-control mb-3'>Tomar evaluación</button>
           <div className='text-black'>
               <div className="row">
                   <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
                       <CapacitacionTema />
 
-                      <h4 className='p-4'>Descripcion general</h4>
-                      <p className='p-4'>{capacitacionActiva?.descripcion}</p>
+                      <h4 className='mt-4'>Descripcion general</h4>
+                      <p style={{fontSize: '17px'}}>{capacitacionActiva?.descripcion}</p>
                   </div>
 
                   <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
@@ -31,6 +30,7 @@ export const VideosComponent = () => {
                   </div>
               </div>
           </div>
+
         </Container>
 
         {
@@ -39,6 +39,9 @@ export const VideosComponent = () => {
           <ModalEvaluacion modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
         }
 
+        <div style={{position: 'fixed', marginTop: '-100px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
+          <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>Tomar evaluación</button>
+        </div>
       </>
   )
 }

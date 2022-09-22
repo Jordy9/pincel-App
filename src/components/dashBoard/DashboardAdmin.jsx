@@ -26,7 +26,7 @@ import {
  } from 'date-fns'
 import { useResponsive } from '../../hooks/useResponsive'
 import { useDispatch } from 'react-redux'
-import { filterResenaSlice } from '../../store/resena/resenaSlice'
+import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -64,8 +64,8 @@ export const DashboardAdmin = () => {
 
   const [selectRange, setSelectRange] = useState(
     {
-      startDate: defineds.startOfMonth,
-      endDate: defineds.endOfMonth,
+      startDate: defineds?.startOfMonth,
+      endDate: defineds?.endOfMonth,
       key: 'selection',
       AllMonth: false,
       ThreeMonth: false
@@ -86,7 +86,7 @@ export const DashboardAdmin = () => {
 
   equipos?.map(equipo => usuariosToFilter.push({label: `Equipo de ${equipo?.name}`, value: equipo.name, team: true}))
 
-  usuarios?.map(usuario => usuariosToFilter.push({label: usuario?.name, value: usuario?.id, team: false}))
+  usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(usuario => usuariosToFilter.push({label: usuario?.name, value: usuario?.id, team: false}))
 
   let usuarioFiltrado
 
@@ -115,9 +115,9 @@ export const DashboardAdmin = () => {
       :
     moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.endDate, 'Y/M/D')))
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.endDate, 'Y/M/D')))
       ||
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.endDate, 'Y/M/D')))
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.endDate, 'Y/M/D')))
   )
 
     resenasFilterArrayDateAndEstado.filter(
@@ -182,9 +182,9 @@ export const DashboardAdmin = () => {
       :
     moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
       : 
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.endDate, 'Y/M/D')))
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.endDate, 'Y/M/D')))
       ||
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange.endDate, 'Y/M/D')))
+    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.endDate, 'Y/M/D')))
   )
 
   const resenasFiltradas = resenasFiltradasPorRango?.filter(
@@ -248,66 +248,73 @@ export const DashboardAdmin = () => {
 
   const staticRanges = createStaticRanges([
     {
+      label: 'Este mes',
+      range: () => ({
+        startDate: defineds?.startOfMonth,
+        endDate: defineds?.endOfMonth,
+        AllMonth: false,
+        ThreeMonth: false,
+        key: 'selection',
+      }),
+    },
+    {
       label: 'Hoy',
       range: () => ({
-        startDate: defineds.startOfToday,
-        endDate: defineds.endOfToday,
+        startDate: defineds?.startOfToday,
+        endDate: defineds?.endOfToday,
         AllMonth: false,
-        ThreeMonth: false
+        ThreeMonth: false,
+        key: 'selection',
       }),
     },
     {
       label: 'Esta semana',
       range: () => ({
-        startDate: defineds.startOfWeek,
-        endDate: defineds.endOfWeek,
+        startDate: defineds?.startOfWeek,
+        endDate: defineds?.endOfWeek,
         AllMonth: false,
-        ThreeMonth: false
+        ThreeMonth: false,
+        key: 'selection',
       }),
     },
     {
       label: 'Semana pasada',
       range: () => ({
-        startDate: defineds.startOfLastWeek,
-        endDate: defineds.endOfLastWeek,
+        startDate: defineds?.startOfLastWeek,
+        endDate: defineds?.endOfLastWeek,
         AllMonth: false,
-        ThreeMonth: false
-      }),
-    },
-    {
-      label: 'Este mes',
-      range: () => ({
-        startDate: defineds.startOfMonth,
-        endDate: defineds.endOfMonth,
-        AllMonth: false,
-        ThreeMonth: false
+        ThreeMonth: false,
+        key: 'selection',
       }),
     },
     {
       label: 'Mes pasado',
       range: () => ({
-        startDate: defineds.startOfLastMonth,
-        endDate: defineds.endOfLastMonth,
+        startDate: defineds?.startOfLastMonth,
+        endDate: defineds?.endOfLastMonth,
         AllMonth: false,
-        ThreeMonth: false
+        ThreeMonth: false,
+        key: 'selection',
       }),
     },
     {
       label: 'Hace 3 meses',
       range: () => ({
-        startDate: defineds.startOfLastThreeMonths,
-        endDate: defineds.endOfLastThreeMonths,
+        startDate: defineds?.startOfLastThreeMonths,
+        endDate: defineds?.endOfLastThreeMonths,
         AllMonth: true,
-        ThreeMonth: true
+        ThreeMonth: true,
+        key: 'selection',
       }),
     },
     {
       label: "Este año",
       range: () => ({
-        startDate: defineds.startOfYear,
-        endDate: defineds.endOfYear,
+        startDate: defineds?.startOfYear,
+        endDate: defineds?.endOfYear,
         AllMonth: true,
-        ThreeMonth: false
+        ThreeMonth: false,
+        key: 'selection',
       })
     }
   ]);
@@ -320,12 +327,12 @@ export const DashboardAdmin = () => {
 
   const handledRange = (range, label) => {
     setSelectRange(range)
-    setChangeDate(range.startDate)
-    setChangeDateRange(range.endDate)
-    setShowAllMonth(range.AllMonth)
-    setShowThreeMonth(range.ThreeMonth)
+    setChangeDate(range?.startDate)
+    setChangeDateRange(range?.endDate)
+    setShowAllMonth(range?.AllMonth)
+    setShowThreeMonth(range?.ThreeMonth)
 
-    if (range.startDate !== range.endDate) {
+    if (range?.startDate !== range?.endDate) {
       setShowFilter(false)
     }
 
@@ -352,6 +359,14 @@ export const DashboardAdmin = () => {
     dispatch(filterResenaSlice(resenasFiltradas))
     
   }, [changeDate, changeDateRange, dispatch])
+
+  useEffect(() => {
+    if (usuarioFiltrado?.length !== 0) {
+      dispatch(showFilter0(false))
+    } else {
+      dispatch(showFilter0(true))
+    }
+  }, [usuarioFiltrado, dispatch])
   
   return (
     <Sidebar>
@@ -402,23 +417,27 @@ export const DashboardAdmin = () => {
               //     inputRanges = {[]}
               //     locale={es}
               //     ranges={[selectRange]}
-              //     onChange={(range) => handledRange(range.selection)}
+              //     onChange={(range) => handledRange(range?.selection)}
               //   />
 
               <div>
                 <DateRange
+                  editableDateInputs={true}
+                  moveRangeOnFirstSelection={false}
                   weekStartsOn={0}
                   staticRanges={[]}
                   inputRanges = {[]}
+                  color = 'rgb(89, 7, 211)'
+                  rangeColors={[]}
                   locale={es}
                   ranges={[selectRange]}
-                  onChange={(range) => handledRange(range.selection)}
+                  onChange={(range) => handledRange(range?.selection)}
                 />
               </div>
             }
 
             <div className='p-1 mt-2' style={{justifyContent: 'space-between', display: 'flex'}}>
-              <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? 'Filtrar por rango' : 'Cerrar ventana de filtro'}</button>
+              <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? (changeDate && changeDateRange) ? `Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}` : 'Filtrar por rango' : 'Cerrar ventana de filtro'}</button>
               <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
             </div>
             <div div className='p-1 my-2' style={{justifyContent: 'space-between', display: 'flex', overflowX: 'auto'}}>
