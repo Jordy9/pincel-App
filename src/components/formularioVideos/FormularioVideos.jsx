@@ -85,19 +85,19 @@ export const FormularioVideos = () => {
                         const normalUrl = element?.video?.split('?v=')
                         const urlAlter = normalUrl[1]?.slice(0, 11)
                         const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
     
                     } else if (element?.video?.includes('youtu.be')) {
                         const normalUrl = element?.video?.split('/')
                         const urlAlter = normalUrl[3]
                         const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
     
                     } else if (element?.video?.includes('embed')) {
                         const normalUrl = element?.video?.split('/')
                         const urlAlter = normalUrl[4]
                         const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date() + urlAlter + urlModif,  createdAt: new Date(), check: []}
+                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
     
                     } else {
                         const Toast = Swal.mixin({
