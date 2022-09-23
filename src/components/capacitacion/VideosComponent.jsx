@@ -25,7 +25,7 @@ export const VideosComponent = () => {
                       <p style={{fontSize: '17px'}}>{capacitacionActiva?.descripcion}</p>
                   </div>
 
-                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4" style={{overflowY: 'auto'}}>
                     <Sidebar />
                   </div>
               </div>
