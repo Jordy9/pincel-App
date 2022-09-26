@@ -21,9 +21,13 @@ export const FormularioVideos = () => {
 
     let arregloEquipos = []
 
-    equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
+    const [chargeUsersTeam, setChargeUsersTeam] = useState(false)
 
-    usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => arregloEquipos.push({ label: e?.name, value: e?.id, team: false }))
+    if (chargeUsersTeam) {
+        equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
+    
+        usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => arregloEquipos.push({ label: e?.name, value: e?.id, team: false }))
+    }
 
     const options = arregloEquipos
     
@@ -415,6 +419,8 @@ export const FormularioVideos = () => {
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                         <label>Equipos</label>
                         <MultiSelect
+                            isLoading = {(chargeUsersTeam && arregloEquipos?.length === 0)}
+                            onMenuToggle={(e) => setChargeUsersTeam(e)}
                             options={options}
                             value={equiposCapacitacion}
                             onChange={setEquiposCapacitacion}

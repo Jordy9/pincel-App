@@ -87,7 +87,7 @@ export const TableContent = (props) => {
                         &&
                     <td className='d-flex justify-content-center'>
                         <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                            <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
+                            <img loading='lazy' src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
                         </div>
                     </td>
                 }

@@ -83,7 +83,7 @@ td {
   .secondary {
     background-color: rgb(7, 36, 65) !important;
     border-top-right-radius: 100px;
-    height: 100vh !important;
+    height: 100% !important;
   }
 
   .secondaryNav {

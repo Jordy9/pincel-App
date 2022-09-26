@@ -9,6 +9,7 @@ import { messageSlice } from './message/messageSlice'
 import { notificacionesSlice } from './notificaciones/notificacionesSlice'
 import { resenaSlice } from './resena/resenaSlice'
 import { socketSlice } from './socket/socketSlice'
+import { toShowResenaSlice } from './toShowResena/toShowResenaSlice'
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     co: comunicadoSlice.reducer,
     ev: evaluacionSlice.reducer,
     eq: equipoSlice.reducer,
+    to: toShowResenaSlice.reducer
   },
 })

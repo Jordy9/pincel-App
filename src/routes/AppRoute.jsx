@@ -22,6 +22,8 @@ import { Evaluacion } from '../components/home/Evaluacion';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { obtenerEquipo } from '../store/equipo/thunk';
+import { CustomEvaluacion } from '../components/home/CustomEvaluacion';
+import { obtenerToShowResena } from '../store/toShowResena/thunk';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -44,6 +46,7 @@ export const AppRoute = () => {
     dispatch(obtenerComunicados())
     dispatch(obtenerEvaluacion())
     dispatch(obtenerEquipo())
+    dispatch(obtenerToShowResena())
   }, [dispatch])
 
   useEffect(() => {

@@ -51,7 +51,7 @@ export const Sidebar = ({children}) => {
           ?
         <div className='row'>
           <div className="col-2 p-1">
-              <div style={{width: '100%', height: '70vh', backgroundColor: 'rgb(10, 25, 45)', color: 'white', borderRadius: '35px'}}>
+              <div style={{width: '100%', height: '100%', backgroundColor: 'rgb(10, 25, 45)', color: 'white', borderRadius: '35px'}}>
                 <NavLink className='d-flex justify-content-center p-3' to='/perfil'>
                   <div className='d-flex justify-content-center' style={{width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                     <img src={usuarioActivo?.urlImage || "https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg"} className='img-fluid' alt="" />
@@ -61,7 +61,7 @@ export const Sidebar = ({children}) => {
                 <div className='d-flex justify-content-center'>
                   <button onClick={navigateTo} className='btn btn-primary text-white'>Ver perfil</button>
                 </div>
-                <div className='my-5 secondary'>
+                <div className='my-5 secondary' style={{overflowY: 'auto'}}>
                   {
                     (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
                       &&
