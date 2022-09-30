@@ -3,6 +3,7 @@ import { authSlice } from './auth/authSlice'
 import { capacitacionSlice } from './capacitacion/capacitacionSlice'
 import { chatSlice } from './chat/chatSlice'
 import { comunicadoSlice } from './comunicado/comunicadoSlice'
+import { customResenaSlice } from './customResena/customResenaSlice'
 import { equipoSlice } from './equipo/equipoSlice'
 import { evaluacionSlice } from './evaluacion/evaluacionSlice'
 import { messageSlice } from './message/messageSlice'
@@ -23,6 +24,7 @@ export const store = configureStore({
     co: comunicadoSlice.reducer,
     ev: evaluacionSlice.reducer,
     eq: equipoSlice.reducer,
-    to: toShowResenaSlice.reducer
+    to: toShowResenaSlice.reducer,
+    cr: customResenaSlice.reducer
   },
 })

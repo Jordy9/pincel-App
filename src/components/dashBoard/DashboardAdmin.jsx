@@ -27,6 +27,11 @@ import {
 import { useResponsive } from '../../hooks/useResponsive'
 import { useDispatch } from 'react-redux'
 import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
+import { filterCustomResena, filterCustomResenaTodosMeses } from '../../helper/filterCustomResena'
+import { CardsAdminCustomResena } from './CardsAdminCustomResena'
+import { filterResenaRango, ReseñasfiltradasTodosMeses } from '../../helper/filterResena'
+import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
+import { filterCustomResenaSlice } from '../../store/customResena/customResenaSlice'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -58,6 +63,16 @@ export const DashboardAdmin = () => {
 
   const { equipos } = useSelector(state => state.eq);
 
+  const { toShowResena, showResena } = useSelector(state => state.to);
+
+  const [changeShowResena, setChangeShowResena] = useState(toShowResena[0]?.showResena)
+
+  useEffect(() => {
+    setChangeShowResena(toShowResena[0]?.showResena)
+  }, [toShowResena])
+  
+  const { resena: customResena } = useSelector(state => state.cr);
+
   const [showThreeMonth, setShowThreeMonth] = useState(false)
 
   const [showThreeMonths, setShowThreeMonths] = useState(false)
@@ -65,6 +80,8 @@ export const DashboardAdmin = () => {
   const [chargeUsersTeam, setChargeUsersTeam] = useState(false)
 
   const [showAllMonth, setShowAllMonth] = useState(false)
+
+  const [showThisWeek, setShowThisWeek] = useState(false)
 
   const [selectRange, setSelectRange] = useState(
     {
@@ -109,124 +126,23 @@ export const DashboardAdmin = () => {
 
   let ArregloFilterDate
 
-  if (usuarioFiltrado?.length !== 0) {
-    resenasFilterArrayDateAndEstado = resena.filter(
-      resena => (changeDate) 
-        ?
-      (changeDateRange && changeDate)
-        ? 
-      (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDateRange, 'Y/M/D')))
-        ||
-      (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDateRange, 'Y/M/D')))
-        :
-      moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
-        : 
-      (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.endDate, 'Y/M/D')))
-        ||
-      (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.endDate, 'Y/M/D')))
-    )
-  
-      resenasFilterArrayDateAndEstado.filter(
-        resena => resena?.estado === true 
-          && 
-        resena?.calificacion?.length !== 0
-      )?.map(resena => (
-        [ArregloFilterDate] = resena?.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))),
-        (ArregloFilterDate !== undefined)
-          &&
-        resenasFilterArray.push({calificacion: [ArregloFilterDate]})
-      ))
-  }
+  resenasFilterArray = filterResenaUsuarioEquipoRango(resena, usuarioFiltrado, resenasFilterArrayDateAndEstado, changeDate, changeDateRange, selectRange, ArregloFilterDate, resenasFilterArray)
 
   // Filtro de las resenas por usuarios o equipos de todos los meses
 
   let SumaResenasPorTodosLosMeses = []
 
-  const MonthFilterTeam = (index, [resena]) => {
-
-    if (resena !== undefined) {
-      SumaResenasPorTodosLosMeses.push(resena)
-    }
-  
-    let suma = 0
-
-    SumaResenasPorTodosLosMeses?.map(resena => suma = suma + resena?.calificacion)
-
-    const totalSumado = suma/SumaResenasPorTodosLosMeses?.length
-
-    const porcentage = (5*totalSumado) / 100
-
-    return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? porcentage : 0 : porcentage
-
-  }
-
   let calificacionPorMesesDeEquipos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-  if (usuarioFiltrado?.length !== 0) {
-    for (let index = 0; index < 12; index++) {
-      SumaResenasPorTodosLosMeses = []
-  
-      resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
-        (resena.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))))
-          &&
-        (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
-          ?
-        calificacionPorMesesDeEquipos[index] = MonthFilterTeam(index, resena.calificacion.filter(calificacion => usuarioFiltrado?.some(usuario => calificacion?.id?.includes(usuario?.id))))
-          :
-        null
-      ))
-    }
-  }
-  
+  calificacionPorMesesDeEquipos = filterResenaUsuarioEquipoTodosMeses(resena, SumaResenasPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionPorMesesDeEquipos, changeDate)
 
   // Filtro de las resenas por fecha y rango de fecha en general
-  
-  const resenasFiltradasPorRango = resena?.filter(
-    resena => (changeDate) 
-      ?
-    (changeDateRange && changeDate)
-      ? 
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDateRange, 'Y/M/D')))
-      ||
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(changeDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(changeDateRange, 'Y/M/D')))
-      :
-    moment(resena?.createdAt, 'Y/M/D').isSame(moment(changeDate).format('Y/M/D'))
-      : 
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.endDate, 'Y/M/D')))
-      ||
-    (moment(resena?.createdAt, 'Y/M/D').isSameOrAfter(moment(selectRange?.startDate, 'Y/M/D')) && moment(resena?.createdAt, 'Y/M/D').isSameOrBefore(moment(selectRange?.endDate, 'Y/M/D')))
-  )
 
-  const resenasFiltradas = resenasFiltradasPorRango?.filter(
-    resena => resena?.estado === true
-      && 
-    resena?.calificacion?.length !== 0
-  )
+  const resenasFiltradas = filterResenaRango(resena, changeDate, changeDateRange, selectRange, showResena)
 
   // Reseñas filtradas por los meses
 
   let SumaResenasPorMes = []
-  
-  const MonthFilter = (index, resena) => {
-
-    SumaResenasPorMes.push(resena)
-    const filtroPorMes = SumaResenasPorMes.reduce(
-      (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
-      ['Alphabet'],
-    )
-
-    const sinAlphabet = filtroPorMes.splice(1)
-
-    let suma = 0
-
-    sinAlphabet?.map(resena => suma = suma + resena?.calificacion)
-
-    const totalSumado = suma/sinAlphabet?.length
-
-    const porcentage = (5*totalSumado) / 100
-
-    return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? porcentage : 0 : porcentage
-  }
 
   let calificacionPorMeses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -238,19 +154,7 @@ export const DashboardAdmin = () => {
     
   }, [showThreeMonth, changeDate, changeDateRange])
 
-  if (showThreeMonth || showAllMonth) {
-    for (let index = 0; index < 12; index++) {
-      SumaResenasPorMes = []
-  
-      resena.filter(resena => resena?.estado === true && resena?.calificacion?.length !== 0).map(resena => (
-        (moment(resena.createdAt).format('M') - 1 === index && moment(resena?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
-          ?
-        calificacionPorMeses[index] = MonthFilter(index, resena)
-          :
-        null
-      ))
-    }
-  }
+  calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate)
 
   // Fin de los filtros
 
@@ -266,6 +170,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfMonth,
         AllMonth: false,
         ThreeMonth: false,
+        thisWeek: false,
         key: 'selection',
       }),
     },
@@ -276,6 +181,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfToday,
         AllMonth: false,
         ThreeMonth: false,
+        thisWeek: false,
         key: 'selection',
       }),
     },
@@ -286,6 +192,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfWeek,
         AllMonth: false,
         ThreeMonth: false,
+        thisWeek: true,
         key: 'selection',
       }),
     },
@@ -296,6 +203,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfLastWeek,
         AllMonth: false,
         ThreeMonth: false,
+        thisWeek: false,
         key: 'selection',
       }),
     },
@@ -306,6 +214,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfLastMonth,
         AllMonth: false,
         ThreeMonth: false,
+        thisWeek: false,
         key: 'selection',
       }),
     },
@@ -316,6 +225,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfLastThreeMonths,
         AllMonth: true,
         ThreeMonth: true,
+        thisWeek: false,
         key: 'selection',
       }),
     },
@@ -326,6 +236,7 @@ export const DashboardAdmin = () => {
         endDate: defineds?.endOfYear,
         AllMonth: true,
         ThreeMonth: false,
+        thisWeek: false,
         key: 'selection',
       })
     }
@@ -341,6 +252,7 @@ export const DashboardAdmin = () => {
     setChangeDateRange(range?.endDate)
     setShowAllMonth(range?.AllMonth)
     setShowThreeMonth(range?.ThreeMonth)
+    setShowThisWeek(range.thisWeek)
 
     if (range?.startDate !== range?.endDate) {
       setShowFilter(false)
@@ -352,7 +264,7 @@ export const DashboardAdmin = () => {
   }
 
   useEffect(() => {
-    if (!showAllMonth && moment(changeDate).format('M') !== moment(changeDateRange).format('M')) {
+    if (!showAllMonth && moment(changeDate).format('M') !== moment(changeDateRange).format('M') && moment(defineds.endOfMonth, 'M/D/YY').diff(changeDate, 'days') === 7) {
       setShowAllMonth(true)
       setShowThreeMonth(true)
     }
@@ -365,8 +277,9 @@ export const DashboardAdmin = () => {
   const [showTransp, setShowTransp] = useState(false)
 
   useEffect(() => {
-
-    dispatch(filterResenaSlice(resenasFiltradas))
+    if (changeShowResena === 'Normal') {
+      dispatch(filterResenaSlice(resenasFiltradas))
+    }
     
   }, [changeDate, changeDateRange, dispatch])
 
@@ -377,6 +290,24 @@ export const DashboardAdmin = () => {
       dispatch(showFilter0(true))
     }
   }, [usuarioFiltrado, dispatch])
+
+  // Filtro por rango de las reseñas personalizadas
+
+  const customResenaPorRango = filterCustomResena(customResena, changeDate, changeDateRange, selectRange)
+
+  useEffect(() => {
+
+    if (changeShowResena === 'Custom') {
+      dispatch(filterCustomResenaSlice(customResenaPorRango))
+    }
+    
+  }, [changeDate, changeDateRange, dispatch, selectRange.startDate])
+
+  // Filtro por todos los meses de las reseñas personalizadas
+  
+  const customResenaTodosLosMeses = filterCustomResenaTodosMeses(customResena, showThreeMonth, changeDate, changeDateRange, showThreeMonths, showAllMonth)
+
+  console.log(resenasFiltradas)
   
   return (
     <Sidebar>
@@ -406,7 +337,7 @@ export const DashboardAdmin = () => {
             </div>
 
             {
-              (usuariosToFilter)
+              (usuariosToFilter && changeShowResena === 'Normal')
                 &&
                 <MultiSelect
                   isLoading = {(chargeUsersTeam && usuariosToFilter?.length === 0)}
@@ -468,17 +399,44 @@ export const DashboardAdmin = () => {
           </div>
 
           <div className={`row ${(showFloat) ? 'mb-3' : 'my-3'}`} style = {{marginTop: (showFloat) && '220px'}}>
-            <CardsAdmin 
-              resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
-              mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
-              calificacionPorMeses = {(usuarioFiltrado?.length !== 0) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
-              show = {showAllMonth}
-              respWidth = { respWidth }
-            />
+            {
+              (changeShowResena === 'Normal')
+                ?
+              <CardsAdmin 
+                resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
+                mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
+                calificacionPorMeses = {(usuarioFiltrado?.length !== 0) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
+                show = {showAllMonth}
+                respWidth = { respWidth }
+                changeShowResena = {changeShowResena}
+                setChangeShowResena = {setChangeShowResena}
+                defineds = {defineds.endOfMonth}
+                changeDate = {changeDate}
+                changeDateRange = {changeDateRange}
+                showThisWeek = {showThisWeek}
+                showThreeMonth = {showThreeMonth}
+              />
+                :
+              <CardsAdminCustomResena 
+                resenasFiltradas = {(customResenaPorRango?.length !== 0) ? customResenaPorRango : []} 
+                mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
+                calificacionPorMeses = {(customResenaTodosLosMeses?.length !== 0) && customResenaTodosLosMeses}
+                show = {showAllMonth}
+                respWidth = { respWidth }
+                changeShowResena = {changeShowResena}
+                setChangeShowResena = {setChangeShowResena}
+                defineds = {defineds.endOfMonth}
+                changeDate = {changeDate}
+                changeDateRange = {changeDateRange}
+                showThisWeek = {showThisWeek}
+                showThreeMonth = {showThreeMonth}
+              />
+            }
+
           </div>
 
           <div className="row">
-            <TableAdmin usuarioFiltrado = {(usuarioFiltrado?.length !== 0) ? usuarioFiltrado : usuarios} />
+            <TableAdmin usuarioFiltrado = {(usuarioFiltrado?.length !== 0) ? usuarioFiltrado : usuarios} toShowResena = {toShowResena} changeShowResena = {changeShowResena} />
           </div>
       </div>
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment';
 import Swal from "sweetalert2"
 import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, filterResenaSlice, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
 
@@ -13,7 +14,10 @@ export const obtenerResena = () => {
             const resp = await axios.get(`${endPoint}/resena`, {headers: {'x-token': token}})
     
             dispatch(getResena(resp.data.resena))
-            dispatch(filterResenaSlice(resp.data.resena))
+
+            const resena = resp.data.resena?.filter(resena => moment(resena?.createdAt).format('M/Y') === moment().format('M/Y'))
+
+            dispatch(filterResenaSlice(resena))
 
         } catch (error) {
         }

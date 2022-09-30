@@ -11,9 +11,15 @@ import { ChatScreen } from '../components/chat2.0/ChatScreen';
 import { Comunicado } from '../components/comunicado/Comunicado';
 import { ListadoComunicados } from '../components/listadoComunicados/ListadoComunicados';
 import { Evaluacion } from '../components/home/Evaluacion';
+import { TipoResenas } from '../components/tipoResenas/TipoResenas';
+import { useSelector } from 'react-redux';
+import { Spinner } from '../components/Spinner';
 
 
 export const AdminRoute = () => {
+
+  const { toShowResena } = useSelector(state => state.to);
+  
   return (
     <Routes>
         <Route path='/pincel' element = {<Dashboard />} />
@@ -27,6 +33,7 @@ export const AdminRoute = () => {
         <Route path='/ListComunicados' element = {<ListadoComunicados />} />
         <Route path='/perfil' element = {<Perfil />} />
         <Route path='/Evaluacion' element = {<Evaluacion />} />
+        <Route path='/TipoResenas' element = {(toShowResena[0]?.inputType) ? <TipoResenas /> : <Spinner />} />
 
         <Route path='/*' element = {<Navigate to='/pincel-admin' />} />
     </Routes>

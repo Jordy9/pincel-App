@@ -4,8 +4,9 @@ import { TableSpreedList } from './TableSpreedList';
 import { CircularProgressbar, buildStyles  } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useResponsive } from '../../hooks/useResponsive';
+import { TableSpreedListCustomResena } from './TableSpreedListCustomResena';
 
-export const TableAdmin = ({usuarioFiltrado, changeDate, changeDateRange}) => {
+export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) => {
 
     const percentage = 66;
 
@@ -22,23 +23,41 @@ export const TableAdmin = ({usuarioFiltrado, changeDate, changeDateRange}) => {
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-xxl-10 my-2">
             <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '300px'}}>
-                <table className="table borderless">
-                    <thead>
-                        <tr>
-                            {
-                                (respWidth > 992)
-                                    &&
-                                <th scope="col">Foto</th>
-                            }
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Promedio de las evaluaciones</th>
-                            <th scope="col">Promedio de las reseñas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <TableSpreedList usuarioFiltrado = {usuarioFiltrado} />
-                    </tbody>
-                </table>
+
+                {
+                    (changeShowResena === 'Normal')
+                        ?
+                    <table className="table borderless">
+                        <thead>
+                            <tr>
+                                {
+                                    (respWidth > 992)
+                                        &&
+                                    <th scope="col">Foto</th>
+                                }
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Promedio de las evaluaciones</th>
+                                <th scope="col">Promedio de las reseñas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <TableSpreedList usuarioFiltrado = {usuarioFiltrado} />
+                        </tbody>
+                    </table>
+                        :
+                    <table className="table borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">Calificación</th>
+                                <th scope="col">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <TableSpreedListCustomResena />
+                        </tbody>
+                    </table>
+                }
             </div>
         </div>
 

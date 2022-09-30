@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { TableContentResena } from './TableContentResena'
 
 export const TableSpreedListResena = ({setModalShowDetalle}) => {
-    const { resenaFilterSlice } = useSelector(state => state.rs)
+    const { resenaFilterSlice, showResena } = useSelector(state => state.rs)
 
     const { activeUser } = useSelector(state => state.auth)
 
@@ -13,7 +13,7 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
             {
                 (resenaFilterSlice)
                     &&
-                    resenaFilterSlice?.map(resena => {
+                    resenaFilterSlice?.filter(resena => (!showResena) ? resena?.estado === true : resena)?.map(resena => {
                         return (
                             (resena.calificacion.filter(resena => (resena.id === activeUser?.id) !== 0))
                                 &&

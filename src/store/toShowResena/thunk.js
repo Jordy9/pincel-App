@@ -21,12 +21,11 @@ export const obtenerToShowResena = () => {
     }
 }
 
-export const actualizarResena = (props) => {
+export const actualizarResena = ({ _id, showResena, title, pregunta, inputType }) => {
     return async(dispatch) => {
-        const {_id, showResena} = props
 
         try {
-            const resp = await axios.put(`${endPoint}/toShowResena/update/${_id}`, { showResena }, {headers: {'x-token': token}})
+            const resp = await axios.put(`${endPoint}/toShowResena/update/${_id}`, { showResena, title, pregunta, inputType }, {headers: {'x-token': token}})
     
             dispatch(updateToShowResena(resp.data.toShowResena))
 

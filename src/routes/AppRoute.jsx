@@ -24,6 +24,7 @@ import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { obtenerEquipo } from '../store/equipo/thunk';
 import { CustomEvaluacion } from '../components/home/CustomEvaluacion';
 import { obtenerToShowResena } from '../store/toShowResena/thunk';
+import { obtenerCustomResena } from '../store/customResena/thunk';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -31,6 +32,8 @@ export const AppRoute = () => {
   const dispatch = useDispatch();
 
   const { uid, usuarioActivo } = useSelector(state => state.auth);
+
+  const { toShowResena } = useSelector(state => state.to);
 
   const {socket, online, conectarSocket, desconectarSocket} = useSocket(`${process.env.REACT_APP_API_URL.split('/api')[0]}`)
 
@@ -47,6 +50,7 @@ export const AppRoute = () => {
     dispatch(obtenerEvaluacion())
     dispatch(obtenerEquipo())
     dispatch(obtenerToShowResena())
+    dispatch(obtenerCustomResena())
   }, [dispatch])
 
   useEffect(() => {
@@ -108,7 +112,7 @@ export const AppRoute = () => {
         <Routes>
           <Route path='/login' element = {<Login />} />
           <Route path='/registro' element = {<Registro />} />
-          <Route path='/Evaluacion' element = {<Evaluacion />} />
+          <Route path='/Evaluacion' element = { (toShowResena[0]?.showResena === 'Normal') ? <Evaluacion /> : <CustomEvaluacion />} />
 
           <Route path='/*' element = {<Navigate to='/login' />} />
         </Routes>

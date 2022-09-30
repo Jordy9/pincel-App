@@ -5,25 +5,15 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 import moment from 'moment';
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showThreeMonth } ) => {
-
-  const FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas?.filter(resena => resena?.estado === true)?.reduce(
-    (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
-    ['Alphabet'],
-  );
-
-  console.log(resenasFiltradas)
-
-  const sinAlphabet = (resenasFiltradas) ? FiltroCalificacionResena.slice(1) : []
+export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showThreeMonth } ) => {
 
   let suma = 0
 
-  sinAlphabet?.map(resena => suma = suma + resena?.calificacion)
+  resenasFiltradas?.map(resena => suma = suma + resena?.calificacion)
 
-  const totalSumado = suma/sinAlphabet?.length
+  const totalSumado = suma/resenasFiltradas?.length
 
   const porcentage = (5*totalSumado) / 100
-
 
   const options = {
     responsive: true,
@@ -168,6 +158,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     }
   };
 
+  
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
   const labels = (!show) ? [labels1.slice((mes[0] - 1), (mes[1] || 0))] : labels1
@@ -177,10 +168,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       : 
-    (showThreeMonth)
-      ?
-    labels.slice(5, 8)
-      :
     labels,
     datasets: [
       {
@@ -195,16 +182,12 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) 
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
-      :
-    (showThreeMonth)
-      ?
-    labels.slice(5, 8)
-      :
+      : 
     labels,
     datasets: [
       {
         label: 'Promedio',
-        data: (!show) ? [porcentage?.toFixed(1)] : (showThreeMonth) ? calificacionPorMeses?.slice(5, 8)?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        data: (!show) ? [porcentage?.toFixed(1)] : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
@@ -214,7 +197,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     <>
         <div className="row">
           <div className='col-xs-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 ml-auto'>
-            <select defaultChecked = 'Normal' className='form-select' onClick={({target}) => setChangeShowResena(target.value)}>
+            <select defaultValue={'Custom'} className='form-select' onClick={({target}) => setChangeShowResena(target.value)}>
               <option value="Normal">Normal</option>
               <option value="Custom">Personalizada</option>
             </select>
@@ -232,7 +215,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
           <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
-            <h6 className='text-center'>Total de reseñas {(resenasFiltradas) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : 0}</h6>
+            <h6 className='text-center'>Total de reseñas {resenasFiltradas?.length}</h6>
             <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
           </div>
         </div>
