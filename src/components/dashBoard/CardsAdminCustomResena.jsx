@@ -183,11 +183,15 @@ export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPor
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       : 
+    (showThreeMonth)
+      ?
+    labels.slice(mes[0] - 1, mes[1])
+      :
     labels,
     datasets: [
       {
         label: 'Promedio',
-        data: (!show) ? [porcentage?.toFixed(1)] : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        data: (!show) ? [porcentage?.toFixed(1)] : (showThreeMonth) ? calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],

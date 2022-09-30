@@ -74,7 +74,7 @@ export const TableContent = (props) => {
                         <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={10} text={`${10}%`} />
                     </div>
                 </td>
-                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseañas`}>{parseInt(suma/division) || 0}</td>
+                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
             </>
         }
 
