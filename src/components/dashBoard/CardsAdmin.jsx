@@ -7,12 +7,19 @@ import moment from 'moment';
 
 export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showThreeMonth } ) => {
 
-  const FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas?.filter(resena => resena?.estado === true)?.reduce(
-    (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
-    ['Alphabet'],
-  );
+  let FiltroCalificacionResena
 
-  console.log(resenasFiltradas)
+  if (resenasFiltradas && resenasFiltradas[0]?.estado) {
+    FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas?.filter(resena => resena?.estado === true)?.reduce(
+      (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
+      ['Alphabet'],
+    );
+  } else {
+    FiltroCalificacionResena = (resenasFiltradas) && resenasFiltradas?.reduce(
+      (previousValue, currentValue) => [...previousValue, ...currentValue?.calificacion],
+      ['Alphabet'],
+    );
+  }
 
   const sinAlphabet = (resenasFiltradas) ? FiltroCalificacionResena.slice(1) : []
 
@@ -23,7 +30,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   const totalSumado = suma/sinAlphabet?.length
 
   const porcentage = (5*totalSumado) / 100
-
 
   const options = {
     responsive: true,
@@ -169,17 +175,32 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   };
 
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  
-  const labels = (!show) ? [labels1.slice((mes[0] - 1), (mes[1] || 0))] : labels1
+
+  const labels = (!show) ? (showThisWeek) ? [labels1.slice(mes[0], mes[1])] : [labels1.slice((mes[0] - 1), (mes[1] || 0))] : labels1
+
+  let resta = (mes[0] - 1) - 11
+
+  resta = (~resta + 1)
+
+  let arregloNuevosLabels = []
+
+  if (mes[0] - 1 > mes[1]) {
+    arregloNuevosLabels = labels1.slice(mes[0] - 1, mes[0] + resta)
+    arregloNuevosLabels.push(...labels1.slice(0, mes[1]))
+  }
 
   const data = {
     labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) 
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
-      : 
+      :
     (showThreeMonth)
       ?
-    labels.slice(5, 8)
+    (mes[0] - 1 > mes[1])
+      ?
+    arregloNuevosLabels
+      :
+    labels1.slice(mes[0] - 1, mes[1])
       :
     labels,
     datasets: [
@@ -192,19 +213,23 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   };
 
   const data2 = {
-    labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) 
+    labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek)
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       :
     (showThreeMonth)
       ?
-    labels.slice(mes[0] - 1, mes[1])
+    (mes[0] - 1 > mes[1])
+      ?
+    arregloNuevosLabels
+      :
+    labels1.slice(mes[0] - 1, mes[1])
       :
     labels,
     datasets: [
       {
         label: 'Promedio',
-        data: (!show) ? [porcentage?.toFixed(1)] : (showThreeMonth) ? calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        data: (!show) ? [porcentage?.toFixed(1)] : (showThreeMonth) ? (mes[0] - 1 > mes[1]) ? calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
@@ -232,7 +257,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
           <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
-            <h6 className='text-center'>Total de reseñas {(resenasFiltradas) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : 0}</h6>
+            <h6 className='text-center'>Total de reseñas {(resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0}</h6>
             <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
           </div>
         </div>

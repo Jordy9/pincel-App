@@ -29,7 +29,7 @@ import { useDispatch } from 'react-redux'
 import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
 import { filterCustomResena, filterCustomResenaTodosMeses } from '../../helper/filterCustomResena'
 import { CardsAdminCustomResena } from './CardsAdminCustomResena'
-import { filterResenaRango, ReseñasfiltradasTodosMeses } from '../../helper/filterResena'
+import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMenorQue } from '../../helper/filterResena'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
 import { filterCustomResenaSlice } from '../../store/customResena/customResenaSlice'
 
@@ -110,6 +110,8 @@ export const DashboardAdmin = () => {
     usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(usuario => usuariosToFilter.push({label: usuario?.name, value: usuario?.id, team: false}))
   }
 
+  let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
+
   let usuarioFiltrado
 
   (FiltroChange?.some(filtro => filtro?.team === true)) 
@@ -154,8 +156,21 @@ export const DashboardAdmin = () => {
     
   }, [showThreeMonth, changeDate, changeDateRange])
 
-  calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate)
+  useEffect(() => {
+    if (moment(changeDateRange , 'M/YY').diff(moment(changeDate, 'M/YY'), 'months') > 0 || moment(changeDate , 'M/YY').diff(moment(changeDateRange, 'M/YY'), 'months') > 0) {
+      setShowThreeMonth(true)
+      setShowAllMonth(true)
+    }
+  }, [changeDate, changeDateRange])
 
+  if (showThreeMonth || showAllMonth) {
+    calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+  }
+
+  if (mes[0] > mes[1]) {
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+  }
+  
   // Fin de los filtros
 
   const { greet } = useGreeting()
@@ -306,8 +321,6 @@ export const DashboardAdmin = () => {
   // Filtro por todos los meses de las reseñas personalizadas
   
   const customResenaTodosLosMeses = filterCustomResenaTodosMeses(customResena, showThreeMonth, changeDate, changeDateRange, showThreeMonths, showAllMonth)
-
-  console.log(resenasFiltradas)
   
   return (
     <Sidebar>

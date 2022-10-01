@@ -157,7 +157,6 @@ export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPor
       }
     }
   };
-
   
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
@@ -168,6 +167,10 @@ export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPor
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       : 
+    (showThreeMonth)
+      ?
+    labels.slice(mes[0] - 1, mes[1])
+      :
     labels,
     datasets: [
       {
