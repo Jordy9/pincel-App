@@ -167,7 +167,7 @@ export const DashboardAdmin = () => {
     calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
   }
 
-  if (mes[0] > mes[1]) {
+  if (mes[0] - 1 > mes[1]) {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
   }
   

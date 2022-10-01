@@ -36,6 +36,8 @@ export const ReseñasfiltradasTodosMeses = (resena, SumaResenasPorMes, showThree
         }
     }
 
+    console.log(calificacionPorMeses)
+
     return calificacionPorMeses
 }
 
