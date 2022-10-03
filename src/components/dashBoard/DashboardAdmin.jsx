@@ -83,6 +83,8 @@ export const DashboardAdmin = () => {
 
   const [showThisWeek, setShowThisWeek] = useState(false)
 
+  const [showLastWeek, setShowLastWeek] = useState(false)
+
   const [selectRange, setSelectRange] = useState(
     {
       startDate: defineds?.startOfMonth,
@@ -186,6 +188,7 @@ export const DashboardAdmin = () => {
         AllMonth: false,
         ThreeMonth: false,
         thisWeek: false,
+        lastWeek: false,
         key: 'selection',
       }),
     },
@@ -197,6 +200,7 @@ export const DashboardAdmin = () => {
         AllMonth: false,
         ThreeMonth: false,
         thisWeek: false,
+        lastWeek: false,
         key: 'selection',
       }),
     },
@@ -208,6 +212,7 @@ export const DashboardAdmin = () => {
         AllMonth: false,
         ThreeMonth: false,
         thisWeek: true,
+        lastWeek: false,
         key: 'selection',
       }),
     },
@@ -219,6 +224,7 @@ export const DashboardAdmin = () => {
         AllMonth: false,
         ThreeMonth: false,
         thisWeek: false,
+        lastWeek: true,
         key: 'selection',
       }),
     },
@@ -230,6 +236,7 @@ export const DashboardAdmin = () => {
         AllMonth: false,
         ThreeMonth: false,
         thisWeek: false,
+        lastWeek: false,
         key: 'selection',
       }),
     },
@@ -241,6 +248,7 @@ export const DashboardAdmin = () => {
         AllMonth: true,
         ThreeMonth: true,
         thisWeek: false,
+        lastWeek: false,
         key: 'selection',
       }),
     },
@@ -252,6 +260,7 @@ export const DashboardAdmin = () => {
         AllMonth: true,
         ThreeMonth: false,
         thisWeek: false,
+        lastWeek: false,
         key: 'selection',
       })
     }
@@ -267,7 +276,8 @@ export const DashboardAdmin = () => {
     setChangeDateRange(range?.endDate)
     setShowAllMonth(range?.AllMonth)
     setShowThreeMonth(range?.ThreeMonth)
-    setShowThisWeek(range.thisWeek)
+    setShowThisWeek(range?.thisWeek)
+    setShowLastWeek(range?.lastWeek)
 
     if (range?.startDate !== range?.endDate) {
       setShowFilter(false)
@@ -427,6 +437,7 @@ export const DashboardAdmin = () => {
                 changeDate = {changeDate}
                 changeDateRange = {changeDateRange}
                 showThisWeek = {showThisWeek}
+                showLastWeek = {showLastWeek}
                 showThreeMonth = {showThreeMonth}
               />
                 :
@@ -442,6 +453,7 @@ export const DashboardAdmin = () => {
                 changeDate = {changeDate}
                 changeDateRange = {changeDateRange}
                 showThisWeek = {showThisWeek}
+                showLastWeek = {showLastWeek}
                 showThreeMonth = {showThreeMonth}
               />
             }
