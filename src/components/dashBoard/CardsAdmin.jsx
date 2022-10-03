@@ -174,8 +174,6 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     }
   };
 
-  console.log(showLastWeek)
-
   const labels1 = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   const labels = (!show) ? [labels1.slice((mes[0] - 1), (mes[1] || 0))] : labels1
@@ -192,7 +190,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   }
 
   const data = {
-    labels: ((moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek)) 
+    labels: ((moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showThisWeek) || (moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showLastWeek)) 
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       :
