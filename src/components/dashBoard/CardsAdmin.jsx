@@ -184,8 +184,13 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
 
   let arregloNuevosLabels = []
 
-  if (mes[0] - 1 > mes[1]) {
-    arregloNuevosLabels = labels1.slice(mes[0] - 1, mes[0] + resta)
+  if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
+    arregloNuevosLabels = labels1.slice(mes[0] - 1, Number(mes[0]) + resta)
+    arregloNuevosLabels.push(...labels1.slice(0, Number(mes[1])))
+  }
+
+  if (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
+    arregloNuevosLabels = labels1.slice(mes[0] - 1, Number(mes[0]) + resta)
     arregloNuevosLabels.push(...labels1.slice(0, mes[1]))
   }
 
@@ -196,7 +201,11 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
       :
     (showThreeMonth)
       ?
-    (mes[0] - 1 > mes[1])
+    (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y'))
+      ?
+    arregloNuevosLabels
+      :
+    (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
       ?
     arregloNuevosLabels
       :
@@ -219,7 +228,11 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
       :
     (showThreeMonth)
       ?
-    (mes[0] - 1 > mes[1])
+    (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y'))
+      ?
+    arregloNuevosLabels
+      :
+    (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
       ?
     arregloNuevosLabels
       :
@@ -229,7 +242,23 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     datasets: [
       {
         label: 'Promedio',
-        data: (!show) ? [porcentage?.toFixed(1)] : (showThreeMonth) ? (mes[0] - 1 > mes[1]) ? calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1)) : calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        data: (!show) 
+          ? 
+        [porcentage?.toFixed(1)] 
+          : 
+        (showThreeMonth) 
+          ? 
+        (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) 
+          ? 
+        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1))
+          : 
+        (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
+          ?
+        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1))
+          :
+        calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1))
+          : 
+        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],

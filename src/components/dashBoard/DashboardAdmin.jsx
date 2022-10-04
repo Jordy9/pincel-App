@@ -29,9 +29,11 @@ import { useDispatch } from 'react-redux'
 import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
 import { filterCustomResena, filterCustomResenaTodosMeses } from '../../helper/filterCustomResena'
 import { CardsAdminCustomResena } from './CardsAdminCustomResena'
-import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMenorQue } from '../../helper/filterResena'
+import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMenorQue } from '../../helper/filterResena'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
 import { filterCustomResenaSlice } from '../../store/customResena/customResenaSlice'
+import Swal from 'sweetalert2'
+import { showError } from '../../store/resena/thunk'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -167,12 +169,22 @@ export const DashboardAdmin = () => {
 
   if (showThreeMonth || showAllMonth) {
     calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+    
   }
 
-  if (mes[0] - 1 > mes[1]) {
+  if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
   }
-  
+
+  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+  }
+
+  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+    console.log(calificacionPorMeses)
+  }
+ 
   // Fin de los filtros
 
   const { greet } = useGreeting()
@@ -309,6 +321,27 @@ export const DashboardAdmin = () => {
   }, [changeDate, changeDateRange, dispatch])
 
   useEffect(() => {
+    if (moment(changeDateRange).diff(changeDate, 'days') > 364) {
+      setSelectRange(
+        {
+          startDate: defineds?.startOfMonth,
+          endDate: defineds?.endOfMonth,
+          AllMonth: false,
+          ThreeMonth: false,
+          thisWeek: false,
+          lastWeek: false,
+          key: 'selection',
+        }
+      )
+
+      setChangeDate(defineds?.startOfMonth)
+      setChangeDateRange(defineds?.endOfMonth)
+
+      dispatch(showError())
+    }
+  }, [changeDateRange, changeDate, dispatch])
+
+  useEffect(() => {
     if (usuarioFiltrado?.length !== 0) {
       dispatch(showFilter0(false))
     } else {
@@ -339,9 +372,9 @@ export const DashboardAdmin = () => {
           <div className='shadow p-2 my-1' id={`${(showFloat) && 'floatFilter'}`} style={{borderRadius: '35px', backgroundColor: (showTransp) ? 'transparent' : 'white'}}>
 
             <div className='d-flex justify-content-end mr-2' style={{display: 'inline-flex'}}>
-              <div class="form-check">
-                <input class="form-check-input" onClick={() => setShowFloat(!showFloat)} type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label mr-4" for="flexCheckDefault">
+              <div className="form-check">
+                <input className="form-check-input" onClick={() => setShowFloat(!showFloat)} type="checkbox" value="" id="flexCheckDefault" />
+                <label className="form-check-label mr-4" for="flexCheckDefault">
                   Activar barra flotante
                 </label>
               </div>
@@ -349,9 +382,9 @@ export const DashboardAdmin = () => {
               {
                 (showFloat)
                   &&
-                <div class="form-check">
-                  <input class="form-check-input" onClick={() => setShowTransp(!showTransp)} type="checkbox" value="" id="flexCheckChecked" />
-                  <label class="form-check-label" for="flexCheckChecked">
+                <div className="form-check">
+                  <input className="form-check-input" onClick={() => setShowTransp(!showTransp)} type="checkbox" value="" id="flexCheckChecked" />
+                  <label className="form-check-label" for="flexCheckChecked">
                     Activar transparencia
                   </label>
                 </div>
@@ -390,7 +423,6 @@ export const DashboardAdmin = () => {
                 <DateRange
                   editableDateInputs={true}
                   moveRangeOnFirstSelection={false}
-                  weekStartsOn={0}
                   staticRanges={[]}
                   inputRanges = {[]}
                   color = 'rgb(89, 7, 211)'
@@ -428,7 +460,7 @@ export const DashboardAdmin = () => {
               <CardsAdmin 
                 resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
                 mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
-                calificacionPorMeses = {(usuarioFiltrado?.length !== 0) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
+                calificacionPorMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
                 show = {showAllMonth}
                 respWidth = { respWidth }
                 changeShowResena = {changeShowResena}

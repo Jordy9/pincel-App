@@ -5,7 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 import moment from 'moment';
 
-export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showThreeMonth } ) => {
+export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth } ) => {
 
   let suma = 0
 
@@ -163,7 +163,7 @@ export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPor
   const labels = (!show) ? [labels1.slice((mes[0] - 1), (mes[1] || 0))] : labels1
 
   const data = {
-    labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) 
+    labels: ((moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showThisWeek) || (moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showLastWeek)) 
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       : 
@@ -182,7 +182,7 @@ export const CardsAdminCustomResena = ( { resenasFiltradas, mes, calificacionPor
   };
 
   const data2 = {
-    labels: (moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) 
+    labels: ((moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showThisWeek) || (moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showLastWeek)) 
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       : 
