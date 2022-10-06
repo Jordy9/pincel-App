@@ -101,19 +101,19 @@ export const FormularioVideos = () => {
                         video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                     } else {
     
-                        if (element?.video?.includes('?v=')) {
+                        if (element?.video?.includes('?v=' && element?.video?.length > 20)) {
                             const normalUrl = element?.video?.split('?v=')
                             const urlAlter = normalUrl[1]?.slice(0, 11)
                             const urlModif = `https://www.youtube.com/embed/${urlAlter}`
                             video[index] = {...video[index], video: urlModif, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
         
-                        } else if (element?.video?.includes('youtu.be')) {
+                        } else if (element?.video?.includes('youtu.be') && element?.video?.length > 20) {
                             const normalUrl = element?.video?.split('/')
                             const urlAlter = normalUrl[3]
                             const urlModif = `https://www.youtube.com/embed/${urlAlter}`
                             video[index] = {...video[index], video: urlModif, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
         
-                        } else if (element?.video?.includes('embed')) {
+                        } else if (element?.video?.includes('embed') && element?.video?.length > 20) {
                             const normalUrl = element?.video?.split('/')
                             const urlAlter = normalUrl[4]
                             const urlModif = `https://www.youtube.com/embed/${urlAlter}`
@@ -275,7 +275,9 @@ export const FormularioVideos = () => {
         if (e.target.name === "") {            
             newFormValues[i]['video'] = e.target.value;
             setFormValues(newFormValues);
-            VideoPreview(i)
+            if (newFormValues[i]['video'].length > 20 && (newFormValues[i]['video'].includes('?v=') || newFormValues[i]['video'].includes('youtu.be') || newFormValues[i]['video'].includes('embed'))) {
+                VideoPreview(i)
+            }
         } else {
             newFormValues[i][e.target.name] = e.target.value;
             setFormValues(newFormValues);
@@ -318,7 +320,7 @@ export const FormularioVideos = () => {
      const ref = useRef()
         
     const agregarPregunta = () => {
-        setFormEvaluacion([...formEvaluacion, { 
+        setFormEvaluacion([...formEvaluacion, {
             pregunta: '', 
             respuesta: [
                 {
@@ -554,7 +556,7 @@ export const FormularioVideos = () => {
                                                 <div className="row">
                                                     <div className="col-12">
                                                         {
-                                                            (formValues[index]?.video)
+                                                            (formValues[index]?.video && (formValues[index]?.video?.includes('?v=') || formValues[index]?.video?.includes('youtu.be') || formValues[index]?.video?.includes('embed')) && formValues[index].video?.length > 20)
                                                                 &&
                                                             <button type='button' className='btn btn-primary' onClick={() => VideoPreview(index)}>
                                                                 <i className="bi bi-eye"></i>
