@@ -11,7 +11,7 @@ export const ModalPreview = ({modalPreview, setModalPreview, preview, previewVid
     }
 
   return (
-    <Modal size='lg' centered show={modalPreview} onHide={(showDuration) && handleClose}>
+    <Modal size='lg' centered show={modalPreview} onHide={((previewVideo && showDuration) || preview) && handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton></Modal.Header>
         
         <Modal.Body>

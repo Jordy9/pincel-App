@@ -36,7 +36,7 @@ export const Cards = () => {
         return (
           <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
             <div className='bg-transparent d-flex flex-column' style={{borderRadius: '10px'}}>
-              <img src={image} className='img-fluid' style={{borderRadius: '20px', width: '100%', height: (respWidth >= 768) ? 170 : 'auto', objectFit: 'cover'}} alt="" />
+              <img src={image} className='img-fluid' style={{borderRadius: '20px', width: '100%', height: (respWidth >= 768) ? 170 : 'auto'}} alt="" />
               <div className='p-2'>
                 <h5>{title}</h5>
                 <p style={{fontSize: '13.5px'}} className='text-muted'>Duracion: {(duration < 1) ? 1 : duration} min</p>
