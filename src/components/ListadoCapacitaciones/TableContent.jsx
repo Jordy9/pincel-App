@@ -34,7 +34,20 @@ export const TableContent = (props) => {
           ok = false
         }
       }
-      
+    }
+
+    let okVideo = true
+
+    for (let index = 0; index < video?.length; index++) {
+      const element = video[index];
+
+      if (!element.titulo) {
+        okVideo = false
+      }
+
+      if (!element.video) {
+        okVideo = false
+      }
     }
 
     const handledDelete = (capacita) => {
@@ -54,42 +67,49 @@ export const TableContent = (props) => {
         }
 
     const handledPublicar = (capacita, publicarAhora) => {
-      if (ok) {
-        if (!publicar) {
-          Swal.fire({
-            title: '¿Esta seguro que desea publicar esta capacitación?',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: 'rgb(71, 7, 168)',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Publicar'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              dispatch(publicarCapacitacion(capacita, !publicarAhora))
-            }
-          })
-  
+      if (okVideo) {
+        if (ok) {
+          if (!publicar) {
+            Swal.fire({
+              title: '¿Esta seguro que desea publicar esta capacitación?',
+              icon: 'warning',
+              showCancelButton: true,
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: 'rgb(71, 7, 168)',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Publicar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(publicarCapacitacion(capacita, !publicarAhora))
+              }
+            })
+    
+          } else {
+    
+            Swal.fire({
+              title: '¿Esta seguro que desea ocultar esta capacitación?',
+              icon: 'warning',
+              showCancelButton: true,
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: 'rgb(71, 7, 168)',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Ocultar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                dispatch(publicarCapacitacion(capacita, !publicarAhora))
+              }
+            })
+    
+          }
         } else {
-  
           Swal.fire({
-            title: '¿Esta seguro que desea ocultar esta capacitación?',
+            title: 'Por favor, verifique que todos los campos de las evaluaciones estén correctos',
             icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: 'rgb(71, 7, 168)',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ocultar'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              dispatch(publicarCapacitacion(capacita, !publicarAhora))
-            }
           })
-  
         }
       } else {
         Swal.fire({
-          title: 'Por favor, verifique que todos los campos de las evaluaciones estén correctos',
+          title: 'Por favor, verifique que todos los campos de los videos estén correctos',
           icon: 'warning',
         })
       }
@@ -103,7 +123,7 @@ export const TableContent = (props) => {
             </div>
         </td>
         <td>{title}</td>
-        <td>{moment(createdAt).format('MM/DD/YYYY, h:mm a')}</td>
+        <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
         <td>{team?.map(team => team?.label)}</td>
         <td>             
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>

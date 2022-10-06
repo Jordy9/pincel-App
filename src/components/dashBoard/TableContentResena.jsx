@@ -40,7 +40,7 @@ export const TableContentResena = (props) => {
                 <>
                     <td>{<Rating size={19} readonly ratingValue={calificacionFiltrada[0]?.calificacion} />}</td>
                     <td>{descripcion}</td>
-                    <td>{moment(createdAt).format('MM/DD/YYYY, h:mm a')}</td>
+                    <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
                     <td>             
                         <button onClick={() => dispatch(actualizarResena(props))} className='btn mx-1 my-1'><i style={{fontSize: '23px'}} className="bi bi-x-circle-fill text-danger"></i></button>
                     </td>

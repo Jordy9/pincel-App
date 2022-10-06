@@ -8,10 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Slider from "react-slick";
 import { ModalPreview } from './ModalPreview';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export const FormularioVideos = () => {
 
     const dispatch = useDispatch();
+
+    const navigate = useNavigate()
 
     const { upload, paraEditar } = useSelector(state => state.cp);
 
@@ -22,6 +25,14 @@ export const FormularioVideos = () => {
     let arregloEquipos = []
 
     const [chargeUsersTeam, setChargeUsersTeam] = useState(false)
+
+    const [showErrorVideo, setShowErrorVideo] = useState(false)
+
+    const [changeIndex, setChangeIndex] = useState(null)
+
+    const [showDuration, setShowDuration] = useState(null)
+
+    const [showErrorEvaluacion, setShowErrorEvaluacion] = useState(false)
 
     if (chargeUsersTeam) {
         equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
@@ -39,7 +50,7 @@ export const FormularioVideos = () => {
 
     const [imag, setimag] = useState()
 
-    const [formValues, setFormValues] = useState([{ titulo: '', video: '' }])
+    const [formValues, setFormValues] = useState([{ titulo: '', video: '', duration: 0 }])
 
     const [formEvaluacion, setFormEvaluacion] = useState([{ 
         pregunta: '', 
@@ -78,58 +89,66 @@ export const FormularioVideos = () => {
         enableReinitialize: true,
         onSubmit: ({titulo, image, descripcion, video, intentos, evaluacion, equipos}) => {
 
+            let suma = 0
+
             for (let index = 0; index < video.length; index++) {
                 const element = video[index];
 
-                if (element.video === paraEditar?.video[index]?.video) {
-                    video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
-                } else {
+                suma = suma + element?.duration
 
-                    if (element?.video?.includes('?v=')) {
-                        const normalUrl = element?.video?.split('?v=')
-                        const urlAlter = normalUrl[1]?.slice(0, 11)
-                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
-    
-                    } else if (element?.video?.includes('youtu.be')) {
-                        const normalUrl = element?.video?.split('/')
-                        const urlAlter = normalUrl[3]
-                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
-    
-                    } else if (element?.video?.includes('embed')) {
-                        const normalUrl = element?.video?.split('/')
-                        const urlAlter = normalUrl[4]
-                        const urlModif = `https://www.youtube.com/embed/${urlAlter}`
-                        video[index] = {...video[index], video: urlModif, duration: 0, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
-    
+                if (element.video !== '') {
+                    if (element.video === paraEditar?.video[index]?.video) {
+                        video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                     } else {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 5000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
-                        
-                        return Toast.fire({
-                            icon: 'error',
-                            title: 'Link de youtube incorrecto'
-                        })
+    
+                        if (element?.video?.includes('?v=')) {
+                            const normalUrl = element?.video?.split('?v=')
+                            const urlAlter = normalUrl[1]?.slice(0, 11)
+                            const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                            video[index] = {...video[index], video: urlModif, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
+        
+                        } else if (element?.video?.includes('youtu.be')) {
+                            const normalUrl = element?.video?.split('/')
+                            const urlAlter = normalUrl[3]
+                            const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                            video[index] = {...video[index], video: urlModif, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
+        
+                        } else if (element?.video?.includes('embed')) {
+                            const normalUrl = element?.video?.split('/')
+                            const urlAlter = normalUrl[4]
+                            const urlModif = `https://www.youtube.com/embed/${urlAlter}`
+                            video[index] = {...video[index], video: urlModif, idVideo: new Date().getTime() + urlAlter + urlModif + element.titulo,  createdAt: new Date(), check: []}
+        
+                        } else {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                            
+                            return Toast.fire({
+                                icon: 'error',
+                                title: 'Link de youtube incorrecto'
+                            })
+                        }
                     }
                 }
-
-
             }
 
             if (!paraEditar) {
-                dispatch(crearCapacitacion(titulo, image, descripcion, intentos, video, evaluacion, 0, equipos))
+                dispatch(crearCapacitacion(titulo, image, descripcion, intentos, video, evaluacion, suma, equipos))
+                setShowErrorVideo(false)
+                setShowErrorEvaluacion(false)
             } else {
-                dispatch(actualizarCapacitacionForm(titulo, image, descripcion, intentos, video, evaluacion, 0, equipos))
+                dispatch(actualizarCapacitacionForm(titulo, image, descripcion, intentos, video, evaluacion, suma, equipos))
+                setShowErrorVideo(false)
+                setShowErrorEvaluacion(false)
             }
 
         },
@@ -147,21 +166,21 @@ export const FormularioVideos = () => {
             intentos: Yup.number()
                         .required('Requerido'),
             equipos: Yup.array()
-                        // .length(1, 'Debe de contener al menos un equipo')
+                        .length(1, 'Debe de contener al menos un equipo')
                         .required('Requerido'),
             video: Yup.array().of(Yup.object({
-                    titulo: Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
-                    video: Yup.string().required('Requerido'),
+                    titulo: (paraEditar?.publicar === true) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
+                    video: (paraEditar?.publicar === true) && Yup.string().required('Requerido'),
                 })
             ),
-            // evaluacion: Yup.array().of(Yup.object({
-            //         pregunta: Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
-            //         respuesta: Yup.array().of(Yup.object({
-            //             respuesta: Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
-            //             // accion: Yup.boolean().required('Requerido'),
-            //         }))
-            //     })
-            // )
+            evaluacion: Yup.array().of(Yup.object({
+                    pregunta: (paraEditar?.publicar === true) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
+                    respuesta: (paraEditar?.publicar === true) && Yup.array().of(Yup.object({
+                        respuesta: (paraEditar?.publicar === true) && Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                        // accion: Yup.boolean().required('Requerido'),
+                    }))
+                })
+            )
         })
     })
 
@@ -252,17 +271,27 @@ export const FormularioVideos = () => {
 
     const handleChange = (i, e) => {
         let newFormValues = [...formValues];
+        setChangeIndex(i)
         if (e.target.name === "") {            
             newFormValues[i]['video'] = e.target.value;
             setFormValues(newFormValues);
+            VideoPreview(i)
         } else {
             newFormValues[i][e.target.name] = e.target.value;
             setFormValues(newFormValues);
         }
      }
-        
+
+    useEffect(() => {
+        if (showDuration) {
+            let videoConDuration = [{...formValues[changeIndex], duration: showDuration}]
+            formValues[changeIndex] = videoConDuration[0]
+        }
+
+    }, [changeIndex, showDuration])
+    
     const agregar = () => {
-        setFormValues([...formValues, { titulo: '', video: '' }])
+        setFormValues([...formValues, { titulo: '', video: '', duration: 0 }])
      }
     
     const eliminar = (i) => {
@@ -402,6 +431,21 @@ export const FormularioVideos = () => {
     const onClickImage = () => {
         document.getElementById('fileImageSelect').click()
     }
+
+    useEffect(() => {
+      if (errors.descripcion || errors.equipos || errors.image || errors.intentos || errors.titulo || errors.video) {
+        setShowErrorVideo(true)
+      }
+
+      if (errors.evaluacion) {
+        setShowErrorEvaluacion(true)
+      }
+
+    }, [errors])
+
+    const goBack = () => {
+        navigate('/ListCapacitaciones')
+    }
     
   return (
     <Sidebar>
@@ -413,6 +457,8 @@ export const FormularioVideos = () => {
                     :
                 <h1>Actualizar capacitación</h1>
             }
+
+            <i onClick={goBack}  style={{fontSize: '30px', cursor: 'pointer'}} className="bi bi-arrow-left-circle-fill"></i>
 
             <form onSubmit={handleSubmit} className='my-5'>
                 <div className="row">
@@ -433,7 +479,7 @@ export const FormularioVideos = () => {
                     
                     <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                         <label>{(!evaluacionChange) ? 'Evaluación' :'Videos'}</label>
-                        <button type='button' onClick={() => setEvaluacionChange(!evaluacionChange)} className='btn btn-primary form-control'>{(!evaluacionChange) ? 'Ir a la evaluación' :'Ir a los videos'}</button>
+                        <button type='button' onClick={() => setEvaluacionChange(!evaluacionChange)} className={`btn ${(!evaluacionChange && showErrorEvaluacion) ? 'btn-danger' : (evaluacionChange && showErrorVideo) ? 'btn-danger' : 'btn-primary' } form-control`}>{(!evaluacionChange) ? 'Ir a la evaluación' :'Ir a los videos'}</button>
                     </div>
                 </div>
 
@@ -492,15 +538,15 @@ export const FormularioVideos = () => {
                                         <div className="row">
                                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-xl-6 col-xxl-6 form-group">
                                                 <label className='form-label'>Titulo del video</label>
-                                                <input name='titulo' value={element.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
+                                                <input name='titulo' value={element?.titulo} onChange = {(e) => handleChange(index, e)} type="text" placeholder='Titulo del video' className='form-control' />
                                                 {touched?.video?.filter(video => video.titulo) && errors?.video?.filter(video => video.titulo) && <span style={{color: 'red'}}>{errors?.video[index]?.titulo}</span>}
                                             </div>
         
                                             <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                                 <label className='form-label'>Link del video</label>
                                                 {/* <button type='button' onClick={() => onClickVideo(index)} className='btn btn-primary form-control'>Seleccionar video <i className="bi bi-camera-video btn-primary mx-1"></i></button> */}
-                                                <input onChange = {(e) => handleChange(index, e)} value = {element.video} type="text" className='form-control' />
-                                                {touched?.video?.filter(video => video.video) && errors?.video?.filter(video => video.video) && <span style={{color: 'red'}}>{errors?.video[index]?.video}</span>}
+                                                <input onChange = {(e) => handleChange(index, e)} value = {element?.video} type="text" className='form-control' />
+                                                {touched?.video?.filter(video => video?.video) && errors?.video?.filter(video => video.video) && <span style={{color: 'red'}}>{errors?.video[index]?.video}</span>}
                                             </div>
         
                                             <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
@@ -652,6 +698,8 @@ export const FormularioVideos = () => {
             previewVideo = {previewVideo} 
             setPreviewImage = {setPreviewImage}
             setPreviewVideo = {setPreviewVideo}
+            setShowDuration = {setShowDuration}
+            showDuration = {showDuration}
         />
     </Sidebar>
   )

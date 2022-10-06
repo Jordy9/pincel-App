@@ -10,7 +10,7 @@ export const Cards = () => {
 
   const { capacitacion } = useSelector(state => state.cp);
 
-  const { uid } = useSelector(state => state.auth);
+  const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const navigate = useNavigate()
 
@@ -28,7 +28,7 @@ export const Cards = () => {
   return (
     <>
     {
-      capacitacion?.filter(capacitacion => capacitacion?.publicar === true)?.map(({title, _id, image, duracion, video}) => {
+      capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || usuarioActivo?.role === 'Administrador')))?.map(({title, _id, image, duracion, video}) => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
