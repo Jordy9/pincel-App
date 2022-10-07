@@ -43,7 +43,7 @@ export const Evaluacion = () => {
         {
             <>
                 <div hidden = {!comenzar} className='text-center'>
-                    <span className='text-center' style={{fontSize: '50px', fontWeight: '600'}}>Nos gustaría que nos dijeras cómo le atendimos hoy</span>
+                    <span className='text-center' style={{fontSize: '50px', fontWeight: '600'}}>Nos gustaría que nos dijeras cómo te atendimos hoy</span>
                     <div className="row">
                         <div className='d-grid gap-2 col-2 mx-auto'>
                             <button type='button' className = 'btn btn-primary btn-lg my-5' onClick={() => dispatch(comenzarResena(false))} style={{height: 'auto', fontSize: '30px'}}>Comenzar</button>
@@ -52,7 +52,7 @@ export const Evaluacion = () => {
                 </div>
                     
                 <div hidden = {comenzar}>
-                    <h1 className='text-black text-center mt-5 mb-5'>¿Quiénes te han atendido hoy?</h1>
+                    <h1 className='text-black text-center mt-5 mb-5'>¿Quiénes te atendieron hoy?</h1>
                     <div className="row p-2 my-2">
                         {
                             toResena[0]?.items?.filter(usuarios => usuarios?.toResena === 'Activos')?.map(usuario => {
