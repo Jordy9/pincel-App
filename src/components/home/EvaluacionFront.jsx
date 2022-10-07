@@ -134,7 +134,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
     }, [resenaToDesc?.length, evaluateFront, idUsuarios])
 
     useEffect(() => {
-      if (segundos === 15) {
+      if (segundos === 25) {
         setIdUsuarios([])
         dispatch(setClearResena())
       }
@@ -143,7 +143,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title className="ms-auto"><h1>{(evaluateFront) && 'Seleccione los coordinadores de servicio que te atendieron hoy'}</h1></Modal.Title>
+          <Modal.Title className="ms-auto"><h1>{(evaluateFront) && '¿Cuáles coordinadores de servicio te atendieron hoy?'}</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
 
@@ -162,7 +162,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                 {
                                                     (resena?.includes(usuario))
                                                         &&
-                                                    <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 130}} className="text-primary bi bi-check-circle-fill"></i>
+                                                    <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 130, color: 'rgb(0, 197, 0)'}} className="bi bi-check-circle-fill"></i>
                                                 }
                                                 <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
                                             </div>
@@ -176,12 +176,12 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                         resena?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map(usuario => {
                                             return (
                                                 <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
-                                                    <h3 className='text-center my-2'>¿Cómo fue el servicio de {usuario?.name} el día de hoy?</h3>
+                                                    <h1 className='text-center my-2 mb-5'>¿Cómo fue el servicio de <strong>{usuario?.name}</strong> el día de hoy?</h1>
                                                     <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                         <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
                                                     <div className='text-center mt-3'>
-                                                        <Rating emptyColor='#828282' onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                        <Rating emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
                                                         <span style={{fontSize: '12px'}}></span>
                                                     </div>
                                                 </div>

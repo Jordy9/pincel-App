@@ -49,7 +49,7 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
     }, [descripci])
 
     useEffect(() => {
-        if (segundos === 15) {
+        if (segundos === 25) {
           setIdUsuarios([])
           dispatch(setClearResena())
         }
@@ -70,8 +70,8 @@ export const ModalEvaluacionDescripcion = ({modalShowDescripcion, setModalShowDe
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <form onSubmit={handleSubmit}>
                         <div className="shadow p-4 my-auto" style={{borderRadius: '35px'}}>
-                            <h3 className='text-center'>¿Algo que nos quieras decir?</h3>
-                            <textarea autoFocus type="text" cols={30} rows={10} {...getFieldProps('descripcion')} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
+                            <h3 className='text-center mb-5'>¿Algo que nos quieras decir?</h3>
+                            <textarea autoFocus type="text" cols={30} rows={7} {...getFieldProps('descripcion')} style = {{resize: 'none', fontSize: '20px'}} placeholder='Descripción de la Reseña' className='form-control' />
                         </div>
                         <div className='d-grid gap-2 col-2 mx-auto'>
                             <button disabled = {(idUsuarios?.length === 0)} type='submit' className = 'btn btn-primary my-5 btn-lg' style={{height: '50px'}}>Finalizar</button>

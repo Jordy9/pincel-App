@@ -32,7 +32,7 @@ export const Evaluacion = () => {
     }, [AResena])
 
     useEffect(() => {
-        if (segundos === 15) {
+        if (segundos === 25) {
             dispatch(setClearResena())
             dispatch(comenzarResena(true))
         }
@@ -43,28 +43,28 @@ export const Evaluacion = () => {
         {
             <>
                 <div hidden = {!comenzar} className='text-center'>
-                    <h1 className='text-center'>Nos gustaría que nos dijeras cómo le atendimos hoy</h1>
+                    <span className='text-center' style={{fontSize: '50px', fontWeight: '600'}}>Nos gustaría que nos dijeras cómo le atendimos hoy</span>
                     <div className="row">
                         <div className='d-grid gap-2 col-2 mx-auto'>
-                            <button type='button' className = 'btn btn-primary btn-lg my-5' onClick={() => dispatch(comenzarResena(false))} style={{height: '50px'}}>Comenzar</button>
+                            <button type='button' className = 'btn btn-primary btn-lg my-5' onClick={() => dispatch(comenzarResena(false))} style={{height: 'auto', fontSize: '30px'}}>Comenzar</button>
                         </div>
                     </div>
                 </div>
                     
                 <div hidden = {comenzar}>
-                    <h1 className='text-black text-center mt-5 mb-3'>Seleccione el personal que le atendió el día de hoy</h1>
+                    <h1 className='text-black text-center mt-5 mb-5'>¿Quiénes te han atendido hoy?</h1>
                     <div className="row p-2 my-2">
                         {
                             toResena[0]?.items?.filter(usuarios => usuarios?.toResena === 'Activos')?.map(usuario => {
                                 return (
-                                    <div key={usuario?.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-1 col-xl-1 col-xxl-1 d-flex" style={{marginLeft: '40px', marginRight: '40px'}}>
+                                    <div key={usuario?.id} className="col-xs-12 col-sm-12 col-md-6 col-lg-1 col-xl-1 col-xxl-1 d-flex" style={{marginLeft: '20px', marginRight: '20px'}}>
                                         <div onClick={() => dispatch(crearAResena(usuario))} className='bg-transparent d-flex flex-column mx-auto align-items-center' style={{width: 'auto', height: 'auto', borderRadius: '10px'}}>
                                             {
                                                 (AResena?.includes(usuario))
                                                     &&
-                                                <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 0, right: -50}} className="text-primary bi bi-check-circle-fill"></i>
+                                                <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 0, right: 3, color: 'rgb(0, 197, 0)'}} className="bi bi-check-circle-fill"></i>
                                             }
-                                            <img src={(usuario?.urlImage) ? usuario?.urlImage : user} className='img-fluid' style={{cursor: 'pointer', height: 'auto', width: 'auto', maxHeight: '170px', maxWidth: '170px', objectFit: 'cover', borderRadius: '20px', opacity: (AResena?.includes(usuario)) && 0.5}} alt="" />
+                                            <img src={(usuario?.urlImage) ? usuario?.urlImage : user} className='img-fluid' style={{cursor: 'pointer', height: 'auto', width: 'auto', maxHeight: '120px', maxWidth: '120px', objectFit: 'cover', borderRadius: '20px', opacity: (AResena?.includes(usuario)) && 0.5}} alt="" />
                                             <>
                                                 <h5 className='text-black text-center'>{usuario?.name}</h5>
                                                 {/* <p style={{fontSize: '15px'}} className='text-black text-center'>{usuario?.role}</p> */}

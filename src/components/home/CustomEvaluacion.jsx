@@ -32,10 +32,10 @@ export const CustomEvaluacion = () => {
     <div className = 'container d-flex align-items-center justify-content-center' style={{height: '100vh'}}>
 
         <div hidden = {!comenzar} className='text-center'>
-            <h1 className='text-center'>Nos gustaría que nos dijeras cómo le atendimos hoy</h1>
+            <span className='text-center' style={{fontSize: '50px', fontWeight: '600'}}>Nos gustaría que nos dijeras cómo le atendimos hoy</span>
             <div className="row">
                 <div className='d-grid gap-2 col-2 mx-auto'>
-                    <button type='button' className = 'btn btn-primary btn-lg my-5' onClick={() => setComenzar(false)} style={{height: '50px'}}>Comenzar</button>
+                    <button type='button' className = 'btn btn-primary btn-lg my-5' onClick={() => setComenzar(false)} style={{height: 'auto', fontSize: '30px'}}>Comenzar</button>
                 </div>
             </div>
         </div>
