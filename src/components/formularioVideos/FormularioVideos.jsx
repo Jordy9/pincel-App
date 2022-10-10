@@ -97,11 +97,12 @@ export const FormularioVideos = () => {
                 suma = suma + element?.duration
 
                 if (element.video !== '') {
+                    console.log(element.video === paraEditar?.video[index]?.video)
                     if (element.video === paraEditar?.video[index]?.video) {
                         video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                     } else {
     
-                        if (element?.video?.includes('?v=' && element?.video?.length > 20)) {
+                        if (element?.video?.includes('?v=') && element?.video?.length > 20) {
                             const normalUrl = element?.video?.split('?v=')
                             const urlAlter = normalUrl[1]?.slice(0, 11)
                             const urlModif = `https://www.youtube.com/embed/${urlAlter}`
@@ -166,7 +167,7 @@ export const FormularioVideos = () => {
             intentos: Yup.number()
                         .required('Requerido'),
             equipos: Yup.array()
-                        .length(1, 'Debe de contener al menos un equipo')
+                        .min(1, 'Debe de contener al menos un equipo')
                         .required('Requerido'),
             video: Yup.array().of(Yup.object({
                     titulo: (paraEditar?.publicar === true) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
@@ -250,7 +251,7 @@ export const FormularioVideos = () => {
       if (paraEditar) {
         let videos = []
         paraEditar?.video?.map(video => (
-            videos.push({titulo: video.titulo, video: video.video})
+            videos.push({titulo: video.titulo, video: video.video, duration: video?.duration})
         ))
         setFormValues([...videos])
         let PreguntasArreglo = []
@@ -460,7 +461,7 @@ export const FormularioVideos = () => {
                 <h1>Actualizar capacitación</h1>
             }
 
-            <i onClick={goBack}  style={{fontSize: '30px', cursor: 'pointer'}} className="bi bi-arrow-left-circle-fill"></i>
+            <i onClick={goBack} hidden = {(evaluacionChange)} style={{fontSize: '30px', cursor: 'pointer'}} className="bi bi-arrow-left-circle-fill"></i>
 
             <form onSubmit={handleSubmit} className='my-5'>
                 <div className="row">
@@ -474,7 +475,6 @@ export const FormularioVideos = () => {
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
                             hasSelectAll = {false}
-                            disableSearch
                         />
                         {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
                     </div>

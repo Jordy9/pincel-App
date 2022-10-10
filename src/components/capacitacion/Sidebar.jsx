@@ -29,7 +29,7 @@ export const Sidebar = () => {
             capacitacionFiltrada[0]?.video?.map((capacitacion, index) => {
                 const duracion = parseInt(capacitacion.duration / 60)
                 return (
-                    <div onClick={() => dispatch(activeCapacitacion({videos: capacitacion, preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos}))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva?.videos === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion?._id}>
+                    <div onClick={() => dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: capacitacion, preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos}))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva?.videos === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion?._id}>
                         <div className="col-2 d-flex justify-content-center">
                             {
                                 (capacitacion?.check?.includes(uid))
