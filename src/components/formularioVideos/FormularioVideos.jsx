@@ -322,7 +322,7 @@ export const FormularioVideos = () => {
         
     const agregarPregunta = () => {
         setFormEvaluacion([...formEvaluacion, {
-            pregunta: '', 
+            pregunta: '',
             respuesta: [
                 {
                     respuesta: '',
@@ -474,7 +474,7 @@ export const FormularioVideos = () => {
                             value={equiposCapacitacion}
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
-                            hasSelectAll = {false}
+                            hasSelectAll = {true}
                         />
                         {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
                     </div>
