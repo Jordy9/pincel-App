@@ -23,14 +23,19 @@ reducers: {
     },
     
     onRegister: (state, action ) => {
-        state.uid = action.payload.uid;
-        state.name = action.payload.name;
+        state.usuarios.push(action.payload)
     },
 
     onUpdate: (state, action ) => {
         state.usuarios = state.usuarios.map(
             e => (e.id === action.payload.id) ? action.payload : e);
         state.usuarioActivo = action.payload;
+    },
+    
+    onUpdateUser: (state, action ) => {
+        state.usuarios = state.usuarios.map(
+            e => (e.id === action.payload.id) ? action.payload : e);
+        state.activeUser = action.payload;
     },
 
     onUpdateTeam: (state, action ) => {
@@ -81,6 +86,7 @@ export const
         onLogin, 
         onRegister,
         onUpdate,
+        onUpdateUser,
         onUpdateTeam,
         onActiveUser, 
         onChecking, 

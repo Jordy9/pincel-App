@@ -55,7 +55,6 @@ export const TipoResenas = () => {
                     </div>
                 </div>
 
-
                 <div className = 'container my-5'>
                     
                     <div className = 'row'>

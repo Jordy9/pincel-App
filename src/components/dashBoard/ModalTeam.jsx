@@ -45,7 +45,7 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
       }
     }
 
-    const itemsFromBackend = usuarios?.filter(usuarios => usuarios?.id !== uid && usuarios.team === 'Sin equipo' && !usuarios?.name.includes('Jordy') && !usuarios?.name.includes('Francis'))?.map(usuarios => (
+    const itemsFromBackend = usuarios?.filter(usuarios => usuarios?.id !== uid && usuarios.team === 'Sin equipo' && usuarios?.estado === true)?.map(usuarios => (
       {id: usuarios?.id, content: [ usuarios?.urlImage, usuarios?.name]}
     ))
 
@@ -80,7 +80,7 @@ export const ModalTeam = ({modalTeam, setModalTeam}) => {
         {
           _id: uuid(),
           name: "Desactivados para reseñas",
-          items: usuarios?.filter(items => !items?.name.includes('Jordy') && !items?.name.includes('Mariela') && !items?.name.includes('Lorena') && !items?.name.includes('Francis') && items.toResena === 'Desactivados para reseñas')
+          items: usuarios?.filter(items => items?.estado === true && items.toResena === 'Desactivados para reseñas')
         },
         ...toResena
       ];

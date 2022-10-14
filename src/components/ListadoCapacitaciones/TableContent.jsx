@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -9,6 +10,10 @@ import { eliminarCapacitacion, publicarCapacitacion } from '../../store/capacita
 export const TableContent = (props) => {
 
     const dispatch = useDispatch();
+
+    const { usuarios } = useSelector(state => state.auth);
+
+    let nuevoUser = usuarios?.filter(usuario => usuario?.estado === true)
 
     const navigate = useNavigate()
     
@@ -124,8 +129,8 @@ export const TableContent = (props) => {
         </td>
         <td>{title}</td>
         <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
-        <td>{team?.map(team => team?.label)}</td>
-        <td>             
+        <td>{(nuevoUser?.length === team?.length) ? 'Todos' : team?.map(teamm => teamm?.label + ', ')}</td>
+        <td>        
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>
             <button onClick={() => handledPublicar(props, publicar)} className='btn btn-primary mx-1 my-1'>{(!publicar) ? 'Publicar' : 'Ocultar'}</button>
         </td>

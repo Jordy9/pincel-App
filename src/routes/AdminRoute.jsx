@@ -14,6 +14,7 @@ import { Evaluacion } from '../components/home/Evaluacion';
 import { TipoResenas } from '../components/tipoResenas/TipoResenas';
 import { useSelector } from 'react-redux';
 import { Spinner } from '../components/Spinner';
+import { ListadoUsuarios } from '../components/usuarios/ListadoUsuarios';
 
 
 export const AdminRoute = () => {
@@ -33,6 +34,7 @@ export const AdminRoute = () => {
         <Route path='/ListComunicados' element = {<ListadoComunicados />} />
         <Route path='/perfil' element = {<Perfil />} />
         <Route path='/Evaluacion' element = {<Evaluacion />} />
+        <Route path='/Usuarios' element = {<ListadoUsuarios />} />
         <Route path='/TipoResenas' element = {(toShowResena[0]?.inputType) ? <TipoResenas /> : <Spinner />} />
 
         <Route path='/*' element = {<Navigate to='/pincel-admin' />} />

@@ -25,6 +25,7 @@ import { obtenerEquipo } from '../store/equipo/thunk';
 import { CustomEvaluacion } from '../components/home/CustomEvaluacion';
 import { obtenerToShowResena } from '../store/toShowResena/thunk';
 import { obtenerCustomResena } from '../store/customResena/thunk';
+import { LeaderRoute } from './LeaderRoute';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -32,6 +33,14 @@ export const AppRoute = () => {
   const dispatch = useDispatch();
 
   const { uid, usuarioActivo } = useSelector(state => state.auth);
+
+  const { equipos } = useSelector(state => state.eq);
+
+  let usuariosFiltrado = []
+
+  equipos?.filter(equipo => usuariosFiltrado.push(equipo?.items[0]?.id))
+
+  const isLeader = usuariosFiltrado?.includes(uid)
 
   const { toShowResena } = useSelector(state => state.to);
 
@@ -103,6 +112,10 @@ export const AppRoute = () => {
           {
             (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
               ?
+            (isLeader)
+              ?
+            <LeaderRoute />
+              :
             <UserRoute />
               :
             <AdminRoute />

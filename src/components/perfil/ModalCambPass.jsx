@@ -19,7 +19,7 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
         },
         enableReinitialize: true,
         onSubmit: ({passwordActual, password}) => {
-            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.date, usuarioActivo?.email.toLowerCase(), passwordActual, password, usuarioActivo?.role))
+            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.date, usuarioActivo?.email.toLowerCase(), passwordActual, password, usuarioActivo?.role, usuarioActivo?.team, usuarioActivo?.urlImage))
         },
         validationSchema: Yup.object({
             passwordActual: Yup.string()

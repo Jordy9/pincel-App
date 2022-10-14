@@ -39,7 +39,7 @@ export const VideosComponent = () => {
           <ModalEvaluacion modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
         }
 
-        <div style={{position: 'fixed', marginTop: '-100px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
+        <div style={{position: 'fixed', marginTop: '-80px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
           <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>Tomar evaluación</button>
         </div>
       </>

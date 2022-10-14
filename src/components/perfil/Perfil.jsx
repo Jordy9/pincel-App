@@ -22,13 +22,14 @@ export const Perfil = () => {
             date: usuarioActivo?.date,
             email: usuarioActivo?.email,
             role: usuarioActivo?.role,
+            team: usuarioActivo?.team,
             password: usuarioActivo?.password,
             confirmPassword: usuarioActivo?.password,
             image: imagePerfil
         },
         enableReinitialize: true,
-        onSubmit: ({name, lastName, date, email, password, role, image}) => {
-            dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, date, email.toLowerCase(), password, role, image))
+        onSubmit: ({name, lastName, date, email, password, role, team, image}) => {
+            dispatch(iniciarActualizacion(usuarioActivo?.id, name, lastName, email.toLowerCase(), date, team, role, image, password))
             setImagePerfil()
         },
         validationSchema: Yup.object({
@@ -78,15 +79,21 @@ export const Perfil = () => {
                     <h1 className="text-black">Información personal</h1>
                     <form className='my-5' onSubmit={handleSubmit}>
                         <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                 <label>Nombre</label>
                                 <input type="text" {...getFieldProps('name')} placeholder = 'Juan' className = 'form-control bg-transparent text-black' />
                                 {touched.name && errors.name && <span style={{color: 'red'}}>{errors.name}</span>}
                             </div>
 
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                                 <label>Apellido</label>
                                 <input type="text" {...getFieldProps('lastName')} placeholder = 'Taveras' className = 'form-control bg-transparent text-black' />
+                                {touched.lastName && errors.lastName && <span style={{color: 'red'}}>{errors.lastName}</span>}
+                            </div>
+
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                <label>Fecha de nacimiento</label>
+                                <input type="date" {...getFieldProps('date')} className = 'form-control bg-transparent text-black' />
                                 {touched.lastName && errors.lastName && <span style={{color: 'red'}}>{errors.lastName}</span>}
                             </div>
                         </div>

@@ -8,10 +8,10 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
       title: 'Si toma la evaluación de nuevo, solo se tomará en cuenta su nueva calificación',
       icon: 'warning',
       showCancelButton: true,
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'No por ahora',
       confirmButtonColor: 'rgb(89, 7, 211)',
       cancelButtonColor: 'rgb(89, 7, 211)',
-      confirmButtonText: 'Intentar'
+      confirmButtonText: 'Si'
     }).then((result) => {
       if (result.isConfirmed) {
         setChangeCountResponse(1)

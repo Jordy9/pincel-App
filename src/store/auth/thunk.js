@@ -1,6 +1,6 @@
 import axios from "axios"
 import Swal from "sweetalert2"
-import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate, uploadFinish, uploadImagePerfil } from "./authSlice"
+import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser, uploadFinish, uploadImagePerfil } from "./authSlice"
 
 const endPoint = process.env.REACT_APP_API_URL
 
@@ -22,41 +22,78 @@ export const obtenerUsuarios = () => {
     }
 }
 
-export const iniciarRegistro = (name, lastName, email, password) => {
+export const iniciarRegistro = (name, lastName, email, date, team, role, file, password) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.post(`${endPoint}/auth/new`, {name, lastName, email, password}, {headers: {'x-token': token}})
-    
-            if (resp.data.ok) {
+            if (file) {
 
-                dispatch(onRegister({
-                    uid: resp.data.uid,
-                    name: resp.data.name
-                }))
-    
-                localStorage.setItem('token', resp.data.token)
-                localStorage.setItem('token-init-date', new Date().getTime());
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('title', name + new Date())
+                formData.append('title2', name + new Date())
 
-                await dispatch(obtenerUsuarioActivo())
+                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
+                    headers: {'x-token': token},
+                    onUploadProgress: (e) =>
+                        {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
+                })
+
+                const idImage = respImage.data.image.id
+                const urlImage = respImage.data.image.url
+
+                const resp = await axios.post(`${endPoint}/auth/new`, {name, lastName, email, date, team, role, urlImage, idImage, password}, {headers: {'x-token': token}})
+
+                if (resp.data.ok) {
+
+                    dispatch(uploadFinish())
+
+                    dispatch(onRegister(resp.data.usuario))
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario registrado correctamente'
+                    })
+                }
+            } else {
+
+                const resp = await axios.post(`${endPoint}/auth/new`, {name, lastName, email, date, team, role, password}, {headers: {'x-token': token}})
+
+                if (resp.data.ok) {
     
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                
-                return Toast.fire({
-                    icon: 'success',
-                    title: 'Usuario registrado correctamente'
-                })
+                    dispatch(onRegister(resp.data.usuario))
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario registrado correctamente'
+                    })
+                }
             }
+    
         } catch ({response}) {
             const Toast = Swal.mixin({
                 toast: true,
@@ -80,7 +117,7 @@ export const iniciarRegistro = (name, lastName, email, password) => {
     }
 }
 
-export const iniciarActualizacion = (id, name, lastName, date, email, password, role, file) => {
+export const iniciarActualizacion = (id, name, lastName, email, date, team, role, file, password) => {
     return async(dispatch, getState) => {
 
         const { usuarioActivo } = getState().auth;
@@ -103,7 +140,7 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
                 const idImage = respImage.data.image.id
                 const urlImage = respImage.data.image.url
     
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
         
                 if (resp.data.ok) {
     
@@ -112,7 +149,6 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
                     if (usuarioActivo?.idImage) {
                         await axios.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${usuarioActivo?.idImage}`, {headers: {'x-token': token}})
                     }
-
     
                     dispatch(uploadFinish())
         
@@ -138,7 +174,7 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
                 const idImage = usuarioActivo?.idImage
                 const urlImage = usuarioActivo?.image
 
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
         
                 if (resp.data.ok) {
     
@@ -185,11 +221,176 @@ export const iniciarActualizacion = (id, name, lastName, date, email, password, 
     }
 }
 
-export const iniciarActualizacionPass = (id, name, lastName, date, email, passwordActual, password, role) => {
+export const iniciarActualizacionModalUser = (id, name, lastName, email, date, team, role, file, password, estado) => {
+    return async(dispatch, getState) => {
+
+        const { activeUser } = getState().auth;
+        
+        try {
+
+            if (file) {
+
+                const formData = new FormData()
+                formData.append('file', file)
+                formData.append('title', name + new Date())
+                formData.append('title2', name + new Date())
+        
+                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
+                    headers: {'x-token': token},
+                    onUploadProgress: (e) =>
+                        {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
+                })
+        
+                const idImage = respImage.data.image.id
+                const urlImage = respImage.data.image.url
+    
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+        
+                if (resp.data.ok) {
+    
+                    dispatch(onUpdateUser(resp.data.usuario))
+
+                    if (activeUser?.idImage) {
+                        await axios.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${activeUser?.idImage}`, {headers: {'x-token': token}})
+                    }
+    
+                    dispatch(uploadFinish())
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario actualizado correctamente'
+                    })
+                }
+
+            } else {
+                const idImage = activeUser?.idImage
+                const urlImage = activeUser?.image
+
+                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+        
+                if (resp.data.ok) {
+    
+                    dispatch(onUpdateUser(resp.data.usuario))
+        
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    
+                    return Toast.fire({
+                        icon: 'success',
+                        title: 'Usuario actualizado correctamente'
+                    })
+                }
+            }
+
+        } catch ({response}) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
+        }
+        
+    }
+}
+
+export const cambiarEstadoUsuario = (id, estado, team, activeResena) => {
+    return async(dispatch, getState) => {
+
+        const { socket } = getState().sk;
+
+        const { equipos } = getState().eq;
+
+        const { toResena } = getState().rs;
+
+        // Filtro equipos
+
+        const equipoFiltrado = equipos?.filter(equipo => equipo?.name === team)
+        const indice = equipoFiltrado[0]?.items?.findIndex(item => item?.id === id)
+        const nuevoEquipo = equipoFiltrado[0]?.items?.filter((e, index) => index !== indice)
+        const idEquipo = equipoFiltrado[0]?._id
+
+        // Filtro resena
+
+        const toResenaFiltrada = toResena?.filter(resena => resena?.name === activeResena)
+
+        const indiceToResena = toResenaFiltrada[0]?.items?.findIndex(item => item?.id === id)
+
+        const nuevaToResena = toResenaFiltrada[0]?.items?.filter((e, index) => index !== indiceToResena)
+
+        const idToResena = toResenaFiltrada[0]?._id
+
+        // Creando un nuevo equipo y toResena
+
+        const toResenaNueva = {...toResenaFiltrada[0], items: nuevaToResena}
+
+        const equipoNuevo = {...equipoFiltrado[0], items: nuevoEquipo}
+
+        try {
+
+            const payload = {id, estado, idEquipo, equipoNuevo, idToResena, toResenaNueva}
+
+            socket?.emit('cambiar-estado', payload)
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: (estado) ? 'Usuario Activado correctamente' : 'Usuario Desactivado correctamente'
+            })
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const iniciarActualizacionPass = (id, name, lastName, date, email, passwordActual, password, role, team, urlImage) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.put(`${endPoint}/auth/updatePassword/${id}`, {name, lastName, date, email, passwordActual, password, role}, {headers: {'x-token': token}})
+            const resp = await axios.put(`${endPoint}/auth/updatePassword/${id}`, {name, lastName, date, email, passwordActual, password, role, team, urlImage}, {headers: {'x-token': token}})
     
             if (resp.data.ok) {
 

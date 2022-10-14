@@ -190,6 +190,11 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
 
         const { usuarios } = getState().auth;
 
+        if (team?.length === 0) {
+            team = []
+            usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+        }
+
         let usuariosEvaluacion = []
 
         usuarios?.map(usuario => usuariosEvaluacion?.push({id: usuario?.id, intentos}))
@@ -243,6 +248,13 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
+
+        const { usuarios } = getState().auth;
+        
+        if (team?.length === 0) {
+            team = []
+            usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+        }
 
         let usuariosEvaluacion = []
 

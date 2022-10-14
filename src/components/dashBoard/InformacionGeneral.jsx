@@ -1,8 +1,14 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Slider from 'react-slick';
 import { useResponsive } from '../../hooks/useResponsive'
+import { activeCapacitacion } from '../../store/capacitacion/capacitacionSlice';
 
 export const InformacionGeneral = () => {
+
+    const dispatch = useDispatch();
 
     const { uid, usuarioActivo } = useSelector(state => state.auth);
 
@@ -11,6 +17,68 @@ export const InformacionGeneral = () => {
     const { evaluacion } = useSelector(state => state.ev);
 
     const [ respWidth ] = useResponsive()
+
+    const navigate = useNavigate()
+
+    const VideoComponent = (id) => {
+        navigate(`/capacitacion/${id}`)
+        const capacitacionfilter = capacitacion?.filter(capacitacion => capacitacion?._id === id)
+    
+        if (capacitacionfilter?.length !== 0) {
+          dispatch(activeCapacitacion({_id: capacitacionfilter[0]?._id, videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas, descripcion: capacitacionfilter[0]?.descripcion, usuariosEvaluacion: capacitacionfilter[0]?.usuariosEvaluacion, intentos: capacitacionfilter[0]?.intentos}))
+        }
+    }
+
+    // Evaluaciones por mejorar
+
+    const evaluacionesFiltradas = evaluacion?.filter(evaluacion => evaluacion?.calificacion < 90 && evaluacion?.idUsuario === uid)
+
+    const capacitacionMostrar = capacitacion?.filter(
+        capacitacion => evaluacionesFiltradas?.some(evaluacion => evaluacion.idCapacitacion === capacitacion?._id)
+        &&
+        capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === uid && intentos?.intentos === 0)
+    )
+
+    // Fin Evaluaciones por mejorar
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: false,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+          infinite: false,
+          dots: false
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: false,
+          dots: false
+        }
+      }
+    ]
+  };
 
     let sumaPorcentage = []
 
@@ -39,90 +107,43 @@ export const InformacionGeneral = () => {
             arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion})
         )
     })
-    
-    let suma = 0
-
-    evaluacionFiltrada?.map(evaluacion => suma = suma + evaluacion?.calificacion)
-
-    const totalSumado = suma/evaluacionFiltrada?.length
-
-    const porcentage = (5*totalSumado) / 100 || 5
-
-    let condicion = ''
-
-    if (porcentage?.toFixed() <= 3) {
-        condicion = 'bi-emoji-frown'
-    } else if (porcentage?.toFixed() >= 3.1 && porcentage?.toFixed() <= 3.5) {
-        condicion = 'bi-emoji-neutral'
-    } else if (porcentage?.toFixed() >= 3.6 && porcentage?.toFixed() <= 4.5) {
-        condicion = 'bi-emoji-smile'
-    } else if (porcentage?.toFixed() >= 4.6) {
-        condicion = 'bi-emoji-laughing'
-    }
 
   return (
     <>
+        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
+          <div className='text-black shadow p-4 d-flex flex-column' style={{width: '100%', height: '300px', borderRadius: '35px', backgroundColor: 'white'}}>
+            <div className="row">
+              <div className="col-6">
+                <h5 style={{fontSize: '50px'}}><i style={{color: 'rgb(71, 7, 168)'}} className="bi bi-arrow-repeat"> </i></h5>
+              </div>
 
-        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 my-2">
-            <div className='text-black shadow p-4 d-flex flex-column' style={{width: '100%', height: '300px', borderRadius: '35px', backgroundColor: 'rgb(7, 36, 65)'}}>
-                <div className="row">
-                    <div className="col-6">
-                        <h5 style={{fontSize: '50px'}}><i style={{color: 'white'}} className={`bi ${condicion}`}> </i></h5>
-                    </div>
-
-                    <div className="col-6 d-flex justify-content-center align-items-center">
-                        <h5 className='text-white'><strong>Mi condición actual</strong></h5>
-                    </div>
-                </div>
-
-            <div className="row my-1">
-                <div className="col-6">
-                    <div className='fondos-cards p-4 text-center text-white' style={{height: '110px', overflowY: 'auto', overflowX: 'hidden', borderBottomRightRadius: '10px', borderTopRightRadius: '10px'}}>
-                        <span>Indice general</span>
-                        <h3>{porcentage?.toFixed()}/5</h3>
-                    </div>
-                </div>
-
-                <div className="col-6">
-                    <div className='fondos-cards p-4 text-center text-white' style={{height: '110px', overflowY: 'auto', overflowX: 'hidden', borderBottomRightRadius: '10px', borderTopRightRadius: '10px'}}>
-                        <span>Estado general</span>
-                        {
-                            (porcentage?.toFixed() <= 3)
-                                &&
-                            <h3>Malo</h3>
-                        }
-
-                        {
-                            (porcentage?.toFixed() >= 3.1 && porcentage?.toFixed() <= 3.5)
-                                &&
-                            <h3>Mejorable</h3>
-                        }
-
-                        {
-                            (porcentage?.toFixed() >= 3.6 && porcentage?.toFixed() <= 4.5)
-                                &&
-                            <h3>Normal</h3>
-                        }
-
-                        {
-                            (porcentage?.toFixed() >= 4.6)
-                                &&
-                            <h3>Excelente</h3>
-                        }
-                    </div>
-                </div>
+              <div className="col-6 d-flex justify-content-center align-items-center">
+                <h5><strong>Evaluaciones Por mejorar</strong></h5>
+              </div>
             </div>
-            {
-                (respWidth > 585 && respWidth < 768)
-                    ?
-                <h5 className='p-2 my-4 text-center fondos-cards text-white'>Debes de tener un estado general normal o superior</h5>
-                    :
-                <h5 className='p-2 my-2 text-center fondos-cards text-white'>Debes de tener un estado general normal o superior</h5>
-            }
+
+            <h5 className='text-center my-3'>Selecciona la evaluacion que desees retomar, para mejorar la calificación</h5>
+
+            <div className="row my-2">
+              <Slider {...settings}>
+                {
+                  capacitacionMostrar?.map((Element, index) => {
+                    return (
+                      <div key={Element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                        <div onClick={() => VideoComponent(Element?._id)} className='btn primary text-center text-white'>
+                          {Element?.title}
+                        </div>
+                      </div>
+                    )
+                  })
+                }
+              </Slider>
             </div>
+            <h5 className='p-2 text-center' style={{backgroundColor: 'lightgray', borderRadius: '35px'}}>Debes mejorar {capacitacionMostrar?.length}</h5>
+          </div>
         </div>
 
-        <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 my-2'>
+        <div className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 my-2'>
             <div className='shadow text-black p-3' style={{borderRadius: '35px', height: '300px', backgroundColor: 'white'}}>
                 <div className="row p-2">
                     <div className="col-6">
@@ -139,7 +160,7 @@ export const InformacionGeneral = () => {
                         {
                             arregloCalificaciones?.map(calificacion => {
                                 return (
-                                    <h6 className='my-2'>{calificacion?.titulo}: {calificacion?.evaluacion}/100</h6>
+                                    <h6 className='my-2'>{calificacion?.titulo}: {calificacion?.evaluacion?.toFixed()}/100</h6>
                                 )
                             })
                         }

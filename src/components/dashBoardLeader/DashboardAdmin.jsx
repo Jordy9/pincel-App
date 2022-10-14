@@ -5,7 +5,6 @@ import { TableAdmin } from './TableAdmin'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { useGreeting } from '../../hooks/useGreeting'
-import { ModalTeam } from './ModalTeam'
 import { MultiSelect } from 'react-multi-select-component'
 import { createStaticRanges, DateRange, DateRangePicker, DefinedRange } from 'react-date-range';
 import { es } from 'react-date-range/dist/locale'
@@ -27,11 +26,8 @@ import {
 import { useResponsive } from '../../hooks/useResponsive'
 import { useDispatch } from 'react-redux'
 import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
-import { filterCustomResena, filterCustomResenaTodosMeses } from '../../helper/filterCustomResena'
-import { CardsAdminCustomResena } from './CardsAdminCustomResena'
-import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMenorQue } from '../../helper/filterResena'
+import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMenorQue } from '../helperLeader/helperLeader'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
-import { filterCustomResenaSlice } from '../../store/customResena/customResenaSlice'
 import { showError } from '../../store/resena/thunk'
 
 const defineds = {
@@ -60,20 +56,22 @@ export const DashboardAdmin = () => {
   // Importacion de estados
   const { resena } = useSelector(state => state.rs);
 
-  const { name, usuarios } = useSelector(state => state.auth);
+  const { name, usuarios, uid, usuarioActivo } = useSelector(state => state.auth);
 
   const { equipos } = useSelector(state => state.eq);
 
   const { toShowResena, showResena } = useSelector(state => state.to);
 
-  const [changeShowResena, setChangeShowResena] = useState(toShowResena[0]?.showResena)
+  const [changeShowResena, setChangeShowResena] = useState('normal')
 
-  useEffect(() => {
-    setChangeShowResena(toShowResena[0]?.showResena)
-  }, [toShowResena])
+  let usuariosFiltradosLeader = []
+
+  equipos?.filter(equipo => usuariosFiltradosLeader.push(equipo?.items[0]?.id))
+
+  const isLeader = usuariosFiltradosLeader?.includes(uid)
+
+  let usuariosParaAdminLeader = usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.team === usuarioActivo?.team)
   
-  const { resena: customResena } = useSelector(state => state.cr);
-
   const [showThreeMonth, setShowThreeMonth] = useState(false)
 
   const [showThreeMonths, setShowThreeMonths] = useState(false)
@@ -109,8 +107,7 @@ export const DashboardAdmin = () => {
   // Filtro de usuarios para filtrar ya sea por usuario o por equipo
 
   if (chargeUsersTeam) {
-    equipos?.map(equipo => usuariosToFilter.push({label: `Equipo de ${equipo?.name}`, value: equipo.name, team: true}))
-    usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy') && usuarios?.estado === true)?.map(usuario => usuariosToFilter.push({label: usuario?.name, value: usuario?.id, team: false}))
+    usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.team === usuarioActivo?.team)?.map(usuario => usuariosToFilter.push({label: usuario?.name, value: usuario?.id, team: false}))
   }
 
   let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
@@ -167,28 +164,25 @@ export const DashboardAdmin = () => {
   }, [changeDate, changeDateRange])
 
   if (showThreeMonth || showAllMonth) {
-    calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+    calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
     
   }
 
   if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
 
   if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
 
   if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-    console.log(calificacionPorMeses)
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
  
   // Fin de los filtros
 
   const { greet } = useGreeting()
-
-  const [modalTeam, setModalTeam] = useState(false)
 
   const staticRanges = createStaticRanges([
     {
@@ -277,6 +271,13 @@ export const DashboardAdmin = () => {
     }
   ]);
 
+  useEffect(() => {
+    if (changeDate && changeDateRange) {
+      dispatch(filterResenaSlice(resenasFiltradas))
+    }
+    
+  }, [changeDate, changeDateRange, dispatch])
+
   const [showFilter, setShowFilter] = useState(false)
 
   const [markButton, setMarkButton ] = useState('Este mes')
@@ -313,13 +314,6 @@ export const DashboardAdmin = () => {
   const [showTransp, setShowTransp] = useState(false)
 
   useEffect(() => {
-    if (changeShowResena === 'Normal') {
-      dispatch(filterResenaSlice(resenasFiltradas))
-    }
-    
-  }, [changeDate, changeDateRange, dispatch])
-
-  useEffect(() => {
     if (moment(changeDateRange).diff(changeDate, 'days') > 364) {
       setSelectRange(
         {
@@ -347,24 +341,6 @@ export const DashboardAdmin = () => {
       dispatch(showFilter0(true))
     }
   }, [usuarioFiltrado, dispatch])
-
-  // Filtro por rango de las reseñas personalizadas
-
-  const customResenaPorRango = filterCustomResena(customResena, changeDate, changeDateRange, selectRange)
-
-  useEffect(() => {
-
-    if (changeShowResena === 'Custom') {
-      dispatch(filterCustomResenaSlice(customResenaPorRango))
-    }
-    
-  }, [changeDate, changeDateRange, dispatch, selectRange.startDate])
-
-  // Filtro por todos los meses de las reseñas personalizadas
-  
-  const customResenaTodosLosMeses = filterCustomResenaTodosMeses(customResena, showThreeMonth, changeDate, changeDateRange, showThreeMonths, showAllMonth)
-
-  const [showModalCreateUser, setShowModalCreateUser] = useState(false)
   
   return (
     <Sidebar>
@@ -394,7 +370,7 @@ export const DashboardAdmin = () => {
             </div>
 
             {
-              (usuariosToFilter && changeShowResena === 'Normal')
+              (usuariosToFilter)
                 &&
                 <MultiSelect
                   isLoading = {(chargeUsersTeam && usuariosToFilter?.length === 0)}
@@ -437,7 +413,6 @@ export const DashboardAdmin = () => {
 
             <div className='p-1 mt-2' style={{justifyContent: 'space-between', display: 'flex'}}>
               <button onClick={() => setShowFilter(!showFilter)} type='button' className='btn btn-primary'>{(!showFilter) ? (changeDate && changeDateRange) ? `Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}` : 'Filtrar por rango' : 'Cerrar ventana de filtro'}</button>
-              <button onClick={() => setModalTeam(true)} type='button' className='btn btn-primary'>Equipos</button>
             </div>
             <div div className='p-1 my-2' style={{justifyContent: 'space-between', display: 'flex', overflowX: 'auto'}}>
                 {
@@ -455,54 +430,28 @@ export const DashboardAdmin = () => {
           </div>
 
           <div className={`row ${(showFloat) ? 'mb-3' : 'my-3'}`} style = {{marginTop: (showFloat) && '220px'}}>
-            {
-              (changeShowResena === 'Normal')
-                ?
-              <CardsAdmin 
-                resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
-                mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
-                calificacionPorMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
-                show = {showAllMonth}
-                respWidth = { respWidth }
-                changeShowResena = {changeShowResena}
-                setChangeShowResena = {setChangeShowResena}
-                defineds = {defineds.endOfMonth}
-                changeDate = {changeDate}
-                changeDateRange = {changeDateRange}
-                showThisWeek = {showThisWeek}
-                showLastWeek = {showLastWeek}
-                showThreeMonth = {showThreeMonth}
-              />
-                :
-              <CardsAdminCustomResena 
-                resenasFiltradas = {(customResenaPorRango?.length !== 0) ? customResenaPorRango : []} 
-                mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
-                calificacionPorMeses = {(customResenaTodosLosMeses?.length !== 0) && customResenaTodosLosMeses}
-                show = {showAllMonth}
-                respWidth = { respWidth }
-                changeShowResena = {changeShowResena}
-                setChangeShowResena = {setChangeShowResena}
-                defineds = {defineds.endOfMonth}
-                changeDate = {changeDate}
-                changeDateRange = {changeDateRange}
-                showThisWeek = {showThisWeek}
-                showLastWeek = {showLastWeek}
-                showThreeMonth = {showThreeMonth}
-              />
-            }
-
+            <CardsAdmin 
+              resenasFiltradas = {(resenasFilterArray?.length !== 0) ? resenasFilterArray : (FiltroChange?.length === 0) && resenasFiltradas} 
+              mes = {[moment(changeDate).format('M'), moment(changeDateRange).format('M')]} 
+              calificacionPorMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionPorMesesDeEquipos : calificacionPorMeses}
+              show = {showAllMonth}
+              respWidth = { respWidth }
+              changeShowResena = {changeShowResena}
+              setChangeShowResena = {setChangeShowResena}
+              defineds = {defineds.endOfMonth}
+              changeDate = {changeDate}
+              changeDateRange = {changeDateRange}
+              showThisWeek = {showThisWeek}
+              showLastWeek = {showLastWeek}
+              showThreeMonth = {showThreeMonth}
+              usuariosParaAdminLeader = {usuariosParaAdminLeader}
+            />
           </div>
 
           <div className="row">
-            <TableAdmin usuarioFiltrado = {(usuarioFiltrado?.length !== 0) ? usuarioFiltrado : usuarios} toShowResena = {toShowResena} changeShowResena = {changeShowResena} />
+            <TableAdmin usuarioFiltrado = {(usuarioFiltrado?.length !== 0) ? usuarioFiltrado : usuariosParaAdminLeader} toShowResena = {toShowResena} changeShowResena = {changeShowResena} />
           </div>
       </div>
-
-      {
-        (modalTeam)
-          &&
-        <ModalTeam modalTeam  = {modalTeam} setModalTeam = {setModalTeam}  />
-      }
     </Sidebar>
   )
 }

@@ -9,6 +9,8 @@ import Slider from "react-slick";
 import { ModalPreview } from './ModalPreview';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { ModalOrder } from './ModalOrder';
+import uuid from "uuid/v4";
 
 export const FormularioVideos = () => {
 
@@ -37,7 +39,7 @@ export const FormularioVideos = () => {
     if (chargeUsersTeam) {
         equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
     
-        usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => arregloEquipos.push({ label: e?.name, value: e?.id, team: false }))
+        usuarios?.filter(usuarios => usuarios?.estado === true)?.map(e => arregloEquipos.push({ label: e?.name, value: e?.id, team: false }))
     }
 
     const options = arregloEquipos
@@ -50,9 +52,10 @@ export const FormularioVideos = () => {
 
     const [imag, setimag] = useState()
 
-    const [formValues, setFormValues] = useState([{ titulo: '', video: '', duration: 0 }])
+    const [formValues, setFormValues] = useState([{ _id: uuid(), titulo: '', video: '', duration: 0 }])
 
-    const [formEvaluacion, setFormEvaluacion] = useState([{ 
+    const [formEvaluacion, setFormEvaluacion] = useState([{
+        _id: uuid(),
         pregunta: '', 
         respuesta: [
             {
@@ -166,9 +169,9 @@ export const FormularioVideos = () => {
                         .required('Requerido'),
             intentos: Yup.number()
                         .required('Requerido'),
-            equipos: Yup.array()
-                        .min(1, 'Debe de contener al menos un equipo')
-                        .required('Requerido'),
+            // equipos: Yup.array()
+            //             .min(1, 'Debe de contener al menos un equipo')
+            //             .required('Requerido'),
             video: Yup.array().of(Yup.object({
                     titulo: (paraEditar?.publicar === true) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
                     video: (paraEditar?.publicar === true) && Yup.string().required('Requerido'),
@@ -251,12 +254,13 @@ export const FormularioVideos = () => {
       if (paraEditar) {
         let videos = []
         paraEditar?.video?.map(video => (
-            videos.push({titulo: video.titulo, video: video.video, duration: video?.duration})
+            videos.push({_id: video?._id, titulo: video.titulo, video: video.video, duration: video?.duration})
         ))
         setFormValues([...videos])
         let PreguntasArreglo = []
         paraEditar?.Preguntas?.map((preguntas) => (
             PreguntasArreglo.push({
+                _id: preguntas?._id,
                 pregunta: preguntas?.pregunta,
                 respuesta: [...preguntas?.respuesta]
             })
@@ -294,7 +298,7 @@ export const FormularioVideos = () => {
     }, [changeIndex, showDuration])
     
     const agregar = () => {
-        setFormValues([...formValues, { titulo: '', video: '', duration: 0 }])
+        setFormValues([...formValues, { _id: uuid(), titulo: '', video: '', duration: 0 }])
      }
     
     const eliminar = (i) => {
@@ -322,6 +326,7 @@ export const FormularioVideos = () => {
         
     const agregarPregunta = () => {
         setFormEvaluacion([...formEvaluacion, {
+            _id: uuid(),
             pregunta: '',
             respuesta: [
                 {
@@ -449,6 +454,10 @@ export const FormularioVideos = () => {
     const goBack = () => {
         navigate('/ListCapacitaciones')
     }
+
+    const [showOrder, setShowOrder] = useState(false)
+
+    console.log(formEvaluacion)
     
   return (
     <Sidebar>
@@ -474,9 +483,14 @@ export const FormularioVideos = () => {
                             value={equiposCapacitacion}
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
-                            hasSelectAll = {true}
+                            hasSelectAll = {false}
                         />
                         {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
+                    </div>
+                    
+                    <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                        <label>Ordenar</label>
+                        <button type='button' onClick={() => setShowOrder(true)} className='btn btn-primary form-control'>Ordenar videos o preguntas</button>
                     </div>
                     
                     <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
@@ -590,7 +604,7 @@ export const FormularioVideos = () => {
                         }
                     </>
                         :
-                    <Slider ref={ref} {...settings}>
+                    <Slider swipe = {false} ref={ref} {...settings}>
                         {
                             formEvaluacion.map((element, index) => {
                                 return (
@@ -702,6 +716,15 @@ export const FormularioVideos = () => {
             setPreviewVideo = {setPreviewVideo}
             setShowDuration = {setShowDuration}
             showDuration = {showDuration}
+        />
+
+        <ModalOrder 
+            showOrder={showOrder}
+            setShowOrder={setShowOrder}
+            formEvaluacion = {formEvaluacion}
+            setFormEvaluacion = {setFormEvaluacion}
+            formValues = {formValues}
+            setFormValues = {setFormValues}
         />
     </Sidebar>
   )

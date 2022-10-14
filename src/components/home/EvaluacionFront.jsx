@@ -6,6 +6,7 @@ import { crearAResena } from '../../store/resena/thunk'
 import Slider from "react-slick";
 import { Modal } from 'react-bootstrap'
 import { setClearResena } from '../../store/resena/resenaSlice'
+import user from '../../heroes/user.webp'
 
 export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowModalFront, setShowModalFront}) => {
 
@@ -164,7 +165,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                         &&
                                                     <i style={{fontSize: '35px', position: 'absolute', zIndex: 1045, top: 5, right: 130, color: 'rgb(0, 197, 0)'}} className="bi bi-check-circle-fill"></i>
                                                 }
-                                                <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
+                                                <img src={usuario?.urlImage || user} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px', opacity: (resena?.includes(usuario)) && 0.8}} alt="" />
                                             </div>
                                             <h3 className='text-center my-2'>{usuario?.name}</h3>
                                         </div>
@@ -178,7 +179,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                 <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                                     <h1 className='text-center my-2 mb-5'>¿Cómo fue el servicio de <strong>{usuario?.name}</strong> hoy?</h1>
                                                     <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
-                                                        <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
+                                                        <img src={usuario?.urlImage || user} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
                                                     <div className='text-center mt-3'>
                                                         <Rating emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />

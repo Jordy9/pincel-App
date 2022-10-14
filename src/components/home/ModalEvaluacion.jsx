@@ -5,6 +5,7 @@ import { Rating } from 'react-simple-star-rating'
 import Slider from "react-slick";
 import { setClearResena } from '../../store/resena/resenaSlice';
 import { ModalEvaluacionFront } from './EvaluacionFront'
+import user from '../../heroes/user.webp'
 
 export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) => {
 
@@ -142,7 +143,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                                         <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                             <h1 className='text-center my-2 mb-5'>¿Cómo fue el servicio de <strong>{usuario?.name}</strong> hoy?</h1>
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
-                                                <img src={usuario?.urlImage || 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg'} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
+                                                <img src={usuario?.urlImage || user} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                             </div>
                                             <div className='text-center mt-3'>
                                                 <Rating emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />

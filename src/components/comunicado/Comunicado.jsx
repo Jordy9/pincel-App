@@ -1,5 +1,6 @@
 import React from 'react'
 import { Sidebar } from '../Sidebar'
+import user from '../../heroes/user.webp'
 
 export const Comunicado = () => {
   return (
@@ -31,7 +32,7 @@ export const Comunicado = () => {
                         <div className="row">
                             <div className="col-3">
                                 <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                                    <img src="https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553_960_720.jpg" className='img-fluid' alt="" />
+                                    <img src={user} className='img-fluid' alt="" />
                                 </div>
                             </div>
 

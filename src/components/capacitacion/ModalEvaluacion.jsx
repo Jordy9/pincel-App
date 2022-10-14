@@ -44,9 +44,9 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         setcalificacionShow((calificacion?.length / formValues?.length) * 100)
 
         if (capacitacionActiva?.intentos === Number(intentosPermitidos[0]?.intentos) && updtEvaluacion?.length === 0) {
-            dispatch(crearEvaluacion(formValues, calificacionFinal))
+            dispatch(crearEvaluacion(formValues, calificacionFinal?.toFixed()))
         } else {
-            dispatch(actualizarEvaluacion(formValues, calificacionFinal, evaluacionUserComplete[0]?._id))
+            dispatch(actualizarEvaluacion(formValues, calificacionFinal?.toFixed(), evaluacionUserComplete[0]?._id))
         }
         
         setChangeEvaluacionCalificacion(true)
@@ -86,15 +86,15 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                         <h4>{changeCountResponse}/{capacitacionActiva?.preguntas?.length}</h4>
 
                         <div className='p-4 text-black'>
-                            <h5>{PreguntaAleatoria[changeCountResponse - 1]?.pregunta}</h5>
+                            <h3>{PreguntaAleatoria[changeCountResponse - 1]?.pregunta}</h3>
                             <div className="row p-4 my-5">
                                 {
                                     arregloRespuestasAleatorias?.map((evaluacionResp, index) => {
                                         return (
-                                            <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3 d-flex justify-content-center" style={{maxHeight: '150px'}}>
+                                            <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 my-3" style={{maxHeight: '150px', overflowY: 'auto'}}>
                                                 <div className="form-check">
                                                     <input checked = {(formValues[changeCountResponse - 1]?.respuesta === evaluacionResp?.respuesta) && true} className="form-check-input" type="radio" onClick={() => funcionarreg(changeCountResponse - 1, capacitacionActiva?.preguntas[changeCountResponse - 1], evaluacionResp?.respuesta, evaluacionResp?.accion )} id="exampleRadios2" value="option2" />
-                                                    <label className="form-check-label">{evaluacionResp?.respuesta}</label>
+                                                    <label className="form-check-label" style={{fontSize: '25px'}}>{evaluacionResp?.respuesta}</label>
                                                 </div>
                                             </div>
                                         )
