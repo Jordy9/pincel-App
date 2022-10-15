@@ -100,7 +100,6 @@ export const FormularioVideos = () => {
                 suma = suma + element?.duration
 
                 if (element.video !== '') {
-                    console.log(element.video === paraEditar?.video[index]?.video)
                     if (element.video === paraEditar?.video[index]?.video) {
                         video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                     } else {
@@ -456,8 +455,6 @@ export const FormularioVideos = () => {
     }
 
     const [showOrder, setShowOrder] = useState(false)
-
-    console.log(formEvaluacion)
     
   return (
     <Sidebar>
@@ -685,14 +682,8 @@ export const FormularioVideos = () => {
                                             </div>
 
                                         </div>
-                                    </Fragment>
-                                )
-                            })
-                        }
-                    </Slider>
-                }
 
-                {
+                                        {
                     (upload !== 0)
                         ?
                     <div className="progress2">
@@ -702,6 +693,12 @@ export const FormularioVideos = () => {
                     <div className='d-grid gap-2 col-6 mx-auto'>
                         <button hidden = {(!evaluacionChange)} type='submit' className = 'btn btn-primary'>Guardar</button>
                     </div>
+                }
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </Slider>
                 }
 
             </form>

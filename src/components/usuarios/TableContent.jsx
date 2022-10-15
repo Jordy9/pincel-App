@@ -36,7 +36,7 @@ export const TableContent = (props) => {
             <td>{name}</td>
             <td>{lastName}</td>
             <td>{email}</td>
-            <td>
+            <td style={{color: (estado) ? 'green' : 'red'}}>
                 {
                     (estado)
                         ?

@@ -58,7 +58,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                                     ?
                                                     <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
                                                     :
-                                                    <i style={{fontSize: '25px'}} className="text-danger bi bi-x-octagon"></i>
+                                                    <i style={{fontSize: '25px'}} className="text-danger bi-x-circle-fill"></i>
                                                 }
                                             </td>
                                         </tr>

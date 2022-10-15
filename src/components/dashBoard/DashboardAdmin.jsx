@@ -181,7 +181,6 @@ export const DashboardAdmin = () => {
 
   if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-    console.log(calificacionPorMeses)
   }
  
   // Fin de los filtros

@@ -1,16 +1,12 @@
-import axios from "axios"
 import Swal from "sweetalert2";
+import salonApi from "../../salonApi/salonApi";
 import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
 
 export const obtenerCapacitacion = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/capacitacion`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/capacitacion`)
     
             dispatch(getCapacitacion(resp.data.capacitacion))
 
@@ -50,8 +46,8 @@ export const obtenerCapacitacion = () => {
 //             }
 
 //             const resp = await Promise.all([
-//                 axios.post(`${endPoint}/fileUpload`, formData, {
-//                     headers: {'x-token': token}, 
+//                 salonApi.post(`/fileUpload`, formData, {
+//                      
 //                     onUploadProgress: (e) =>
 //                     {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
 //                 })
@@ -122,8 +118,8 @@ export const obtenerCapacitacion = () => {
 
 //             if (ok) {
 //                 resp = await Promise.all([
-//                     axios.post(`${endPoint}/fileUpload`, formData, {
-//                         headers: {'x-token': token}, 
+//                     salonApi.post(`/fileUpload`, formData, {
+//                          
 //                         onUploadProgress: (e) =>
 //                         {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
 //                     })
@@ -179,7 +175,7 @@ export const obtenerCapacitacion = () => {
 
 //         for (let index = 0; index < indiceEliminar.length; index++) {
 //             const element = indiceEliminar[index];
-//             await axios.delete(`${endPoint}/fileUpload/${paraEditar?.video[element]?.idVideo}`, {headers: {'x-token': token}})
+//             await salonApi.delete(`/fileUpload/${paraEditar?.video[element]?.idVideo}`)
 //         }
 
 //     }
@@ -206,8 +202,8 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
 
         try {
 
-            const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
-                headers: {'x-token': token},
+            const respImage = await salonApi.post(`/fileUpload/imagen`, formData, {
+                
                 onUploadProgress: (e) =>
                 {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
             })
@@ -215,7 +211,7 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
             const idImage = respImage.data.image.id
             const image = respImage.data.image.url
 
-            const resp = await axios.post(`${endPoint}/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
+            const resp = await salonApi.post(`/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
     
             dispatch(uploadFinish())
             dispatch(createCapacitacion(resp.data.capacitacion))
@@ -276,8 +272,8 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
                 formData.append('title', title)
                 formData.append('title2', title + new Date())
     
-                const respImage = await axios.post(`${endPoint}/fileUpload/imagen`, formData, {
-                    headers: {'x-token': token},
+                const respImage = await salonApi.post(`/fileUpload/imagen`, formData, {
+                    
                     onUploadProgress: (e) =>
                     {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
                 })
@@ -285,11 +281,11 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
                 const idImage = respImage.data.image.id
                 const image = respImage.data.image.url
     
-                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
         
                 dispatch(uploadFinish())
 
-                await axios.delete(`${endPoint}/fileUpload/${paraEditar?.idImage}`, {headers: {'x-token': token}})
+                await salonApi.delete(`/fileUpload/${paraEditar?.idImage}`)
                 
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
 
@@ -312,7 +308,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
             } else {
                 const image = file
                 const idImage = paraEditar?.idImage
-                const resp = await axios.put(`${endPoint}/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
         
                 dispatch(uploadFinish())
                 dispatch(actualizarCapacitacion(resp.data.capacitacion))
@@ -346,7 +342,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
 export const publicarCapacitacion = (capacitacion, publicar) => {
     return async(dispatch) => {
 
-        const resp = await axios.put(`${endPoint}/capacitacion/update/${capacitacion?._id}`, {...capacitacion, publicar}, {headers: {'x-token': token}})
+        const resp = await salonApi.put(`/capacitacion/update/${capacitacion?._id}`, {...capacitacion, publicar})
         dispatch(actualizarCapacitacion(resp.data.capacitacion))
 
         if (publicar) {
@@ -398,15 +394,15 @@ export const eliminarCapacitacion = (props) => {
         const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === props?._id)
         
         try {
-            const resp = await axios.delete(`${endPoint}/capacitacion/delete/${props?._id}`, {headers: {'x-token': token}})
+            const resp = await salonApi.delete(`/capacitacion/delete/${props?._id}`)
 
             if (evaluacionFiltrada?.length !== 0) {
-                await axios.post(`${endPoint}/evaluacion/delete`, evaluacionFiltrada, {headers: {'x-token': token}})
+                await salonApi.post(`/evaluacion/delete`, evaluacionFiltrada)
             }
 
             dispatch(deleteCapacitacion(resp.data.capacitacion))
 
-            await axios.delete(`${endPoint}/fileUpload/${props?.idImage}`, {headers: {'x-token': token}})
+            await salonApi.delete(`/fileUpload/${props?.idImage}`)
 
             const Toast = Swal.mixin({
                 toast: true,
@@ -438,7 +434,7 @@ export const eliminarCapacitacion = (props) => {
             
 //             try {
     
-//                 await axios.delete(`${endPoint}/fileUpload/${element?.idVideo}`, {headers: {'x-token': token}})
+//                 await salonApi.delete(`/fileUpload/${element?.idVideo}`)
 //             } catch (error) {
 //                 console.log(error)
 //             }

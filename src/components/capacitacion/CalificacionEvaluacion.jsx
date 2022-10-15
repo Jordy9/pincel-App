@@ -24,7 +24,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
   return (
     <div className='p-4 shadow mt-5' style={{borderRadius: '35px'}}>
         <h1 className='text-center'>Calificación</h1>
-        <h5 className='text-center'>Tu calificación en esta evaluación es {calificacionShow} de 100</h5>
+        <h5 className='text-center'>Tu calificación en esta evaluación es {calificacionShow?.toFixed()} de 100</h5>
 
         {
           (intentos === 0)
@@ -51,7 +51,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
                             </td>
                             <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
                             <td className='no-elipsis'>{evaluacion?.respuesta}</td>
-                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0].respuesta}</td>
+                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
                             <td>
                               {
                                 (evaluacion?.correcta === 'true')

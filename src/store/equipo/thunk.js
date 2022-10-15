@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import salonApi from "../../salonApi/salonApi";
 import { onUpdateTeam } from "../auth/authSlice";
 import { obtenerUsuarios } from "../auth/thunk";
 import { obtenerToResena } from "../resena/thunk";
@@ -7,13 +8,11 @@ import { createTeam, deleteTeam, getTeam, updateTeam } from "./equipoSlice";
 
 const endPoint = process.env.REACT_APP_API_URL
 
-const token = localStorage.getItem('token') || '';
-
 export const obtenerEquipo = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/equipos`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/equipos`)
     
             dispatch(getTeam(resp.data.equipo))
 
@@ -27,7 +26,7 @@ export const crearEquipo = (name, items, setchangeColumns) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.post(`${endPoint}/equipos/new`, {name, items}, {headers: {'x-token': token}})
+            const resp = await salonApi.post(`/equipos/new`, {name, items})
 
             setchangeColumns(true)
     
@@ -62,7 +61,7 @@ export const actualizarEquipo = (props, name2) => {
         const {_id} = props
 
         try {
-            await axios.put(`${endPoint}/equipos/update/${_id}`, {...props, name2}, {headers: {'x-token': token}})
+            await salonApi.put(`/equipos/update/${_id}`, {...props, name2})
     
             dispatch(obtenerUsuarios())
             dispatch(obtenerEquipo())
@@ -143,6 +142,8 @@ export const actualizarColumnasInicioOrder = (equipos) => {
 
 export const eliminarEquipo = (props) => {
     return async(dispatch) => {
+
+        const token = localStorage.getItem('token')
 
         try {
             await axios.delete(`${endPoint}/equipos/delete/${props._id}`, {headers: {'x-token': token}, data: {props}})

@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Login } from '../components/home/Login';
 import { Registro } from '../components/home/Registro';
 import { Notificaciones } from '../components/Notificaciones';
 import { useSelector, useDispatch } from 'react-redux'
-import { iniciarAutenticacion, obtenerUsuarioActivo, obtenerUsuarios } from '../store/auth/thunk';
+import { iniciarAutenticacion, iniciarLogoutTokenExpire, obtenerUsuarioActivo, obtenerUsuarios } from '../store/auth/thunk';
 import { Spinner } from '../components/Spinner';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -48,6 +48,26 @@ export const AppRoute = () => {
 
   const token = localStorage.getItem('token')
 
+  const tokenInit = localStorage.getItem('token-init-date')
+
+  // console.log(moment(Number(tokenInit)).fromNow())
+
+  const [segundos, setSegundos] = useState(0)
+    const refSegundos = useRef()
+
+    useEffect(() => {
+      refSegundos.current && clearInterval(refSegundos.current)
+      refSegundos.current = setInterval(
+         () => (token) && setSegundos(s => s + 1)
+        , 1000)
+    }, [token])
+
+  useEffect(() => {
+    if (moment().diff(moment(Number(tokenInit)), 'hours') >= 2 && moment().diff(moment(Number(tokenInit)), 'hours') < 462716) {
+      dispatch(iniciarAutenticacion())
+    }
+  }, [segundos, tokenInit, dispatch])
+  
   useEffect(() => {
     dispatch(obtenerUsuarios())
     dispatch(iniciarAutenticacion())

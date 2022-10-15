@@ -1,16 +1,12 @@
-import axios from 'axios'
 import Swal from "sweetalert2"
+import salonApi from '../../salonApi/salonApi';
 import { getToShowResena, updateToShowResena } from './toShowResenaSlice';
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
 
 export const obtenerToShowResena = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/toShowResena`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/toShowResena`)
     
             dispatch(getToShowResena(resp.data.toShowResena))
 
@@ -25,7 +21,7 @@ export const actualizarResena = ({ _id, showResena, title, pregunta, inputType }
     return async(dispatch) => {
 
         try {
-            const resp = await axios.put(`${endPoint}/toShowResena/update/${_id}`, { showResena, title, pregunta, inputType }, {headers: {'x-token': token}})
+            const resp = await salonApi.put(`/toShowResena/update/${_id}`, { showResena, title, pregunta, inputType })
     
             dispatch(updateToShowResena(resp.data.toShowResena))
 

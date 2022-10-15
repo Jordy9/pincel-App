@@ -1,17 +1,13 @@
-import axios from 'axios'
 import moment from 'moment';
 import Swal from "sweetalert2"
+import salonApi from '../../salonApi/salonApi';
 import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, filterResenaSlice, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
 
 export const obtenerResena = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/resena`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/resena`)
     
             dispatch(getResena(resp.data.resena))
 
@@ -29,7 +25,7 @@ export const obtenerToResena = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/resena/To`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/resena/To`)
     
             dispatch(getToResena(resp.data.Toresena))
 
@@ -47,7 +43,7 @@ export const crearResena = (calificacion, descripcion, handleClose, setIdUsuario
         try {
             if (calificacion?.length !== 0) {
 
-                const resp = await axios.post(`${endPoint}/resena/new`, {calificacion, descripcion}, {headers: {'x-token': token}})
+                const resp = await salonApi.post(`/resena/new`, {calificacion, descripcion})
         
                 dispatch(createResena(resp.data.resena))
     
@@ -122,7 +118,7 @@ export const actualizarResena = (props) => {
         const estado = !props.estado
 
         try {
-            const resp = await axios.put(`${endPoint}/resena/update/${_id}`, {calificacion, descripcion, estado}, {headers: {'x-token': token}})
+            const resp = await salonApi.put(`/resena/update/${_id}`, {calificacion, descripcion, estado})
     
             dispatch(UpdateResena(resp.data.resena))
 
@@ -154,7 +150,7 @@ export const eliminarResena = (id) => {
     return async(dispatch) => {
 
         try {
-            await axios.delete(`${endPoint}/resena/delete/${id}`, {headers: {'x-token': token}})
+            await salonApi.delete(`/resena/delete/${id}`)
     
             dispatch(DeleteResena(id))
 

@@ -1,17 +1,13 @@
-import axios from 'axios'
 import moment from 'moment';
 import Swal from "sweetalert2"
+import salonApi from '../../salonApi/salonApi';
 import { createResena, DeleteResena, filterCustomResenaSlice, getResena, UpdateResena } from './customResenaSlice';
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
 
 export const obtenerCustomResena = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/customResena`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/customResena`)
     
             dispatch(getResena(resp.data.resena))
 
@@ -30,7 +26,7 @@ export const crearCustomResena = (titulo, calificacion, descripcion, setComenzar
 
         try {
 
-            const resp = await axios.post(`${endPoint}/customResena/new`, {titulo, calificacion, descripcion}, {headers: {'x-token': token}})
+            const resp = await salonApi.post(`/customResena/new`, {titulo, calificacion, descripcion})
     
             dispatch(createResena(resp.data.resena))
 
@@ -69,7 +65,7 @@ export const actualizarCustomResena = (props) => {
         const estado = !props.estado
 
         try {
-            const resp = await axios.put(`${endPoint}/customResena/update/${_id}`, {calificacion, descripcion, estado}, {headers: {'x-token': token}})
+            const resp = await salonApi.put(`/customResena/update/${_id}`, {calificacion, descripcion, estado})
     
             dispatch(UpdateResena(resp.data.resena))
 
@@ -101,7 +97,7 @@ export const eliminarCustomResena = (id) => {
     return async(dispatch) => {
 
         try {
-            await axios.delete(`${endPoint}/customResena/delete/${id}`, {headers: {'x-token': token}})
+            await salonApi.delete(`/customResena/delete/${id}`)
     
             dispatch(DeleteResena(id))
 

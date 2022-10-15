@@ -1,16 +1,11 @@
-import axios from "axios";
+import salonApi from "../../salonApi/salonApi";
 import { createEvaluacion, getEvaluacion, updateEvaluacion } from "./evaluacionSlice";
-
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
 
 export const obtenerEvaluacion = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/evaluacion`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/evaluacion`)
     
             dispatch(getEvaluacion(resp.data.evaluacion))
 
@@ -30,7 +25,7 @@ export const crearEvaluacion = (evaluacion, calificacion) => {
         const idCapacitacion = window.location.pathname.split('/')[2]
 
         try {
-            const resp = await axios.post(`${endPoint}/evaluacion/new`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})
+            const resp = await salonApi.post(`/evaluacion/new`, {idCapacitacion, idUsuario, evaluacion, calificacion})
     
             dispatch(createEvaluacion(resp.data.evaluacion))
 
@@ -55,7 +50,7 @@ export const actualizarEvaluacion = (evaluacion, calificacion, id) => {
         socket?.emit('intento-change', {id: idCapacitacion, uid: idUsuario})
 
         try {
-            const resp = await axios.put(`${endPoint}/evaluacion/update/${id}`, {idCapacitacion, idUsuario, evaluacion, calificacion}, {headers: {'x-token': token}})
+            const resp = await salonApi.put(`/evaluacion/update/${id}`, {idCapacitacion, idUsuario, evaluacion, calificacion})
     
             dispatch(updateEvaluacion(resp.data.evaluacion))
 

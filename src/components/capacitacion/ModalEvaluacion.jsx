@@ -12,11 +12,9 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
 
     const { evaluacion } = useSelector(state => state.ev);
 
-    const updtEvaluacion = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === capacitacionActiva?._id)
-
     const { uid } = useSelector(state => state.auth);
 
-    const evaluacionUserComplete = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === window.location.pathname.split('/')[2] && evaluacion?.idUsuario === uid)
+    const evaluacionUserComplete = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === capacitacionActiva?._id && evaluacion?.idUsuario === uid)
 
   const handleClose = () => {
     setModalShowEvaluacion(false)
@@ -43,10 +41,12 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
         const calificacionFinal = (calificacion?.length / formValues?.length) * 100
         setcalificacionShow((calificacion?.length / formValues?.length) * 100)
 
-        if (capacitacionActiva?.intentos === Number(intentosPermitidos[0]?.intentos) && updtEvaluacion?.length === 0) {
+        if (capacitacionActiva?.intentos === Number(intentosPermitidos[0]?.intentos) && evaluacionUserComplete?.length === 0) {
             dispatch(crearEvaluacion(formValues, calificacionFinal?.toFixed()))
+            console.log('Crear')
         } else {
             dispatch(actualizarEvaluacion(formValues, calificacionFinal?.toFixed(), evaluacionUserComplete[0]?._id))
+            console.log('Actualizar')
         }
         
         setChangeEvaluacionCalificacion(true)

@@ -63,13 +63,13 @@ export const Cards = () => {
         )
     })
 
-  let suma = 0
+    let suma = 0
 
     evaluacionFiltrada?.map(evaluacion => suma = suma + evaluacion?.calificacion)
 
-    const totalSumado = suma/evaluacionFiltrada?.length
+    const totalSumado = (evaluacionFiltrada?.length !== 0) ? suma/evaluacionFiltrada?.length : 0
 
-    const porcentage = (100*totalSumado) / 100 || 100
+    const porcentage = (evaluacionFiltrada?.length !== 0) ? (100*totalSumado) / 100 : 100
 
   // Condicion emojies
     let condicion = ''

@@ -39,6 +39,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                         <table className="table borderless">
                             <thead>
                                 <tr>
+                                    <th className='d-flex justify-content-start' scope="col">Número pregunta</th>
                                     <th scope="col">Pregunta</th>
                                     <th scope="col">Respuesta seleccionada</th>
                                     <th scope="col">Respuesta correcta</th>
@@ -46,19 +47,22 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                             </thead>
                             <tbody>
                                 {
-                                   evaluacionActiva?.evaluacion?.map(evaluacion => {
+                                   evaluacionActiva?.evaluacion?.map((evaluacion, index) => {
                                     return (
                                         <tr onTouchStart={(e) => onDoubleTap(e, onShow)} onDoubleClick={onShow}>
-                                            <td>{evaluacion?.evaluacion?.pregunta}</td>
-                                            <td>{evaluacion?.respuesta}</td>
-                                            <td>{evaluacion?.evaluacion?.respuesta1}</td>
+                                            <td className='d-flex justify-content-start'>
+                                                <button className='btn btn-primary'>{index + 1}</button>
+                                            </td>
+                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
                                             <td>
                                                 {
-                                                    (evaluacion?.correcta)
-                                                    ?
+                                                    (evaluacion?.correcta === 'true')
+                                                        ?
                                                     <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
-                                                    :
-                                                    <i style={{fontSize: '25px'}} className="text-danger bi bi-x-octagon"></i>
+                                                        :
+                                                    <i style={{fontSize: '25px'}} className="text-danger bi-x-circle-fill"></i>
                                                 }
                                             </td>
                                         </tr>
@@ -67,7 +71,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                 }
                             </tbody>
                         </table>
-                        <h5 style = {{position: 'absolute', right: 50, bottom: 0}} >Calificación: {evaluacionActiva?.calificacion}</h5>
+                        <h5 style = {{position: 'absolute', right: 50, bottom: 20}} >Calificación: {evaluacionActiva?.calificacion?.toFixed()}</h5>
                     </div>
                 </div>
             </div>

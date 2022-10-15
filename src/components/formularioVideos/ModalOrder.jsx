@@ -85,7 +85,6 @@ export const ModalOrder = ({showOrder, setShowOrder, formEvaluacion, setFormEval
             <div className='row' style={{ height: "450px" }}>
                 <DragDropContext onDragEnd={result => onDragEndOrderVideos(result, formValues, setFormValues)}>
                     {columnsFromBackendVideos.map((e, index) => {
-                        console.log(formValues[index])
                     const columnId = formValues[index]?._id
                     const column = formValues
                     

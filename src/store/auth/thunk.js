@@ -1,16 +1,12 @@
-import axios from "axios"
 import Swal from "sweetalert2"
-import { onActiveUser, onChecking, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser, uploadFinish, uploadImagePerfil } from "./authSlice"
-
-const endPoint = process.env.REACT_APP_API_URL
-
-const token = localStorage.getItem('token') || '';
+import salonApi from "../../salonApi/salonApi";
+import { onActiveUser, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser, uploadFinish, uploadImagePerfil } from "./authSlice"
 
 export const obtenerUsuarios = () => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.get(`${endPoint}/auth`, {headers: {'x-token': token}})
+            const resp = await salonApi.get(`/auth`)
     
             dispatch(onGetUsers(resp.data.usuarios))
 
@@ -33,8 +29,8 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 formData.append('title', name + new Date())
                 formData.append('title2', name + new Date())
 
-                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
-                    headers: {'x-token': token},
+                const respImage = await salonApi.post(`/fileUpload/perfil`, formData, {
+
                     onUploadProgress: (e) =>
                         {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
                 })
@@ -42,7 +38,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 const idImage = respImage.data.image.id
                 const urlImage = respImage.data.image.url
 
-                const resp = await axios.post(`${endPoint}/auth/new`, {name, lastName, email, date, team, role, urlImage, idImage, password}, {headers: {'x-token': token}})
+                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, team, role, urlImage, idImage, password})
 
                 if (resp.data.ok) {
 
@@ -69,7 +65,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 }
             } else {
 
-                const resp = await axios.post(`${endPoint}/auth/new`, {name, lastName, email, date, team, role, password}, {headers: {'x-token': token}})
+                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, team, role, password})
 
                 if (resp.data.ok) {
     
@@ -131,8 +127,8 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                 formData.append('title', name + new Date())
                 formData.append('title2', name + new Date())
         
-                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
-                    headers: {'x-token': token},
+                const respImage = await salonApi.post(`/fileUpload/perfil`, formData, {
+
                     onUploadProgress: (e) =>
                         {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
                 })
@@ -140,14 +136,14 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                 const idImage = respImage.data.image.id
                 const urlImage = respImage.data.image.url
     
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage})
         
                 if (resp.data.ok) {
     
                     dispatch(onUpdate(resp.data.usuario))
 
                     if (usuarioActivo?.idImage) {
-                        await axios.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${usuarioActivo?.idImage}`, {headers: {'x-token': token}})
+                        await salonApi.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${usuarioActivo?.idImage}`)
                     }
     
                     dispatch(uploadFinish())
@@ -174,7 +170,7 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                 const idImage = usuarioActivo?.idImage
                 const urlImage = usuarioActivo?.image
 
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage})
         
                 if (resp.data.ok) {
     
@@ -235,8 +231,8 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                 formData.append('title', name + new Date())
                 formData.append('title2', name + new Date())
         
-                const respImage = await axios.post(`${endPoint}/fileUpload/perfil`, formData, {
-                    headers: {'x-token': token},
+                const respImage = await salonApi.post(`/fileUpload/perfil`, formData, {
+
                     onUploadProgress: (e) =>
                         {dispatch(uploadImagePerfil(Math.round( (e.loaded * 100) / e.total )))}
                 })
@@ -244,14 +240,14 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                 const idImage = respImage.data.image.id
                 const urlImage = respImage.data.image.url
     
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage})
         
                 if (resp.data.ok) {
     
                     dispatch(onUpdateUser(resp.data.usuario))
 
                     if (activeUser?.idImage) {
-                        await axios.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${activeUser?.idImage}`, {headers: {'x-token': token}})
+                        await salonApi.delete(`${process.env.REACT_APP_API_URL}/fileUpload/${activeUser?.idImage}`)
                     }
     
                     dispatch(uploadFinish())
@@ -278,7 +274,7 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                 const idImage = activeUser?.idImage
                 const urlImage = activeUser?.image
 
-                const resp = await axios.put(`${endPoint}/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage}, {headers: {'x-token': token}})
+                const resp = await salonApi.put(`/auth/update/${id}`, {name, lastName, date, email, password, role, team, idImage, urlImage})
         
                 if (resp.data.ok) {
     
@@ -390,7 +386,7 @@ export const iniciarActualizacionPass = (id, name, lastName, date, email, passwo
     return async(dispatch) => {
 
         try {
-            const resp = await axios.put(`${endPoint}/auth/updatePassword/${id}`, {name, lastName, date, email, passwordActual, password, role, team, urlImage}, {headers: {'x-token': token}})
+            const resp = await salonApi.put(`/auth/updatePassword/${id}`, {name, lastName, date, email, passwordActual, password, role, team, urlImage})
     
             if (resp.data.ok) {
 
@@ -440,7 +436,7 @@ export const iniciarLogin = (email, password) => {
     return async(dispatch) => {
 
         try {
-            const resp = await axios.post(`${endPoint}/auth`, {email, password}, {headers: {'x-token': token}})
+            const resp = await salonApi.post(`/auth`, {email, password})
     
             if (resp.data.ok) {
 
@@ -502,8 +498,12 @@ export const iniciarLogout = () => {
 export const iniciarAutenticacion = () => {
     return async(dispatch) => {
 
+        const token = localStorage.getItem('token')
+
+        if (!token) return dispatch(iniciarLogout())
+
         try {
-            const resp = await axios.get(`${endPoint}/auth/renew`, {headers: {'x-token': token}});
+            const resp = await salonApi.get(`/auth/renew`);
             
             localStorage.setItem('token', resp.data.token)
             localStorage.setItem('token-init-date', new Date().getTime());
@@ -512,12 +512,49 @@ export const iniciarAutenticacion = () => {
                 uid: resp.data.uid,
                 name: resp.data.name
             }))
-        } catch (error) {
-            console.log(error)
-            localStorage.removeItem('token')
-            localStorage.removeItem('token-init-date')
-            dispatch(onChecking())
-            dispatch(onLogout())
+        } catch ({response}) {
+            dispatch(iniciarLogout())
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
         }
+    }
+}
+
+export const iniciarLogoutTokenExpire = () => {
+    return (dispatch) => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('token-init-date')
+        dispatch(onLogout())
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        
+        return Toast.fire({
+            icon: 'error',
+            title: 'Su token expiro'
+        })
     }
 }
