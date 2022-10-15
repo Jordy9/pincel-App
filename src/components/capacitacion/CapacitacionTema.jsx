@@ -94,7 +94,7 @@ export const CapacitacionTema = () => {
           <h5>A continuación en {(segundos > -1) && segundos} {(NextVideo?.video?.length !== cuentaVideos) && nuevoVideo?.titulo}</h5>
         </div>
           :
-        <ReactPlayer onProgress={(state) => setTimeUpdate(state.playedSeconds)} onDuration = {(e) => setDuration(e)} width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} playing />
+        <ReactPlayer onProgress={(state) => setTimeUpdate(state.playedSeconds)} onDuration = {(e) => setDuration(e)} width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
       }
     </>
   )

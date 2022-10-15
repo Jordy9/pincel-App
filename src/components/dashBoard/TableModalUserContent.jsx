@@ -35,7 +35,7 @@ export const TableModalUserContent = (props) => {
 
     // const porciento = (videosFiltrados?.length/capacitacionFiltrada[0]?.video?.length)*100
 
-  const handledActive = (id) => {
+  const handledActive = () => {
     if (calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) {
       dispatch(activeEvaluacion(calificacionEvaluacion[0]))
       setModalShowEvaluacion(true)

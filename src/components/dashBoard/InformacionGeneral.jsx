@@ -36,7 +36,7 @@ export const InformacionGeneral = () => {
     const capacitacionMostrar = capacitacion?.filter(
         capacitacion => evaluacionesFiltradas?.some(evaluacion => evaluacion.idCapacitacion === capacitacion?._id)
         &&
-        capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === uid && intentos?.intentos === 0)
+        capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === uid && intentos?.intentos !== 0)
     )
 
     // Fin Evaluaciones por mejorar
@@ -128,7 +128,11 @@ export const InformacionGeneral = () => {
               <Slider {...settings}>
                 {
                   capacitacionMostrar?.map((Element, index) => {
+                    const CantidadCheck = Element?.video?.filter(video => video?.check?.includes(uid))
+                    const porcentaje = parseInt((CantidadCheck?.length / Element?.video?.length) * 100)     
                     return (
+                      (porcentaje === 100)
+                        &&
                       <div key={Element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
                         <div onClick={() => VideoComponent(Element?._id)} className='btn primary text-center text-white'>
                           {Element?.title}

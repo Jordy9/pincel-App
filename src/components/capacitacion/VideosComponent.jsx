@@ -10,6 +10,12 @@ export const VideosComponent = () => {
 
   const { noMostrarBoton, capacitacionActiva } = useSelector(state => state.cp);
 
+  const { uid } = useSelector(state => state.auth);
+
+  const { evaluacion } = useSelector(state => state.ev);
+
+  const evaluacionCompleta = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === capacitacionActiva?._id && evaluacion?.idUsuario === uid)
+
   const [modalShowEvaluacion, setModalShowEvaluacion] = useState(false)
 
   return (
@@ -40,7 +46,7 @@ export const VideosComponent = () => {
         }
 
         <div style={{position: 'fixed', marginTop: '-80px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
-          <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>Tomar evaluación</button>
+          <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>{(evaluacionCompleta?.length !== 0) ? 'Ver resultado' : 'Tomar evaluación'}</button>
         </div>
       </>
   )

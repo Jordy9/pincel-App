@@ -26,6 +26,7 @@ import { CustomEvaluacion } from '../components/home/CustomEvaluacion';
 import { obtenerToShowResena } from '../store/toShowResena/thunk';
 import { obtenerCustomResena } from '../store/customResena/thunk';
 import { LeaderRoute } from './LeaderRoute';
+import { ScrollToTop } from '../components/scrollToTop/ScrollToTop';
 moment.locale('es');
 
 export const AppRoute = () => {
@@ -128,6 +129,7 @@ export const AppRoute = () => {
         <>
           <Notificaciones />
           <IconExit />
+          <ScrollToTop />
 
           {
             (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')

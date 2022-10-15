@@ -10,6 +10,8 @@ export const Cards = () => {
 
   const { capacitacion } = useSelector(state => state.cp);
 
+  const { evaluacion } = useSelector(state => state.ev);
+
   const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const navigate = useNavigate()
@@ -32,6 +34,8 @@ export const Cards = () => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
+        const EvaluacionDeCap = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === uid)
+
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)        
         return (
           <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
@@ -47,7 +51,7 @@ export const Cards = () => {
                     <div className="progress-bar" role="progressbar" style={{width: `${porcentaje}%`, backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{porcentaje}%</div>
                   </div>
                 }
-                <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje >= 1) ? 'Continuar capacitación' : 'Empezar capacitación' }</button>
+                <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje === 100 && EvaluacionDeCap?.length !== 0) ? 'Capacitación completa' : (porcentaje >= 1 && EvaluacionDeCap?.length === 0) ? 'Continuar capacitación' : 'Empezar capacitación'}</button>
               </div>
             </div>
           </div>
