@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { MultiSelect } from 'react-multi-select-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { useResponsive } from '../../hooks/useResponsive'
@@ -26,11 +27,37 @@ export const Cards = () => {
   }
 
   const [respWidth] = useResponsive()
+
+  let capacitacionFilter = []
+
+  const [capacitacionesFiltro, setCapacitacionesFiltro] = useState([])
+
+  let capacitacionTOList = []
+
+  capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || team?.value === usuarioActivo?.id || usuarioActivo?.role === 'Administrador')))?.map(capacitacion => capacitacionFilter?.push({ label: capacitacion?.title, value: capacitacion?._id}))
+
+  capacitacionTOList = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || team?.value === usuarioActivo?.id || usuarioActivo?.role === 'Administrador')))
+
+  let options = capacitacionFilter
+
+  const capacitacionParaList = capacitacion?.filter(capacitacion => capacitacionesFiltro?.some(capacitaciones => capacitaciones?.value === capacitacion?._id))
+
+  if (capacitacionParaList?.length !== 0) {
+    capacitacionTOList = capacitacionParaList
+  }
   
   return (
     <>
+
+    <MultiSelect
+        options={options}
+        value={capacitacionesFiltro}
+        onChange={setCapacitacionesFiltro}
+        labelledBy="Select"
+        hasSelectAll = {false}
+    />
     {
-      capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || team?.value === usuarioActivo?.id || usuarioActivo?.role === 'Administrador')))?.map(({title, _id, image, duracion, video}) => {
+      capacitacionTOList?.map(({title, _id, image, duracion, video}) => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
@@ -38,7 +65,7 @@ export const Cards = () => {
 
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)        
         return (
-          <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-2">
+          <div className="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-col-xxl-3 my-3">
             <div className='bg-transparent d-flex flex-column' style={{borderRadius: '10px'}}>
               <img src={image} className='img-fluid' style={{borderRadius: '20px', width: '100%', height: (respWidth >= 768) ? 170 : 'auto'}} alt="" />
               <div className='p-2'>
