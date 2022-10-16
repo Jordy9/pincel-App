@@ -1,11 +1,12 @@
 import moment from 'moment'
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { toUpdate } from '../../store/capacitacion/capacitacionSlice';
 import { eliminarCapacitacion, publicarCapacitacion } from '../../store/capacitacion/thunk';
+import noImg from '../../heroes/no.jpg'
 
 export const TableContent = (props) => {
 
@@ -13,7 +14,9 @@ export const TableContent = (props) => {
 
     const { usuarios } = useSelector(state => state.auth);
 
-    let nuevoUser = usuarios?.filter(usuario => usuario?.estado === true)
+    const usuariosInactivos = usuarios?.filter(usuario => usuario?.estado === false)
+
+    let nuevoUser = usuarios?.filter(usuario => usuario?.estado === true && usuario?.name !== 'Jordy')
 
     const navigate = useNavigate()
     
@@ -120,16 +123,18 @@ export const TableContent = (props) => {
       }
     }
 
+    const nuevoTeam = team?.filter(usuario => !usuariosInactivos?.some(usuarioIn => usuarioIn?.id === usuario?.value))
+
   return (
     <tr onDoubleClick = {() => handledActive(props)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                <img src={image} className='img-fluid' alt="" />
+                <img src={(image === 'image') ? noImg : image} className='img-fluid' alt="" />
             </div>
         </td>
         <td>{title}</td>
         <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
-        <td>{(nuevoUser?.length === team?.length) ? 'Todos' : team?.map(teamm => teamm?.label + ', ')}</td>
+        <td>{(nuevoUser?.length === nuevoTeam?.length) ? 'Todos' : team?.map(teamm => teamm?.label + ', ')}</td>
         <td>        
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>
             <button onClick={() => handledPublicar(props, publicar)} className='btn btn-primary mx-1 my-1'>{(!publicar) ? 'Publicar' : 'Ocultar'}</button>

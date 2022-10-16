@@ -18,7 +18,7 @@ export const FormularioVideos = () => {
 
     const navigate = useNavigate()
 
-    const { upload, paraEditar } = useSelector(state => state.cp);
+    const { paraEditar } = useSelector(state => state.cp);
 
     const { equipos } = useSelector(state => state.eq);
     
@@ -50,8 +50,6 @@ export const FormularioVideos = () => {
 
     const [formValuesIntentos, setFormValuesIntentos] = useState(1)
 
-    const [imag, setimag] = useState()
-
     const [formValues, setFormValues] = useState([{ _id: uuid(), titulo: '', video: '', duration: 0 }])
 
     const [formEvaluacion, setFormEvaluacion] = useState([{
@@ -82,7 +80,6 @@ export const FormularioVideos = () => {
     const {handleSubmit, touched, errors} = useFormik({
         initialValues: {
             titulo: formValuesTitulo ,
-            image: imag,
             descripcion: formValuesDescripcion,
             intentos: formValuesIntentos,
             video: formValues,
@@ -145,11 +142,11 @@ export const FormularioVideos = () => {
             }
 
             if (!paraEditar) {
-                dispatch(crearCapacitacion(titulo, image, descripcion, intentos, video, evaluacion, suma, equipos))
+                dispatch(crearCapacitacion(titulo, descripcion, intentos, video, evaluacion, suma, equipos))
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
             } else {
-                dispatch(actualizarCapacitacionForm(titulo, image, descripcion, intentos, video, evaluacion, suma, equipos))
+                dispatch(actualizarCapacitacionForm(titulo, descripcion, intentos, video, evaluacion, suma, equipos))
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
             }
@@ -159,8 +156,6 @@ export const FormularioVideos = () => {
             titulo: Yup.string()
                         .max(50, 'Debe de tener 50 caracteres o menos')
                         .min(3, 'Debe de tener 3 caracteres o más')
-                        .required('Requerido'),
-            image: Yup.mixed()
                         .required('Requerido'),
             descripcion: Yup.string()
                         .max(200, 'Debe de tener 200 caracteres o menos')
@@ -265,7 +260,6 @@ export const FormularioVideos = () => {
             })
         ))
         setFormEvaluacion([...PreguntasArreglo])
-        setimag(paraEditar?.image)
         setFormValuesDescripcion(paraEditar?.descripcion)
         setFormValuesIntentos(paraEditar?.intentos)
         setEquiposCapacitacion([...paraEditar?.team])
@@ -405,17 +399,6 @@ export const FormularioVideos = () => {
 
     const [previewImage, setPreviewImage] = useState()
 
-    const ImagePreview = (i) => {
-        if (imag && typeof imag !== 'string') {
-            setPreviewImage(URL.createObjectURL(imag))
-            URL.revokeObjectURL(imag)
-            setModalPreview(true)
-        } else {
-            setPreviewImage(imag)
-            setModalPreview(true)
-        }
-    }
-
     const [modalPreview, setModalPreview] = useState(false)
 
     const [previewVideo, setPreviewVideo] = useState()
@@ -434,10 +417,6 @@ export const FormularioVideos = () => {
     // const onClickVideo = (i) => {
     //     document.getElementById(`fileVideo${i}`).click()
     // }
-
-    const onClickImage = () => {
-        document.getElementById('fileImageSelect').click()
-    }
 
     useEffect(() => {
       if (errors.descripcion || errors.equipos || errors.image || errors.intentos || errors.titulo || errors.video) {
@@ -506,27 +485,6 @@ export const FormularioVideos = () => {
                                 <input value={formValuesTitulo} onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
                                 {touched?.titulo && errors?.titulo && <span style={{color: 'red'}}>{errors?.titulo}</span>}
                             </div>
-        
-                            <div className="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3 col-xxl-3 form-group">
-                                <label className='form-label'>Imagen</label>
-                                <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Seleccionar imagen <i className="bi bi-images btn-primary mx-1"></i></button>
-                                <input hidden accept="image/*" type="file" id='fileImageSelect' className='form-control' name='image' onChange={(e) => {
-                                    // setFieldValue('image', setimag(e.currentTarget.files[0], (e.currentTarget.files[0]) ? setimag(URL.createObjectURL(e.currentTarget.files[0]) || '') : setimag())
-                                    setimag(e.currentTarget.files[0])
-                                }} />
-                                {touched?.image && errors?.image && <span style={{color: 'red'}}>{errors?.image}</span>}
-                            </div>
-
-                            {
-                                (imag)
-                                    &&
-                                <div className="col-1 d-flex align-items-center mt-3">
-                                    <button type='button' className='btn btn-primary' onClick={ImagePreview}>
-                                        <i className="bi bi-eye"></i>
-                                    </button>
-                                </div>
-                            }
-
                         </div>
 
                         <div className="row">
@@ -684,16 +642,10 @@ export const FormularioVideos = () => {
                                         </div>
 
                                         {
-                    (upload !== 0)
-                        ?
-                    <div className="progress2">
-                        <div className="progress-bar" role="progressbar" style={{width: `${upload}%`, backgroundColor: 'rgb(89, 7, 211)', color: 'white', borderRadius: 100}} aria-valuemin="0" aria-valuemax="100">Subiendo imagen {upload}%</div>
-                    </div>
-                        :
-                    <div className='d-grid gap-2 col-6 mx-auto'>
-                        <button hidden = {(!evaluacionChange)} type='submit' className = 'btn btn-primary'>Guardar</button>
-                    </div>
-                }
+                                            <div className='d-grid gap-2 col-6 mx-auto'>
+                                                <button hidden = {(!evaluacionChange)} type='submit' className = 'btn btn-primary'>Guardar</button>
+                                            </div>
+                                        }
                                     </Fragment>
                                 )
                             })

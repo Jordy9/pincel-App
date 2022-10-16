@@ -27,6 +27,7 @@ import { obtenerToShowResena } from '../store/toShowResena/thunk';
 import { obtenerCustomResena } from '../store/customResena/thunk';
 import { LeaderRoute } from './LeaderRoute';
 import { ScrollToTop } from '../components/scrollToTop/ScrollToTop';
+import axios from 'axios';
 moment.locale('es');
 
 export const AppRoute = () => {

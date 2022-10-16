@@ -1,6 +1,7 @@
+import axios from "axios";
 import Swal from "sweetalert2";
 import salonApi from "../../salonApi/salonApi";
-import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdate, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 export const obtenerCapacitacion = () => {
     return async(dispatch) => {
@@ -181,39 +182,42 @@ export const obtenerCapacitacion = () => {
 //     }
 // }
 
-export const crearCapacitacion = (title, file, descripcion, intentos, video, Preguntas, duracion, team) => {
+export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas, duracion, team) => {
     return async(dispatch, getState) => {
 
         const { usuarios } = getState().auth;
 
         if (team?.length === 0) {
             team = []
-            usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+            usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.name !== 'Jordy')?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
         }
 
         let usuariosEvaluacion = []
 
         usuarios?.map(usuario => usuariosEvaluacion?.push({id: usuario?.id, intentos}))
 
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('title', title)
-        formData.append('title2', title + new Date())
-
         try {
 
-            const respImage = await salonApi.post(`/fileUpload/imagen`, formData, {
-                
-                onUploadProgress: (e) =>
-                {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-            })
+            let urlId
+            let idImage = 'idImagen'
+            let image = 'image'
 
-            const idImage = respImage.data.image.id
-            const image = respImage.data.image.url
+            if (video[0]?.video?.includes('embed')) {
+
+                const urlSplit = video[0]?.video?.split('/')
+        
+                urlId = urlSplit[4]
+
+                const { data } = await axios.get(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDVPoMC3k0GlLy6q3Qy19ljRA2LGMnqcRU&channelId=UCMq8MYv0-X1XC17vnVRfwpw&part=snippet,id&id=${urlId}`)
+
+                idImage = urlId
+                image = data?.items[0].snippet?.thumbnails?.maxres?.url
+            }
 
             const resp = await salonApi.post(`/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
     
             dispatch(uploadFinish())
+            dispatch(toUpdate(resp.data.capacitacion))
             dispatch(createCapacitacion(resp.data.capacitacion))
 
             const Toast = Swal.mixin({
@@ -240,7 +244,7 @@ export const crearCapacitacion = (title, file, descripcion, intentos, video, Pre
     }
 }
 
-export const actualizarCapacitacionForm = (title, file, descripcion, intentos, video, Preguntas, duracion, team) => {
+export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team) => {
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
@@ -249,7 +253,7 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
         
         if (team?.length === 0) {
             team = []
-            usuarios?.filter(usuarios => !usuarios?.name?.includes('Jordy'))?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+            usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.name !== 'Jordy')?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
         }
 
         let usuariosEvaluacion = []
@@ -265,72 +269,43 @@ export const actualizarCapacitacionForm = (title, file, descripcion, intentos, v
         }
         
         try {
-            if (typeof file !== 'string') {
 
-                const formData = new FormData()
-                formData.append('file', file)
-                formData.append('title', title)
-                formData.append('title2', title + new Date())
-    
-                const respImage = await salonApi.post(`/fileUpload/imagen`, formData, {
-                    
-                    onUploadProgress: (e) =>
-                    {dispatch(uploadCapacitacion(Math.round( (e.loaded * 100) / e.total )))}
-                })
-    
-                const idImage = respImage.data.image.id
-                const image = respImage.data.image.url
-    
-                const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
-        
-                dispatch(uploadFinish())
+            let idImage = paraEditar?.idImage
+            let image = paraEditar?.image
 
-                await salonApi.delete(`/fileUpload/${paraEditar?.idImage}`)
-                
-                dispatch(actualizarCapacitacion(resp.data.capacitacion))
+            const urlSplit = video[0]?.video?.split('/')
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                
-                return Toast.fire({
-                    icon: 'success',
-                    title: 'Capacitación actualizada correctamente'
-                })
-            } else {
-                const image = file
-                const idImage = paraEditar?.idImage
-                const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
-        
-                dispatch(uploadFinish())
-                dispatch(actualizarCapacitacion(resp.data.capacitacion))
-                // dispatch(toUpdateClear())
+            const urlId = urlSplit[4]
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                
-                return Toast.fire({
-                    icon: 'success',
-                    title: 'Capacitación actualizada correctamente'
-                })
+            if (video[0]?.video?.includes('embed') && paraEditar?.idImage !== urlId) {
+
+                const { data } = await axios.get(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDVPoMC3k0GlLy6q3Qy19ljRA2LGMnqcRU&channelId=UCMq8MYv0-X1XC17vnVRfwpw&part=snippet,id&id=${urlId}`)
+
+                idImage = urlId
+                image = data?.items[0].snippet?.thumbnails?.maxres?.url
             }
+            const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
+    
+            dispatch(uploadFinish())
+            dispatch(actualizarCapacitacion(resp.data.capacitacion))
+            // dispatch(toUpdateClear())
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'success',
+                title: 'Capacitación actualizada correctamente'
+            })
 
         } catch (error) {
             console.log(error)
@@ -401,8 +376,6 @@ export const eliminarCapacitacion = (props) => {
             }
 
             dispatch(deleteCapacitacion(resp.data.capacitacion))
-
-            await salonApi.delete(`/fileUpload/${props?.idImage}`)
 
             const Toast = Swal.mixin({
                 toast: true,

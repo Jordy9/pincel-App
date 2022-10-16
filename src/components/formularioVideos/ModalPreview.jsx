@@ -17,11 +17,9 @@ export const ModalPreview = ({modalPreview, setModalPreview, preview, previewVid
         <Modal.Body>
             {
                 (previewVideo)
-                    ?
+                    &&
                 <ReactPlayer onDuration={(duration) => setShowDuration(duration)} width='100%' height = '60vh' controls url={previewVideo} />
                 // <video controls src={previewVideo} style={{width: '100%', height: '60vh', borderRadius: '20px', objectFit: 'cover'}} />
-                    :
-                <img src={preview} style = {{width: '100%', height: 'auto', objectFit: 'cover'}} alt="" />
             }
         </Modal.Body>
     </Modal>
