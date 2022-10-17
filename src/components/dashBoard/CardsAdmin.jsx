@@ -5,7 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 import moment from 'moment';
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth } ) => {
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount } ) => {
 
   let FiltroCalificacionResena
 
@@ -195,7 +195,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   }
 
   const data = {
-    labels: ((moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showThisWeek) || (moment(changeDate).format('M') !== moment(changeDateRange).format('M') && showLastWeek)) 
+    labels: ((moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek))
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       :
@@ -215,9 +215,25 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
     datasets: [
       {
         label: 'Promedio general',
-        data: [5, 1, 3, 1, 4, 5, 1, 0, 4.5, 3.2, 1.5, 2],
+        data: (!show) 
+          ? 
+        [evaluacionFiltradaPorRango]
+          : 
+        (showThreeMonth) 
+          ? 
+        (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) 
+          ? 
+        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion?.toFixed(1))
+          : 
+        (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
+          ?
+        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion?.toFixed(1))
+          :
+        evaluacionFiltroTodosLosMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1))
+          : 
+        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion?.toFixed(1)),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
+      }
     ],
   };
 
@@ -278,7 +294,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
           <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'} p-4`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Evaluaciones de los empleados</h6>
-            <h6 className='text-center'>Total 0</h6>
+            <h6 className='text-center'>Total {evaluacionCount}</h6>
             <Bar options={options} data={data} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
           </div>
         </div>

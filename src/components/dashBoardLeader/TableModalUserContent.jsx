@@ -17,9 +17,7 @@ export const TableModalUserContent = (props) => {
 
     const {title, image, video, _id} = props
 
-    const calificacionEvaluacion = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === _id)
-
-    const calificacionFiltradaPorUsuario = calificacionEvaluacion?.filter(calificacion => calificacion?.idUsuario === activeUser?.id)
+    const calificacionEvaluacion = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === activeUser?.id)
 
     const cantidadVideosFiltradas = video?.filter(video => video?.check?.includes(activeUser?.id))
 
@@ -62,7 +60,7 @@ export const TableModalUserContent = (props) => {
     }
   }
 
-  const porcientoVideos = (calificacionFiltradaPorUsuario[0]?.calificacion) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+  const porcientoVideos = (calificacionEvaluacion?.length !== 0) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
 
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, _id)} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
@@ -73,8 +71,8 @@ export const TableModalUserContent = (props) => {
         </td>
         <td>{title}</td>
         <td className='d-flex justify-content-center mx-auto'>
-          <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos y ${(calificacionFiltradaPorUsuario[0]?.calificacion) ? '1 evaluación' : '0 evaluación' }`}>
-              <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${calificacionFiltradaPorUsuario[0]?.calificacion || '-'}%`} />
+          <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : '0 evaluación' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionEvaluacion[0]?.calificacion}` : 'Incompleta'}`}>
+              <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : '-'}`} />
           </div>
         </td>
         <ModalEvaluacionUser modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />

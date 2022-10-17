@@ -8,12 +8,15 @@ import { ModalPerfilUser } from './ModalUserPerfil'
 import { ModalUserResena } from './ModalUserResena'
 import { TableModalUserSpreed } from './TableModalUserSpreed'
 import { onDoubleTap } from '../../helper/onDoubleTap'
+import { MultiSelect } from 'react-multi-select-component'
 
 export const ModalUser = () => {
 
     const dispatch = useDispatch();
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
+
+    const { capacitacion } = useSelector(state => state.cp);
 
     const handleClose = () => {
         dispatch(modalClose())
@@ -32,6 +35,24 @@ export const ModalUser = () => {
 
     const onShow = () => {
         setModalShowResena(true)
+    }
+
+    let capacitacionFilter = []
+
+    let capacitacionTOList = []
+
+    let options = capacitacionFilter
+    
+    const [capacitacionesFiltro, setCapacitacionesFiltro] = useState([])
+
+    capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id)))?.map(capacitacion => capacitacionFilter?.push({ label: capacitacion?.title, value: capacitacion?._id}))
+
+    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
+
+    const capacitacionParaList = capacitacion?.filter(capacitacion => capacitacionesFiltro?.some(capacitaciones => capacitaciones?.value === capacitacion?._id))
+
+    if (capacitacionParaList?.length !== 0) {
+        capacitacionTOList = capacitacionParaList
     }
       
   return (
@@ -59,6 +80,13 @@ export const ModalUser = () => {
 
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 my-auto" style={{borderRadius: '35px'}}>
                             <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
+                                <MultiSelect
+                                    options={options}
+                                    value={capacitacionesFiltro}
+                                    onChange={setCapacitacionesFiltro}
+                                    labelledBy="Select"
+                                    hasSelectAll = {false}
+                                />
                                 <h4 className='text-center'>Capacitaciones</h4>
                                 <table className="table borderless">
                                     <thead>
@@ -69,7 +97,7 @@ export const ModalUser = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <TableModalUserSpreed />
+                                        <TableModalUserSpreed capacitacionTOList = {capacitacionTOList} />
                                     </tbody>
                                 </table>
                             </div>

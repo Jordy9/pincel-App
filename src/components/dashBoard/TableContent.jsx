@@ -12,9 +12,19 @@ export const TableContent = (props) => {
 
     const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
 
-    // const { capacitacion } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
+
+    const { evaluacion } = useSelector(state => state.ev);
 
     const { id, name, urlImage } = props
+
+    const calificacionEvaluacion = evaluacion?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id) && evaluacion?.idUsuario === id)
+
+    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(id)))
+
+    let video = []
+
+    cantidadVideosFiltradas?.map(videos => video?.push(videos?.video))
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
@@ -53,6 +63,8 @@ export const TableContent = (props) => {
 
     const sumaPorcentage0 = parseInt(suma/division) || 0
 
+    const porcientoVideos = (calificacionEvaluacion?.length !== 0) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
@@ -70,8 +82,8 @@ export const TableContent = (props) => {
                 }
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
-                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados">
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={10} text={`${10}%`} />
+                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : '0 evaluación' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionEvaluacion[0]?.calificacion}` : 'Incompleta'}`}>
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : '-'}`} />
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>

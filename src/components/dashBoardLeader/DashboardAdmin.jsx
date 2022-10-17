@@ -26,7 +26,9 @@ import {
 import { useResponsive } from '../../hooks/useResponsive'
 import { useDispatch } from 'react-redux'
 import { filterResenaSlice, showFilter0 } from '../../store/resena/resenaSlice'
-import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMenorQue } from '../helperLeader/helperLeader'
+import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo, ReseñasfiltradasTodosMesesMenorQue } from '../helperLeader/helperLeader'
+import { filterEvaluationGeneral, EvaluationfiltradasTodosMeses, EvaluacionesfiltradasTodosMesesMayorQue, EvaluacionesfiltradasTodosMesesMayorQueD, EvaluacionfiltradasTodosMesesMayorQueMenor, EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo, EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo } from '../helperLeader/filterEvaluation'
+import { filterEvaluacionUsuarioEquipoTodosMeses, filterEvaluacionUsuarioEquipoRango } from '../helperLeader/filterEvaluationTeamUser'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
 import { showError } from '../../store/resena/thunk'
 
@@ -55,6 +57,8 @@ export const DashboardAdmin = () => {
   
   // Importacion de estados
   const { resena } = useSelector(state => state.rs);
+
+  const { evaluacion } = useSelector(state => state.ev);
 
   const { name, usuarios, uid, usuarioActivo } = useSelector(state => state.auth);
 
@@ -172,15 +176,78 @@ export const DashboardAdmin = () => {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
 
-  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
+  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
 
-  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y')) {
+  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader, usuarioFiltrado)
+  }
+
+  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
     calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
   }
+
+  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader, usuarioFiltrado)
+  }
  
-  // Fin de los filtros
+  // Fin de los filtros de las resenas
+
+  // Filtros de las evaluaciones
+  
+  // Filtro general por rango
+
+  const evaluacionFiltradaPorRango = filterEvaluationGeneral(evaluacion, changeDateRange, changeDate, selectRange, usuariosParaAdminLeader)
+
+  // Filtro todos los meses
+
+  let SumaEvaluacionPorMes = []
+
+  let CalificacionEvaluacionPorMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  if (showThreeMonth || showAllMonth) {
+    CalificacionEvaluacionPorMes = EvaluationfiltradasTodosMeses(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, usuariosParaAdminLeader)
+  }
+
+  if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQue(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuariosParaAdminLeader)
+  }
+
+  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueD(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuariosParaAdminLeader)
+    console.log(CalificacionEvaluacionPorMes)
+  }
+
+  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuariosParaAdminLeader, usuarioFiltrado)
+  }
+
+  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
+    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenor(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuariosParaAdminLeader)
+  }
+
+  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuariosParaAdminLeader, usuarioFiltrado)
+  }
+
+  // Filtros de evaluaciones por equipo o usuario por todos los meses
+
+  let SumaEvaluacionesPorTodosLosMeses = []
+
+  let calificacionEvaluacionPorMesesDeEquipos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+  let evaluacionFilterArrayDate = []
+
+  let evaluacionFilterArray = []
+
+  let ArregloFilterDateEvaluacion
+
+  evaluacionFilterArray = filterEvaluacionUsuarioEquipoRango(evaluacion, usuarioFiltrado, evaluacionFilterArrayDate, changeDate, changeDateRange, selectRange, ArregloFilterDateEvaluacion, evaluacionFilterArray, usuariosParaAdminLeader)
+
+  calificacionEvaluacionPorMesesDeEquipos = filterEvaluacionUsuarioEquipoTodosMeses(evaluacion, SumaEvaluacionesPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionEvaluacionPorMesesDeEquipos, changeDate, usuariosParaAdminLeader)
+
+  // Fin de los filtros de las evaluaciones
 
   const { greet } = useGreeting()
 
@@ -445,6 +512,9 @@ export const DashboardAdmin = () => {
               showLastWeek = {showLastWeek}
               showThreeMonth = {showThreeMonth}
               usuariosParaAdminLeader = {usuariosParaAdminLeader}
+              evaluacionFiltradaPorRango = {(evaluacionFilterArray?.length !== 0 && usuarioFiltrado?.length !== 0) ? evaluacionFilterArray : evaluacionFiltradaPorRango[0]}
+              evaluacionFiltroTodosLosMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionEvaluacionPorMesesDeEquipos : CalificacionEvaluacionPorMes}
+              evaluacionCount = {(usuarioFiltrado?.length !== 0) ? evaluacionFilterArray[1] : evaluacionFiltradaPorRango[1]}
             />
           </div>
 

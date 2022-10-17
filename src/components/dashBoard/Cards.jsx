@@ -27,12 +27,14 @@ export const Cards = () => {
     capacitacion => capacitacion?.publicar === true 
       && 
     capacitacion?.team?.some(team => team?.value === uid || team?.value === usuarioActivo?.team)
-  )?.map(({video}) => {
+  )?.map(({video, _id}) => {
     const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
-    const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)   
+    const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && evaluacion?.idCapacitacion === _id)
+
+    const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
     return (
-      (porcentaje === 100) ? sumaPorcentage.push(porcentaje) : (porcentaje === 0) ? sumDisponible.push(porcentaje) : sumaPorcentageEnCurso.push(porcentaje)
+      (porcentaje === 100 && evaluacionFilt?.length !== 0) ? sumaPorcentage.push(porcentaje) : (porcentaje === 0) ? sumDisponible.push(porcentaje) : sumaPorcentageEnCurso.push(porcentaje)
     )
   })
 
@@ -111,25 +113,25 @@ export const Cards = () => {
                 <div className='fondos-cards p-4 text-center text-white' style={{height: '110px', overflowY: 'auto', overflowX: 'hidden', borderBottomRightRadius: '10px', borderTopRightRadius: '10px'}}>
                     <span>Estado general</span>
                     {
-                        (porcentage?.toFixed() <= 3)
+                        (porcentage?.toFixed() <= 50)
                             &&
                         <h3>Malo</h3>
                     }
 
                     {
-                        (porcentage?.toFixed() >= 3.1 && porcentage?.toFixed() <= 3.5)
+                        (porcentage?.toFixed() >= 51 && porcentage?.toFixed() <= 69)
                             &&
                         <h3>Mejorable</h3>
                     }
 
                     {
-                        (porcentage?.toFixed() >= 3.6 && porcentage?.toFixed() <= 4.5)
+                        (porcentage?.toFixed() >= 70 && porcentage?.toFixed() <= 90)
                             &&
                         <h3>Normal</h3>
                     }
 
                     {
-                        (porcentage?.toFixed() >= 4.6)
+                        (porcentage?.toFixed() >= 90)
                             &&
                         <h3>Excelente</h3>
                     }
