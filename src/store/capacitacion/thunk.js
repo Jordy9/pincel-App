@@ -277,12 +277,14 @@ export const actualizarCapacitacionForm = (title, descripcion, intentos, video, 
 
             const urlId = urlSplit[4]
 
+            console.log(video[0]?.video?.includes('embed') && paraEditar?.idImage !== urlId)
+
             if (video[0]?.video?.includes('embed') && paraEditar?.idImage !== urlId) {
 
                 const { data } = await axios.get(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDVPoMC3k0GlLy6q3Qy19ljRA2LGMnqcRU&channelId=UCMq8MYv0-X1XC17vnVRfwpw&part=snippet,id&id=${urlId}`)
 
                 idImage = urlId
-                image = data?.items[0].snippet?.thumbnails?.maxres?.url
+                image = (data?.items[0].snippet?.thumbnails?.maxres?.url) ? data?.items[0].snippet?.thumbnails?.maxres?.url : (data?.items[0].snippet?.thumbnails?.high?.url) ? data?.items[0].snippet?.thumbnails?.high?.url : data?.items[0].snippet?.thumbnails?.default?.url
             }
             const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
     
