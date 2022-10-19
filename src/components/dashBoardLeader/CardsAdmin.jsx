@@ -295,7 +295,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
       <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
         <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px'}}>
           <h6 className='text-center my-1'>Reseñas de los clientes</h6>
-          <h6 className='text-center'>Total de reseñas {sinAlphabet?.length || 0}</h6>
+          <h6 className='text-center'>Total de reseñas {(resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0}</h6>
           <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
         </div>
       </div>

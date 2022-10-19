@@ -93,23 +93,23 @@ export const TableContent = (props) => {
         {
             (!isShow)
                 &&
-            <>
+                <>
                 {
                     (respWidth > 992)
                         &&
                     <td className='d-flex justify-content-center'>
                         <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                            <img loading='lazy' src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
+                            <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
                         </div>
                     </td>
                 }
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
-                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title="3/10 cursos completados">
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={10} text={`${10}%`} />
+                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : '0 evaluación' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionEvaluacion[0]?.calificacion}` : 'Incompleta'}`}>
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : '-'}`} />
                     </div>
                 </td>
-                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseañas`}>{parseInt(suma/division) || 0}</td>
+                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
             </>
         }
     </tr>

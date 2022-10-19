@@ -9,6 +9,7 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { iniciarRegistro } from '../../store/auth/thunk'
 import { useEffect } from 'react'
+import { useResponsive } from '../../hooks/useResponsive'
 
 export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) => {
 
@@ -90,6 +91,7 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
 
     }, [ImagePerfil])
     
+    const [ respWidth ] = useResponsive()
 
   return (
     <Modal size='xl' show={showModalCreateUser} onHide={handleClose}>
@@ -119,7 +121,13 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                 </div>
 
                                 <div className='d-grid gap-2 col-6 mx-auto mt-4'>
-                                    <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Foto de perfil <i className="bi bi-images btn-primary mx-1"></i></button>
+                                    {
+                                        (respWidth > 992)
+                                            ?
+                                        <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Foto de perfil</button>
+                                            :
+                                        <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Foto</button>
+                                    }
                                     <input accept="image/*" id='fileSelectorPerfilModal' hidden = {true} type="file" className='form-control bg-transparent text-black' onChange={(e) => {
                                         setImagePerfil(e.currentTarget.files[0])
                                     }} />

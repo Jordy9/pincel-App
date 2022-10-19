@@ -146,7 +146,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                                                 <img src={usuario?.urlImage || user} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                             </div>
                                             <div className='text-center mt-3'>
-                                                <Rating emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                <Rating allowHover transition emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
                                             </div>
                                         </div>
                                     )

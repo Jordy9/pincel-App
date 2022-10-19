@@ -5,6 +5,7 @@ import { useResponsive } from '../../hooks/useResponsive';
 import { ModalUser } from './ModalUser';
 import { useState } from 'react';
 import { setActiveUser } from '../../store/auth/authSlice';
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableContent = (props) => {
 
@@ -23,7 +24,7 @@ export const TableContent = (props) => {
 
   return (
     <>
-        <tr style={{cursor: 'pointer'}} onTouchStart = {handleActive} onDoubleClick={handleActive} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+        <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handleActive)} onDoubleClick={handleActive} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
             {
                 (respWidth > 992)
                     &&

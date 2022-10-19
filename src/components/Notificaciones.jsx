@@ -30,6 +30,16 @@ export const Notificaciones = () => {
         }
     }, [pathname])
 
+    const [changePosition, setChangePosition] = useState('absolute')
+
+    useEffect(() => {
+        if (pathname === '/TipoResenas') {
+          setChangePosition('fixed')
+        } else {
+          setChangePosition('absolute')
+        }
+      }, [pathname])
+
   return (
     <>
         {
@@ -38,7 +48,7 @@ export const Notificaciones = () => {
             <DropdownButton
                 onBlur = {onBlurBell}
                 onClick = {onClickBell}
-                style={{position: 'absolute', zIndex: 1045, right: '70px', top: '15px', backgroundColor: 'transparent'}}
+                style={{position: changePosition, zIndex: 1045, right: '70px', top: '15px', backgroundColor: 'transparent'}}
                 className='mr-2 d-flex align-items-center'
                 title = {
                     <>

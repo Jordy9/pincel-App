@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { MultiSelect } from 'react-multi-select-component'
 import { useSelector } from 'react-redux'
+import { useResponsive } from '../../hooks/useResponsive'
 import { ModalCreateUser } from './ModalCreateUser'
 import { TableSpreedList } from './TableSpreedList'
 
@@ -20,6 +21,8 @@ export const TableUsers = () => {
     let options = usuariosFilter
 
     const usuarioParaList = usuarios?.filter(usuarios => usuariosFiltro?.some(usuarioss => usuarioss?.value === usuarios?.id))
+
+    const [ respWidth ] = useResponsive()
     
   return (
     <div className='container'>
@@ -40,7 +43,11 @@ export const TableUsers = () => {
             <table className="table borderless">
                 <thead>
                     <tr>
-                        <th scope="col">Foto</th>
+                        {
+                            (respWidth > 992)
+                                &&
+                            <th scope="col">Foto</th>
+                        }
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
                         <th scope="col">Correo electrónico</th>
