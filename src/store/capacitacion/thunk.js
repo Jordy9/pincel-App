@@ -68,7 +68,7 @@ export const obtenerCapacitacion = () => {
 //                 toast: true,
 //                 position: 'top-end',
 //                 showConfirmButton: false,
-//                 timer: 5000,
+//                 timer: 2000,
 //                 timerProgressBar: true,
 //                 didOpen: (toast) => {
 //                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -153,7 +153,7 @@ export const obtenerCapacitacion = () => {
 //                 toast: true,
 //                 position: 'top-end',
 //                 showConfirmButton: false,
-//                 timer: 5000,
+//                 timer: 2000,
 //                 timerProgressBar: true,
 //                 didOpen: (toast) => {
 //                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -224,7 +224,7 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -296,7 +296,7 @@ export const actualizarCapacitacionForm = (title, descripcion, intentos, video, 
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -328,7 +328,7 @@ export const publicarCapacitacion = (capacitacion, publicar) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -347,7 +347,7 @@ export const publicarCapacitacion = (capacitacion, publicar) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -383,7 +383,7 @@ export const eliminarCapacitacion = (props) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -444,7 +444,7 @@ export const updateUsuarioIntento = (id, uid) => {
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)

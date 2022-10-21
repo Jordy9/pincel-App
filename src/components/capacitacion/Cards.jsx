@@ -39,7 +39,7 @@ export const Cards = () => {
 
     <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
     {
-      capacitacionTOList?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)?.map(({title, _id, image, duracion, video}) => {
+      capacitacionTOList?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)?.map(({title, _id, image, duracion, video, EvaluatShow}) => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
@@ -60,7 +60,7 @@ export const Cards = () => {
                     <div className="progress-bar" role="progressbar" style={{width: `${porcentaje}%`, backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{porcentaje}%</div>
                   </div>
                 }
-                <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje === 100 && EvaluacionDeCap?.length !== 0) ? 'Capacitación completa' : (porcentaje >= 1 && EvaluacionDeCap?.length === 0) ? 'Continuar capacitación' : 'Empezar capacitación'}</button>
+                <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje === 100 && (EvaluacionDeCap?.length !== 0 || !EvaluatShow)) ? 'Capacitación completa' : (porcentaje >= 1 && EvaluacionDeCap?.length === 0) ? 'Continuar capacitación' : 'Empezar capacitación'}</button>
               </div>
             </div>
           </div>

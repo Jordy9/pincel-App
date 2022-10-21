@@ -59,7 +59,7 @@ export const crearResena = (calificacion, descripcion, handleClose, setIdUsuario
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 2000,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -126,7 +126,7 @@ export const actualizarResena = (props) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -158,7 +158,7 @@ export const eliminarResena = (id) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -184,7 +184,7 @@ export const showError = () => {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 5000,
+        timer: 2000,
         timerProgressBar: true,
         didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)

@@ -50,7 +50,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -75,7 +75,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -95,7 +95,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -152,7 +152,7 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -180,7 +180,7 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -200,7 +200,7 @@ export const iniciarActualizacion = (id, name, lastName, email, date, team, role
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -256,7 +256,7 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -284,7 +284,7 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
-                        timer: 5000,
+                        timer: 2000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -304,7 +304,7 @@ export const iniciarActualizacionModalUser = (id, name, lastName, email, date, t
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -363,7 +363,7 @@ export const cambiarEstadoUsuario = (id, estado, team, activeResena) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -396,7 +396,7 @@ export const iniciarActualizacionPass = (id, name, lastName, date, email, passwo
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 5000,
+                    timer: 2000,
                     timerProgressBar: true,
                     didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -414,7 +414,7 @@ export const iniciarActualizacionPass = (id, name, lastName, date, email, passwo
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -455,7 +455,7 @@ export const iniciarLogin = (email, password) => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -518,7 +518,7 @@ export const iniciarAutenticacion = () => {
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 5000,
+                timer: 2000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -544,7 +544,7 @@ export const iniciarLogoutTokenExpire = () => {
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 5000,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
