@@ -4,6 +4,10 @@ import { TableSpreedList } from './TableSpreedList'
 import { useNavigate } from 'react-router-dom'
 import { toUpdateClear } from '../../store/capacitacion/capacitacionSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { Pagination } from '../usuarios/Pagination'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { MultiSelect } from 'react-multi-select-component'
 
 export const TableCapacitaciones = () => {
 
@@ -11,7 +15,7 @@ export const TableCapacitaciones = () => {
 
     const dispatch = useDispatch();
 
-    const { paraEditar } = useSelector(state => state.cp);
+    const { paraEditar, capacitacion } = useSelector(state => state.cp);
 
     const goToForm = () => {
         if (paraEditar) {
@@ -19,8 +23,23 @@ export const TableCapacitaciones = () => {
         }
         navigate('/formCapacitaciones')
     }
+
+    const [currentPage, setCurrentPage] = useState(0)
+
+    useEffect(() => {
+        setCurrentPage(0)
+    }, [])
+
+    let capacitacionParaList = []
+
+    const [title, setTitle] = useState('')
+
+    capacitacionParaList = capacitacion?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)
+
   return (
     <Container>
+
+        <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
         <div className = 'text-right'>
             <button className = 'btn btn-primary my-1' onClick = {goToForm}>Crear capacitación</button>
         </div>
@@ -36,9 +55,13 @@ export const TableCapacitaciones = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <TableSpreedList />
+                    <TableSpreedList capacitacion = {capacitacionParaList} currentPage = {currentPage} />
                 </tbody>
             </table>
+        </div>
+
+        <div className='mt-3'>
+            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {capacitacionParaList} />
         </div>
     </Container>
   )

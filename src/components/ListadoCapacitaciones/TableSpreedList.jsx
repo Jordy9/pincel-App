@@ -1,16 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { TableContent } from './TableContent'
 
-export const TableSpreedList = () => {
-    const { capacitacion } = useSelector(state => state.cp)
+export const TableSpreedList = ({capacitacion, currentPage}) => {
+
+    const PaginateResena = () => {
+        const allResena = [...capacitacion]
+        return allResena?.slice(currentPage, currentPage + 25)
+    }
 
     return (
         <>
             {
                 (capacitacion)
                     &&
-                    capacitacion?.map(capacitacion => {
+                    PaginateResena()?.map(capacitacion => {
                         return (
                             <TableContent key = {capacitacion?._id} {...capacitacion} />
                         )

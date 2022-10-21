@@ -27,14 +27,14 @@ export const Cards = () => {
     capacitacion => capacitacion?.publicar === true 
       && 
     capacitacion?.team?.some(team => team?.value === uid || team?.value === usuarioActivo?.team)
-  )?.map(({video, _id}) => {
+  )?.map(({video, _id, EvaluatShow}) => {
     const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
     const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && evaluacion?.idCapacitacion === _id)
 
     const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
     return (
-      (porcentaje === 100 && evaluacionFilt?.length !== 0) ? sumaPorcentage.push(porcentaje) : (porcentaje === 0) ? sumDisponible.push(porcentaje) : sumaPorcentageEnCurso.push(porcentaje)
+      (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) ? sumaPorcentage.push(porcentaje) : (porcentaje === 0) ? sumDisponible.push(porcentaje) : sumaPorcentageEnCurso.push(porcentaje)
     )
   })
 

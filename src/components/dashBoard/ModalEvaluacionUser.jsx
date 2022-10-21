@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2';
 import { onDoubleTap } from '../../helper/onDoubleTap';
 import { updateUsuarioIntento } from '../../store/capacitacion/thunk';
 
@@ -9,6 +10,12 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
     const dispatch = useDispatch();
     
     const { evaluacionActiva } = useSelector(state => state.ev);
+
+    const { capacitacion } = useSelector(state => state.cp);
+
+    const capacitacionFiltrada = capacitacion?.filter(capacitacion => capacitacion?._id === evaluacionActiva?.idCapacitacion)
+
+    const intentos = capacitacionFiltrada[0]?.usuariosEvaluacion?.filter(usuarios => usuarios?.id === evaluacionActiva?.idUsuario)
 
     const handleClose = () => {
         setModalShowEvaluacion(false)
@@ -19,7 +26,19 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
     // }
 
     const permitir = () => {
-        dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
+        Swal.fire({
+            title: '¿Está seguro que desea permitir otro intento a este usuario?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'No por ahora',
+            confirmButtonColor: 'rgb(0, 197, 0)',
+            cancelButtonColor: 'rgb(0, 197, 0)',
+            confirmButtonText: 'Si'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
+            }
+        })
     }
 
     const onShow = () => {
@@ -50,12 +69,9 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                    evaluacionActiva?.evaluacion?.map((evaluacion, index) => {
                                     return (
                                         <tr onTouchStart={(e) => onDoubleTap(e, onShow)} onDoubleClick={onShow}>
-                                            <td className='d-flex justify-content-start'>
+                                            {/* <td className='d-flex justify-content-start'>
                                                 <button className='btn btn-primary'>{index + 1}</button>
-                                            </td>
-                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
-                                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
-                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
+                                            </td> */}
                                             <td>
                                                 {
                                                     (evaluacion?.correcta === 'true')
@@ -65,6 +81,9 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                                     <i style={{fontSize: '25px'}} className="text-danger bi-x-circle-fill"></i>
                                                 }
                                             </td>
+                                            <td className='no-elipsis text-left'>{evaluacion?.evaluacion?.pregunta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
                                         </tr>
                                     )
                                    }) 
@@ -79,7 +98,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
         </Modal.Body>
         
         <Modal.Footer>
-            <button onClick={permitir} className='btn btn-primary'>Permitir otro intento</button>
+            <button hidden = {(intentos && intentos[0]?.intentos !== 0)} onClick={permitir} className='btn btn-primary'>Permitir otro intento</button>
         </Modal.Footer>
     </Modal>
   )

@@ -29,6 +29,10 @@ export const VideosComponent = () => {
       navigate('/capacitacion', { replace: true })
     }
   }, [capacitacionActiva?._id])
+
+  const calificacion = evaluacionCompleta?.filter(evaluacion => evaluacion?.idCapacitacion === capacitacionActiva?._id)
+
+  const intentos = capacitacionActiva?.usuariosEvaluacion?.filter(usuario => usuario?.id === uid)
   
   return (
       <>
@@ -58,7 +62,7 @@ export const VideosComponent = () => {
         }
 
         <div style={{position: 'fixed', marginTop: '-80px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
-          <button onClick={() => setModalShowEvaluacion(true)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>{(evaluacionCompleta?.length !== 0) ? 'Ver resultado' : 'Tomar evaluación'}</button>
+          <button onClick={() => setModalShowEvaluacion(true)} disabled = {(intentos && intentos[0]?.intentos === 0)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>{(evaluacionCompleta?.length !== 0 && (intentos[0]?.intentos === 0)) ? `Calificación: ${calificacion[0]?.calificacion} / 100` : 'Tomar evaluación'}</button>
         </div>
       </>
   )

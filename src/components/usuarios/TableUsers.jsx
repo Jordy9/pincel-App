@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { MultiSelect } from 'react-multi-select-component'
 import { useSelector } from 'react-redux'
 import { useResponsive } from '../../hooks/useResponsive'
 import { ModalCreateUser } from './ModalCreateUser'
+import { Pagination } from './Pagination'
 import { TableSpreedList } from './TableSpreedList'
 
 export const TableUsers = () => {
@@ -23,6 +24,13 @@ export const TableUsers = () => {
     const usuarioParaList = usuarios?.filter(usuarios => usuariosFiltro?.some(usuarioss => usuarioss?.value === usuarios?.id))
 
     const [ respWidth ] = useResponsive()
+
+    const [currentPage, setCurrentPage] = useState(0)
+
+    useEffect(() => {
+        setCurrentPage(0)
+    }, [])
+    
     
   return (
     <div className='container'>
@@ -55,9 +63,13 @@ export const TableUsers = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <TableSpreedList usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} />
+                    <TableSpreedList usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} currentPage = {currentPage} />
                 </tbody>
             </table>
+        </div>
+        
+        <div className='mt-3'>
+            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} />
         </div>
 
         <ModalCreateUser showModalCreateUser={showModalCreateUser} setShowModalCreateUser = {setShowModalCreateUser} />

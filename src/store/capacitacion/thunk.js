@@ -23,7 +23,7 @@ export const obtenerCapacitacion = () => {
                 capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
-                    dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos}))
+                    dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos, EvaluatShow: capacitacionFiltrada[0]?.EvaluatShow}))
                 }
 
         } catch (error) {
@@ -182,7 +182,7 @@ export const obtenerCapacitacion = () => {
 //     }
 // }
 
-export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas, duracion, team) => {
+export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas, duracion, team, EvaluatShow) => {
     return async(dispatch, getState) => {
 
         const { usuarios } = getState().auth;
@@ -214,7 +214,7 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
                 image = data?.items[0].snippet?.thumbnails?.maxres?.url
             }
 
-            const resp = await salonApi.post(`/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
+            const resp = await salonApi.post(`/capacitacion/new`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion, EvaluatShow})
     
             dispatch(uploadFinish())
             dispatch(toUpdate(resp.data.capacitacion))
@@ -244,7 +244,7 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
     }
 }
 
-export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team) => {
+export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team, EvaluatShow) => {
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
@@ -286,7 +286,7 @@ export const actualizarCapacitacionForm = (title, descripcion, intentos, video, 
                 idImage = urlId
                 image = (data?.items[0].snippet?.thumbnails?.maxres?.url) ? data?.items[0].snippet?.thumbnails?.maxres?.url : (data?.items[0].snippet?.thumbnails?.high?.url) ? data?.items[0].snippet?.thumbnails?.high?.url : data?.items[0].snippet?.thumbnails?.default?.url
             }
-            const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion})
+            const resp = await salonApi.put(`/capacitacion/update/${paraEditar?._id}`, {title, image, idImage, descripcion, intentos, video, Preguntas, duracion, team, usuariosEvaluacion, EvaluatShow})
     
             dispatch(uploadFinish())
             dispatch(actualizarCapacitacion(resp.data.capacitacion))

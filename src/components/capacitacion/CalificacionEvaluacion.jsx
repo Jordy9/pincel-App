@@ -26,7 +26,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
         <h1 className='text-center'>Calificación</h1>
         <h5 className='text-center'>Tu calificación en esta evaluación es {calificacionShow?.toFixed()} de 100</h5>
 
-        {
+        {/* {
           (intentos === 0)
             &&
           <div className='table-responsive' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: 'auto'}}>
@@ -69,7 +69,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
               </tbody>
             </table>
           </div>
-        }
+        } */}
 
         {
           (intentos !== 0)

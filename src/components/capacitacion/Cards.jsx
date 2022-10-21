@@ -20,44 +20,26 @@ export const Cards = () => {
   const VideoComponent = (id) => {
     navigate(`/capacitacion/${id}`)
     const capacitacionfilter = capacitacion?.filter(capacitacion => capacitacion?._id === id)
-
+    
     if (capacitacionfilter?.length !== 0) {
-      dispatch(activeCapacitacion({_id: capacitacionfilter[0]?._id, videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas, descripcion: capacitacionfilter[0]?.descripcion, usuariosEvaluacion: capacitacionfilter[0]?.usuariosEvaluacion, intentos: capacitacionfilter[0]?.intentos}))
+      dispatch(activeCapacitacion({_id: capacitacionfilter[0]?._id, videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas, descripcion: capacitacionfilter[0]?.descripcion, usuariosEvaluacion: capacitacionfilter[0]?.usuariosEvaluacion, intentos: capacitacionfilter[0]?.intentos, EvaluatShow: capacitacionfilter[0]?.EvaluatShow}))
     }
   }
 
   const [respWidth] = useResponsive()
 
-  let capacitacionFilter = []
-
-  const [capacitacionesFiltro, setCapacitacionesFiltro] = useState([])
-
   let capacitacionTOList = []
-
-  capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || team?.value === usuarioActivo?.id || usuarioActivo?.role === 'Administrador')))?.map(capacitacion => capacitacionFilter?.push({ label: capacitacion?.title, value: capacitacion?._id}))
 
   capacitacionTOList = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === usuarioActivo?.team || team?.value === usuarioActivo?.id || usuarioActivo?.role === 'Administrador')))
 
-  let options = capacitacionFilter
-
-  const capacitacionParaList = capacitacion?.filter(capacitacion => capacitacionesFiltro?.some(capacitaciones => capacitaciones?.value === capacitacion?._id))
-
-  if (capacitacionParaList?.length !== 0) {
-    capacitacionTOList = capacitacionParaList
-  }
+  const [title, setTitle] = useState('')
   
   return (
     <>
 
-    <MultiSelect
-        options={options}
-        value={capacitacionesFiltro}
-        onChange={setCapacitacionesFiltro}
-        labelledBy="Select"
-        hasSelectAll = {false}
-    />
+    <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
     {
-      capacitacionTOList?.map(({title, _id, image, duracion, video}) => {
+      capacitacionTOList?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)?.map(({title, _id, image, duracion, video}) => {
         const duration = parseInt(duracion / 60)
         const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
 
@@ -69,7 +51,7 @@ export const Cards = () => {
             <div className='bg-transparent d-flex flex-column' style={{borderRadius: '10px'}}>
               <img src={image} className='img-fluid' style={{borderRadius: '20px', width: '100%', height: (respWidth >= 768) ? 170 : 'auto'}} alt="" />
               <div className='p-2'>
-                <h5>{title}</h5>
+                <h5 className='elipsisCard'>{title}</h5>
                 <p style={{fontSize: '13.5px'}} className='text-muted'>Duracion: {(duration < 1) ? 1 : duration} min</p>
                 {
                   (porcentaje >= 1)

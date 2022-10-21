@@ -66,7 +66,7 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
 
     let totalCursos = equipoFiltrado?.length
 
-    const porcentage = (100*totalSumado) / 100 || 5
+    const porcentage = (100*totalSumado) / 100 || 100
 
     // Fin desde capacitaciones realizadas hasta indice
 

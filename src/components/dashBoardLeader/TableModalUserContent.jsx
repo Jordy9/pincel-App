@@ -71,7 +71,7 @@ export const TableModalUserContent = (props) => {
         </td>
         <td>{title}</td>
         <td className='d-flex justify-content-center mx-auto'>
-          <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : '0 evaluación' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionEvaluacion[0]?.calificacion}` : 'Incompleta'}`}>
+          <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : 'No ha tomado la evaluación' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionEvaluacion[0]?.calificacion}` : 'Incompleta'}`}>
               <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : '-'}`} />
           </div>
         </td>

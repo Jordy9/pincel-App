@@ -37,23 +37,13 @@ export const ModalUser = () => {
         setModalShowResena(true)
     }
 
-    let capacitacionFilter = []
-
     let capacitacionTOList = []
-
-    let options = capacitacionFilter
     
-    const [capacitacionesFiltro, setCapacitacionesFiltro] = useState([])
-
-    capacitacion?.filter(capacitacion => capacitacion?.publicar === true && (capacitacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id)))?.map(capacitacion => capacitacionFilter?.push({ label: capacitacion?.title, value: capacitacion?._id}))
-
     capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
 
-    const capacitacionParaList = capacitacion?.filter(capacitacion => capacitacionesFiltro?.some(capacitaciones => capacitaciones?.value === capacitacion?._id))
+    const [title, setTitle] = useState('')
 
-    if (capacitacionParaList?.length !== 0) {
-        capacitacionTOList = capacitacionParaList
-    }
+    const capacitacionToShow = capacitacionTOList?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)
       
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
@@ -80,13 +70,7 @@ export const ModalUser = () => {
 
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 my-auto" style={{borderRadius: '35px'}}>
                             <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
-                                <MultiSelect
-                                    options={options}
-                                    value={capacitacionesFiltro}
-                                    onChange={setCapacitacionesFiltro}
-                                    labelledBy="Select"
-                                    hasSelectAll = {false}
-                                />
+                                <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
                                 <h4 className='text-center'>Capacitaciones</h4>
                                 <table className="table borderless">
                                     <thead>
@@ -97,7 +81,7 @@ export const ModalUser = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <TableModalUserSpreed capacitacionTOList = {capacitacionTOList} />
+                                        <TableModalUserSpreed capacitacionTOList = {capacitacionToShow} />
                                     </tbody>
                                 </table>
                             </div>

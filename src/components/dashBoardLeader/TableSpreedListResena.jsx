@@ -1,11 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { TableContentResena } from './TableContentResena'
 
-export const TableSpreedListResena = ({setModalShowDetalle}) => {
-    const { resenaFilterSlice, showResena } = useSelector(state => state.rs)
-
-    const { activeUser } = useSelector(state => state.auth)
+export const TableSpreedListResena = ({setModalShowDetalle, currentPage, resenaFilterSlice}) => {
+    
+    const PaginateResena = () => {
+        const allResena = [...resenaFilterSlice]
+        return allResena?.slice(currentPage, currentPage + 25)
+    }
 
     // Si da error, solo hay que quitarle los parentesis a (resena.id === activeUser?.id)
     return (
@@ -13,10 +14,8 @@ export const TableSpreedListResena = ({setModalShowDetalle}) => {
             {
                 (resenaFilterSlice)
                     &&
-                    resenaFilterSlice?.filter(resena => (!showResena) ? resena?.estado === true : resena)?.map(resena => {
+                    PaginateResena()?.map(resena => {
                         return (
-                            (resena.calificacion.filter(resena => (resena.id === activeUser?.id) !== 0))
-                                &&
                             <TableContentResena key = {resena?._id} {...resena} setModalShowDetalle = {setModalShowDetalle} />
                         )
                     })

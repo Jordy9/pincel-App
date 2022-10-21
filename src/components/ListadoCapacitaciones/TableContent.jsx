@@ -20,7 +20,7 @@ export const TableContent = (props) => {
 
     const navigate = useNavigate()
     
-    const { image, title, createdAt, team, publicar, video, Preguntas} = props
+    const { image, title, createdAt, team, publicar, video, Preguntas, EvaluatShow } = props
 
     const handledActive = (capacitacion) => {
       dispatch(toUpdate(capacitacion))
@@ -60,7 +60,7 @@ export const TableContent = (props) => {
 
     const handledDelete = (capacita) => {
           Swal.fire({
-            title: '¿Esta seguro que desea eliminar esta capacitación?',
+            title: '¿Está seguro que desea eliminar esta capacitación?',
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: 'Cancelar',
@@ -76,7 +76,7 @@ export const TableContent = (props) => {
 
     const handledPublicar = (capacita, publicarAhora) => {
       if (okVideo) {
-        if (ok) {
+        if (ok || !EvaluatShow) {
           if (!publicar) {
             Swal.fire({
               title: '¿Esta seguro que desea publicar esta capacitación?',

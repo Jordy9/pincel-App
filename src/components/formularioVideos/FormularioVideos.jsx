@@ -48,6 +48,8 @@ export const FormularioVideos = () => {
 
     const [formValuesDescripcion, setFormValuesDescripcion] = useState('')
 
+    const [evaluateShow, setEvaluateShow] = useState(false)
+
     const [formValuesIntentos, setFormValuesIntentos] = useState(1)
 
     const [formValues, setFormValues] = useState([{ _id: uuid(), titulo: '', video: '', duration: 0 }])
@@ -84,10 +86,11 @@ export const FormularioVideos = () => {
             intentos: formValuesIntentos,
             video: formValues,
             evaluacion: formEvaluacion,
-            equipos: equiposCapacitacion
+            equipos: equiposCapacitacion,
+            EvaluatShow: evaluateShow
         },
         enableReinitialize: true,
-        onSubmit: ({titulo, image, descripcion, video, intentos, evaluacion, equipos}) => {
+        onSubmit: ({titulo, image, descripcion, video, intentos, evaluacion, equipos, EvaluatShow}) => {
 
             let suma = 0
 
@@ -142,11 +145,11 @@ export const FormularioVideos = () => {
             }
 
             if (!paraEditar) {
-                dispatch(crearCapacitacion(titulo, descripcion, intentos, video, evaluacion, suma, equipos))
+                dispatch(crearCapacitacion(titulo, descripcion, intentos, video, evaluacion, suma, equipos, EvaluatShow))
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
             } else {
-                dispatch(actualizarCapacitacionForm(titulo, descripcion, intentos, video, evaluacion, suma, equipos))
+                dispatch(actualizarCapacitacionForm(titulo, descripcion, intentos, video, evaluacion, suma, equipos, EvaluatShow))
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
             }
@@ -154,7 +157,7 @@ export const FormularioVideos = () => {
         },
         validationSchema: Yup.object({
             titulo: Yup.string()
-                        .max(50, 'Debe de tener 50 caracteres o menos')
+                        .max(100, 'Debe de tener 100 caracteres o menos')
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
             descripcion: Yup.string()
@@ -172,9 +175,9 @@ export const FormularioVideos = () => {
                 })
             ),
             evaluacion: Yup.array().of(Yup.object({
-                    pregunta: (paraEditar?.publicar === true) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
-                    respuesta: (paraEditar?.publicar === true) && Yup.array().of(Yup.object({
-                        respuesta: (paraEditar?.publicar === true) && Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
+                    pregunta: (paraEditar?.publicar === true && paraEditar?.EvaluatShow) && Yup.string().min(3, 'El titulo debe de tener como mínimo 3 caracteres').required('Requerido'),
+                    respuesta: (paraEditar?.publicar === true && paraEditar?.EvaluatShow) && Yup.array().of(Yup.object({
+                        respuesta: (paraEditar?.publicar === true && paraEditar?.EvaluatShow) && Yup.string().min(2, 'La respuesta debe de tener como mínimo 2 caracteres').required('Requerido'),
                         // accion: Yup.boolean().required('Requerido'),
                     }))
                 })
@@ -264,6 +267,7 @@ export const FormularioVideos = () => {
         setFormValuesIntentos(paraEditar?.intentos)
         setEquiposCapacitacion([...paraEditar?.team])
         setFormValuesTitulo(paraEditar?.title)
+        setEvaluateShow(paraEditar?.EvaluatShow)
       }
     }, [paraEditar])
 
@@ -464,15 +468,20 @@ export const FormularioVideos = () => {
                         {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
                     </div>
                     
-                    <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
                         <label>Ordenar</label>
                         <button type='button' onClick={() => setShowOrder(true)} className='btn btn-primary form-control'>Ordenar videos o preguntas</button>
                     </div>
+
+                    {
+                        (evaluateShow)
+                            &&
+                        <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                            <label>{(!evaluacionChange) ? 'Evaluación' :'Videos'}</label>
+                            <button type='button' onClick={() => setEvaluacionChange(!evaluacionChange)} className={`btn ${(!evaluacionChange && showErrorEvaluacion) ? 'btn-danger' : (evaluacionChange && showErrorVideo) ? 'btn-danger' : 'btn-primary' } form-control`}>{(!evaluacionChange) ? 'Ir a la evaluación' :'Ir a los videos'}</button>
+                        </div>
+                    }
                     
-                    <div className="ml-auto col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                        <label>{(!evaluacionChange) ? 'Evaluación' :'Videos'}</label>
-                        <button type='button' onClick={() => setEvaluacionChange(!evaluacionChange)} className={`btn ${(!evaluacionChange && showErrorEvaluacion) ? 'btn-danger' : (evaluacionChange && showErrorVideo) ? 'btn-danger' : 'btn-primary' } form-control`}>{(!evaluacionChange) ? 'Ir a la evaluación' :'Ir a los videos'}</button>
-                    </div>
                 </div>
 
                 {
@@ -484,6 +493,28 @@ export const FormularioVideos = () => {
                                 <label className='form-label'>Titulo</label>
                                 <input value={formValuesTitulo} onChange={({target}) => setFormValuesTitulo(target.value)} type="text" placeholder='Titulo de la capacitación' className='form-control' />
                                 {touched?.titulo && errors?.titulo && <span style={{color: 'red'}}>{errors?.titulo}</span>}
+                            </div>
+
+                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 form-group">
+                                <label className="form-check-label" for="flexCheckDefault">
+                                    {
+                                        (evaluateShow)
+                                            ?
+                                        'Desactivar Evaluación'
+                                            :
+                                        'Activar Evaluación'
+                                    }
+                                </label>
+
+                                <div>
+                                    {
+                                        (evaluateShow)
+                                            ?
+                                        <i style={{fontSize: '30px', cursor: 'pointer'}} onClick={() => setEvaluateShow(false)} className="text-success bi bi-check-circle-fill"></i> 
+                                            :
+                                        <i style={{fontSize: '30px', cursor: 'pointer'}} onClick={() => setEvaluateShow(true)} className="bi bi-x-circle-fill text-danger"></i> 
+                                    }
+                                </div>
                             </div>
                         </div>
 
@@ -583,7 +614,7 @@ export const FormularioVideos = () => {
                                                             </div>
 
                                                             <div className="col-xs-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 col-xxl-1 text-center">
-                                                                <label className='form-label'>Opciones</label>
+                                                                <label className='form-label'>{(elemento.accion === 'true') ? 'Correcta' : 'Incorrecta'}</label>
                                                                 {
                                                                     (elemento.accion === 'true')
                                                                         ?
@@ -652,7 +683,10 @@ export const FormularioVideos = () => {
                         }
                     </Slider>
                 }
-
+            
+                <div className='d-grid gap-2 col-6 mx-auto mt-4'>
+                    <button hidden = {evaluacionChange} type='submit' className = 'btn btn-primary'>Guardar</button>
+                </div>
             </form>
         </div>
 

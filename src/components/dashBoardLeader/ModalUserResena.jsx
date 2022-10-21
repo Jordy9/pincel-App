@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { showResena0 } from '../../store/resena/resenaSlice'
+import { Pagination } from '../usuarios/Pagination'
 import { ModalResenaDetalle } from './ModalResenaDetalle'
 import { TableSpreedListResena } from './TableSpreedListResena'
 
@@ -14,9 +16,21 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
     setModalShowResena(false)
   }
 
-  const { showResena } = useSelector(state => state.rs);
+  const { showResena, resenaFilterSlice } = useSelector(state => state.rs);
+
+  const { activeUser } = useSelector(state => state.auth);
+
+  const nuevaResenaSlice = resenaFilterSlice?.filter(resena => (!showResena) ? resena?.estado === true : resena)
+
+  const finalResenaSlice = nuevaResenaSlice?.filter(resena => resena?.calificacion?.some(calificacion => calificacion.id === activeUser?.id))
 
   const [modalShowDetalle, setModalShowDetalle] = useState(false)
+
+  const [currentPage, setCurrentPage] = useState(0)
+
+  useEffect(() => {
+    setCurrentPage(0)
+  }, [])
 
   return (
     <Modal fullscreen show={modalShowResena} onHide={handleClose}>
@@ -44,10 +58,14 @@ export const ModalUserResena = ({modalShowResena, setModalShowResena}) => {
                             </tr>
                         </thead>
                         <tbody>
-                          <TableSpreedListResena setModalShowDetalle = {setModalShowDetalle} />
+                          <TableSpreedListResena setModalShowDetalle = {setModalShowDetalle} currentPage = {currentPage} resenaFilterSlice = {finalResenaSlice} />
                         </tbody>
                     </table>
                 </div>
+              </div>
+
+              <div className='mt-3'>
+                <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {finalResenaSlice} />
               </div>
             </div>
 
