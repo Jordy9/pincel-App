@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import io from 'socket.io-client';
 import { onUpdateUser } from '../store/auth/authSlice';
+import { actualizarCapacitacion } from '../store/capacitacion/capacitacionSlice';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { UsuariosCargados } from '../store/chat/chatSlice';
 import { NotificacionesCargadas } from '../store/notificaciones/notificacionesSlice';
@@ -78,6 +79,12 @@ export const useSocket = ( serverPath ) => {
     useEffect(() => {
         socket?.on('estado-cambiado', (usuario) => {
             dispatch(onUpdateUser(usuario))
+        })
+    }, [ socket, dispatch])
+
+    useEffect(() => {
+        socket?.on('updated-one-user-evaluacion', (capacitacion) => {
+            dispatch(actualizarCapacitacion(capacitacion))
         })
     }, [ socket, dispatch])
 

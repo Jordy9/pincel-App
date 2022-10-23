@@ -43,7 +43,8 @@ export const VideosComponent = () => {
                   <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
                       <CapacitacionTema />
 
-                      <h4 className='mt-4'>Descripcion general</h4>
+                      <h4 className='my-3'>{capacitacionActiva?.title}</h4>
+                      <h4>Descripcion general</h4>
                       <p style={{fontSize: '17px'}}>{capacitacionActiva?.descripcion}</p>
                   </div>
 

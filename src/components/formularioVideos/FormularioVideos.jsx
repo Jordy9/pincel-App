@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { ModalOrder } from './ModalOrder';
 import uuid from "uuid/v4";
+import { useResponsive } from '../../hooks/useResponsive';
 
 export const FormularioVideos = () => {
 
@@ -48,7 +49,7 @@ export const FormularioVideos = () => {
 
     const [formValuesDescripcion, setFormValuesDescripcion] = useState('')
 
-    const [evaluateShow, setEvaluateShow] = useState(false)
+    const [evaluateShow, setEvaluateShow] = useState(true)
 
     const [formValuesIntentos, setFormValuesIntentos] = useState(1)
 
@@ -94,6 +95,8 @@ export const FormularioVideos = () => {
 
             let suma = 0
 
+            let newVideo = false
+
             for (let index = 0; index < video.length; index++) {
                 const element = video[index];
 
@@ -103,6 +106,8 @@ export const FormularioVideos = () => {
                     if (element.video === paraEditar?.video[index]?.video) {
                         video[index] = {...paraEditar?.video[index], titulo: element?.titulo} 
                     } else {
+
+                        newVideo = true
     
                         if (element?.video?.includes('?v=') && element?.video?.length > 20) {
                             const normalUrl = element?.video?.split('?v=')
@@ -149,9 +154,10 @@ export const FormularioVideos = () => {
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
             } else {
-                dispatch(actualizarCapacitacionForm(titulo, descripcion, intentos, video, evaluacion, suma, equipos, EvaluatShow))
+                dispatch(actualizarCapacitacionForm(titulo, descripcion, intentos, video, evaluacion, suma, equipos, EvaluatShow, newVideo))
                 setShowErrorVideo(false)
                 setShowErrorEvaluacion(false)
+                newVideo = false
             }
 
         },
@@ -161,7 +167,7 @@ export const FormularioVideos = () => {
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
             descripcion: Yup.string()
-                        .max(200, 'Debe de tener 200 caracteres o menos')
+                        .max(500, 'Debe de tener 500 caracteres o menos')
                         .min(3, 'Debe de tener 3 caracteres o más')
                         .required('Requerido'),
             intentos: Yup.number()
@@ -438,6 +444,8 @@ export const FormularioVideos = () => {
     }
 
     const [showOrder, setShowOrder] = useState(false)
+
+    const [ respWidth ] = useResponsive()
     
   return (
     <Sidebar>
@@ -595,7 +603,7 @@ export const FormularioVideos = () => {
                             formEvaluacion.map((element, index) => {
                                 return (
                                     <Fragment key={element + index}>
-                                        <div key={element + index} className="row p-4">
+                                        <div key={element + index} className="row mx-auto p-4">
                                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 form-group">
                                                 <button className='btn btn-primary my-1 mx-1'>{index + 1}</button>
                                                 <label className='form-label'>Pregunta</label>
@@ -618,9 +626,9 @@ export const FormularioVideos = () => {
                                                                 {
                                                                     (elemento.accion === 'true')
                                                                         ?
-                                                                    <i style={{fontSize: '23px'}} className="text-success bi bi-check-circle-fill"></i> 
+                                                                    <i style={{fontSize: '23px', marginLeft: (respWidth <= 767) && '6px'}} className="text-success bi bi-check-circle-fill"></i> 
                                                                         :
-                                                                    <i style={{fontSize: '23px'}} className="bi bi-x-circle-fill text-danger"></i> 
+                                                                    <i style={{fontSize: '23px', marginLeft: (respWidth <= 767) && '6px'}} className="bi bi-x-circle-fill text-danger"></i> 
                                                                 }
                                                             </div>
 

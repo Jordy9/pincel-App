@@ -35,6 +35,8 @@ import { filterCustomResenaSlice } from '../../store/customResena/customResenaSl
 import { showError } from '../../store/resena/thunk'
 import { EvaluacionesfiltradasTodosMesesMayorQue, EvaluacionesfiltradasTodosMesesMayorQueD, EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo, EvaluacionfiltradasTodosMesesMayorQueMenor, EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo, EvaluationfiltradasTodosMeses, filterEvaluationGeneral } from '../../helper/filterEvaluation'
 import { filterEvaluacionUsuarioEquipoTodosMeses, filterEvaluacionUsuarioEquipoRango } from '../../helper/filterEvaluationTeamUser'
+import { filterCapacitacionGeneral } from '../../helper/filterCapacitacion'
+import { filterCapacitacionSlice } from '../../store/capacitacion/capacitacionSlice'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -69,6 +71,8 @@ export const DashboardAdmin = () => {
   const { toShowResena, showResena } = useSelector(state => state.to);
 
   const { evaluacion } = useSelector(state => state.ev);
+
+  const { capacitacion } = useSelector(state => state.cp);
 
   const [changeShowResena, setChangeShowResena] = useState(toShowResena[0]?.showResena)
 
@@ -202,6 +206,8 @@ export const DashboardAdmin = () => {
   // Filtro general por rango
 
   const evaluacionFiltradaPorRango = filterEvaluationGeneral(evaluacion, changeDateRange, changeDate, selectRange)
+
+  const capacitacionFiltradaPorRango = filterCapacitacionGeneral(capacitacion, changeDateRange, changeDate, selectRange)
 
   // Filtro todos los meses
 
@@ -380,6 +386,13 @@ export const DashboardAdmin = () => {
   useEffect(() => {
     if (changeShowResena === 'Normal') {
       dispatch(filterResenaSlice(resenasFiltradas))
+    }
+    
+  }, [changeDate, changeDateRange, dispatch])
+
+  useEffect(() => {
+    if (capacitacionFiltradaPorRango) {
+      dispatch(filterCapacitacionSlice(capacitacionFiltradaPorRango))
     }
     
   }, [changeDate, changeDateRange, dispatch])

@@ -12,32 +12,32 @@ export const TableContent = (props) => {
 
     const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
 
-    const { capacitacion } = useSelector(state => state.cp);
+    const { capacitacionFilterSlice } = useSelector(state => state.cp);
 
     const { evaluacion } = useSelector(state => state.ev);
 
     const { id, name, urlImage, team: usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacion?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacion?.filter(evaluacion => capacitacionFilterSlice?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id) && evaluacion?.idUsuario === id)
 
     let sumaPorcentage = []
 
-    capacitacion?.filter(
+    capacitacionFilterSlice?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
-      )?.map(({video, _id}) => {
+      )?.map(({video, _id, EvaluatShow}) => {
         const CantidadCheck = video?.filter(video => video?.check?.includes(id))
     
         const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
     
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
         return (
-          (porcentaje === 100 && evaluacionFilt?.length !== 0) && sumaPorcentage.push(porcentaje)
+          (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) && sumaPorcentage.push(porcentaje)
         )
       })
 
-    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(id)))
+    const cantidadVideosFiltradas = capacitacionFilterSlice?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(id)))
 
     let video = []
 
@@ -106,12 +106,12 @@ export const TableContent = (props) => {
 
     calificacionEvaluacion?.map(evC => sumaCalific = sumaCalific + evC?.calificacion)
 
-    const calificacionFinalUsuario = (sumaCalific / calificacionEvaluacion?.length)?.toFixed() || 0
+    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed()) || 0
 
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
-            (isShow && (sumaPorcentage0 !== 0 || capacitacionPlural))
+            (isShow && (sumaPorcentage0 !== 0 || calificacionFinalUsuario !== 0))
                 &&
             <>
                 {

@@ -111,6 +111,7 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
                         setChangeEvaluacionCalificacion = {setChangeEvaluacionCalificacion}
                         evaluacionActiva = {evaluacionUserComplete[0]?.evaluacion}
                         setFormValues = {setFormValues}
+                        setModalShowEvaluacion = {setModalShowEvaluacion}
                     />
                 }
             </div>

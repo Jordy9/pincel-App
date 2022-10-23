@@ -37,14 +37,14 @@ export const TableContent = (props) => {
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
-      )?.map(({video, _id}) => {
+      )?.map(({video, _id, EvaluatShow}) => {
         const CantidadCheck = video?.filter(video => video?.check?.includes(id))
     
         const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
     
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
         return (
-          (porcentaje === 100 && evaluacionFilt?.length !== 0) && sumaPorcentage.push(porcentaje)
+          (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) && sumaPorcentage.push(porcentaje)
         )
       })
 

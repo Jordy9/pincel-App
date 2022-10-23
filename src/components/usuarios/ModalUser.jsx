@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { cambiarEstadoUsuario, iniciarActualizacionModalUser } from '../../store/auth/thunk'
 import user from '../../heroes/user.webp'
 import { useResponsive } from '../../hooks/useResponsive'
+import Swal from 'sweetalert2'
 
 export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
 
@@ -134,8 +135,20 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
     }, [ImagePerfil])
 
     const ChangeEstate = () => {
-        setEstado(!estado)
-        dispatch(cambiarEstadoUsuario(activeUser?.id, !estado, activeUser?.team, activeUser?.toResena))
+        Swal.fire({
+            title: `¿Está seguro que desea ${(estado) ? 'desactivar' : 'activar' } a este usuario?`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'No por ahora',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: 'rgb(0, 197, 0)',
+            confirmButtonText: 'Si'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                setEstado(!estado)
+                dispatch(cambiarEstadoUsuario(activeUser?.id, !estado, activeUser?.team, activeUser?.toResena))
+            }
+          })
     }
 
     const [ respWidth ] = useResponsive()

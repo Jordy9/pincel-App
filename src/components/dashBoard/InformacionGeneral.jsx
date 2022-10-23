@@ -25,7 +25,7 @@ export const InformacionGeneral = () => {
         const capacitacionfilter = capacitacion?.filter(capacitacion => capacitacion?._id === id)
     
         if (capacitacionfilter?.length !== 0) {
-          dispatch(activeCapacitacion({_id: capacitacionfilter[0]?._id, videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas, descripcion: capacitacionfilter[0]?.descripcion, usuariosEvaluacion: capacitacionfilter[0]?.usuariosEvaluacion, intentos: capacitacionfilter[0]?.intentos, EvaluatShow: capacitacionfilter[0]?.EvaluatShow}))
+          dispatch(activeCapacitacion({_id: capacitacionfilter[0]?._id, videos: capacitacionfilter[0]?.video[0], preguntas: capacitacionfilter[0]?.Preguntas, descripcion: capacitacionfilter[0]?.descripcion, usuariosEvaluacion: capacitacionfilter[0]?.usuariosEvaluacion, intentos: capacitacionfilter[0]?.intentos, EvaluatShow: capacitacionfilter[0]?.EvaluatShow, title: capacitacionfilter[0]?.title}))
         }
     }
 
@@ -134,7 +134,7 @@ export const InformacionGeneral = () => {
                       (porcentaje === 100)
                         &&
                       <div key={Element + index} className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
-                        <div onClick={() => VideoComponent(Element?._id)} className='btn primary text-center text-white'>
+                        <div onClick={() => VideoComponent(Element?._id)} className='btn primary text-center text-white elipsisCard'>
                           {Element?.title}
                         </div>
                       </div>

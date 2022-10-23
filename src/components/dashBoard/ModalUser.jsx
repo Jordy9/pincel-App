@@ -4,11 +4,9 @@ import { Rating } from 'react-simple-star-rating'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalClose } from '../../store/auth/authSlice'
 import user from '../../heroes/user.webp'
-import { ModalPerfilUser } from './ModalUserPerfil'
 import { ModalUserResena } from './ModalUserResena'
 import { TableModalUserSpreed } from './TableModalUserSpreed'
 import { onDoubleTap } from '../../helper/onDoubleTap'
-import { MultiSelect } from 'react-multi-select-component'
 
 export const ModalUser = () => {
 
@@ -16,7 +14,7 @@ export const ModalUser = () => {
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
 
-    const { capacitacion } = useSelector(state => state.cp);
+    const { capacitacionFilterSlice } = useSelector(state => state.cp);
 
     const handleClose = () => {
         dispatch(modalClose())
@@ -39,7 +37,7 @@ export const ModalUser = () => {
 
     let capacitacionTOList = []
     
-    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
+    capacitacionTOList = capacitacionFilterSlice?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
 
     const [title, setTitle] = useState('')
 

@@ -1,7 +1,8 @@
 import axios from "axios";
+import moment from "moment";
 import Swal from "sweetalert2";
 import salonApi from "../../salonApi/salonApi";
-import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, getCapacitacion, toSave, toUpdate, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
+import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, filterCapacitacionSlice, getCapacitacion, toSave, toUpdate, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 export const obtenerCapacitacion = () => {
     return async(dispatch) => {
@@ -23,8 +24,13 @@ export const obtenerCapacitacion = () => {
                 capacitacionFiltrada?.map(capacitacion =>
                     filtro = capacitacion?.video?.filter(video => video?.idVideo === queryString),
                     )
-                    dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos, EvaluatShow: capacitacionFiltrada[0]?.EvaluatShow}))
-                }
+                    dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: filtro[0] || capacitacionFiltrada[0]?.video[0], preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos, EvaluatShow: capacitacionFiltrada[0]?.EvaluatShow, title: capacitacionFiltrada[0]?.title}))
+            }
+
+            const capacitacion = resp.data.capacitacion?.filter(capacitacion => moment(capacitacion?.createdAt).format('M/Y') === moment().format('M/Y') && capacitacion?.publicar === true)
+
+            dispatch(filterCapacitacionSlice(capacitacion))
+
 
         } catch (error) {
         }
@@ -244,7 +250,7 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
     }
 }
 
-export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team, EvaluatShow) => {
+export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team, EvaluatShow, newVideo) => {
     return async(dispatch, getState) => {
 
         const { paraEditar } = getState().cp;
@@ -277,9 +283,7 @@ export const actualizarCapacitacionForm = (title, descripcion, intentos, video, 
 
             const urlId = urlSplit[4]
 
-            console.log(video[0]?.video?.includes('embed') && paraEditar?.idImage !== urlId)
-
-            if (video[0]?.video?.includes('embed') && paraEditar?.idImage !== urlId) {
+            if (video[0]?.video?.includes('embed') && (paraEditar?.idImage !== urlId || newVideo)) {
 
                 const { data } = await axios.get(`https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDVPoMC3k0GlLy6q3Qy19ljRA2LGMnqcRU&channelId=UCMq8MYv0-X1XC17vnVRfwpw&part=snippet,id&id=${urlId}`)
 

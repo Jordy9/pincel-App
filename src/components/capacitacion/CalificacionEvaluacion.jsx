@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 
-export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCountResponse, setChangeEvaluacionCalificacion, evaluacionActiva, setFormValues}) => {
+export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCountResponse, setChangeEvaluacionCalificacion, evaluacionActiva, setFormValues, setModalShowEvaluacion}) => {
 
   const handledIntento = () => {
     Swal.fire({
@@ -20,6 +20,24 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
       }
     })
   }
+
+  console.log(intentos)
+
+  const [segundos, setSegundos] = useState(0)
+  const refSegundos = useRef()
+
+  useEffect(() => {
+    refSegundos.current && clearInterval(refSegundos.current)
+    refSegundos.current = setInterval(
+        () => (segundos < 3 && intentos === 0) && setSegundos(s => s + 1)
+      , 1000)
+  }, [segundos, intentos])
+
+  useEffect(() => {
+    if (segundos === 2) {
+      setModalShowEvaluacion(false)
+    }
+  }, [segundos, setModalShowEvaluacion])
 
   return (
     <div className='p-4 shadow mt-5' style={{borderRadius: '35px'}}>

@@ -49,21 +49,21 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                    evaluacionActiva?.evaluacion?.map((evaluacion, index) => {
                                     return (
                                         <tr onTouchStart={(e) => onDoubleTap(e, onShow)} onDoubleClick={onShow}>
-                                            <td className='d-flex justify-content-start'>
+                                            {/* <td className='d-flex justify-content-start'>
                                                 <button className='btn btn-primary'>{index + 1}</button>
-                                            </td>
-                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.pregunta}</td>
-                                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
-                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
+                                            </td> */}
                                             <td>
                                                 {
                                                     (evaluacion?.correcta === 'true')
-                                                    ?
+                                                        ?
                                                     <i style={{fontSize: '25px'}} className="text-success bi bi-check-circle-fill"></i>
-                                                    :
+                                                        :
                                                     <i style={{fontSize: '25px'}} className="text-danger bi-x-circle-fill"></i>
                                                 }
                                             </td>
+                                            <td className='no-elipsis text-left'>{evaluacion?.evaluacion?.pregunta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.respuesta}</td>
+                                            <td className='no-elipsis'>{evaluacion?.evaluacion?.respuesta[0]?.respuesta}</td>
                                         </tr>
                                     )
                                    }) 
