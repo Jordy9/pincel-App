@@ -453,8 +453,6 @@ export const ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo = (resena, Su
 
   arregloFinal.push(...arregloNuevo.slice(0, mes[1]))
 
-  console.log(arregloFinal)
-
   return arregloFinal
 }
 
