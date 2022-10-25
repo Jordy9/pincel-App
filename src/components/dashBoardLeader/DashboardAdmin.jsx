@@ -174,7 +174,7 @@ export const DashboardAdmin = () => {
     }
   }, [changeDate, changeDateRange])
 
-  if (showThreeMonth || showAllMonth) {
+  if ((showThreeMonth || showAllMonth) && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
     calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuariosParaAdminLeader)
     
   }
@@ -215,7 +215,7 @@ export const DashboardAdmin = () => {
 
   let CalificacionEvaluacionPorMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-  if (showThreeMonth || showAllMonth) {
+  if ((showThreeMonth || showAllMonth) && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
     CalificacionEvaluacionPorMes = EvaluationfiltradasTodosMeses(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, usuariosParaAdminLeader)
   }
 
