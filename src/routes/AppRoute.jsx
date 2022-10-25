@@ -54,21 +54,21 @@ export const AppRoute = () => {
 
   // console.log(moment(Number(tokenInit)).fromNow())
 
-  const [segundos, setSegundos] = useState(0)
-    const refSegundos = useRef()
+  // const [segundos, setSegundos] = useState(0)
+  //   const refSegundos = useRef()
 
-    useEffect(() => {
-      refSegundos.current && clearInterval(refSegundos.current)
-      refSegundos.current = setInterval(
-         () => (token) && setSegundos(s => s + 1)
-        , 1000)
-    }, [token])
+  //   useEffect(() => {
+  //     refSegundos.current && clearInterval(refSegundos.current)
+  //     refSegundos.current = setInterval(
+  //        () => (token) && setSegundos(s => s + 1)
+  //       , 1000)
+  //   }, [token])
 
-  useEffect(() => {
-    if (moment().diff(moment(Number(tokenInit)), 'hours') >= 2 && moment().diff(moment(Number(tokenInit)), 'hours') < 462716) {
-      dispatch(iniciarAutenticacion())
-    }
-  }, [segundos, tokenInit, dispatch])
+  // useEffect(() => {
+  //   if (moment().diff(moment(Number(tokenInit)), 'hours') >= 2 && moment().diff(moment(Number(tokenInit)), 'hours') < 462716) {
+  //     dispatch(iniciarAutenticacion())
+  //   }
+  // }, [segundos, tokenInit, dispatch])
   
   useEffect(() => {
     dispatch(obtenerUsuarios())
