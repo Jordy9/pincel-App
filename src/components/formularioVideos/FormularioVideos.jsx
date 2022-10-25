@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModalOrder } from './ModalOrder';
 import uuid from "uuid/v4";
 import { useResponsive } from '../../hooks/useResponsive';
+import moment from 'moment';
 
 export const FormularioVideos = () => {
 
@@ -446,7 +447,20 @@ export const FormularioVideos = () => {
     const [showOrder, setShowOrder] = useState(false)
 
     const [ respWidth ] = useResponsive()
+
+    const [condicionShowTodos, setCondicionShowTodos] = useState()
+
     
+    useEffect(() => {
+        const nuevoTeam = equiposCapacitacion?.filter(equipo => equipo?.team === false)
+        const newUsuarios = usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.id !== '62cd8eacd16f6cc5e71f5f29')
+        
+        if (equiposCapacitacion?.length !== 0) {
+            setCondicionShowTodos(newUsuarios?.length === nuevoTeam?.length)
+        }
+
+    }, [equiposCapacitacion])
+
   return (
     <Sidebar>
         <div className='p-4'>
@@ -468,7 +482,7 @@ export const FormularioVideos = () => {
                             isLoading = {(chargeUsersTeam && arregloEquipos?.length === 0)}
                             onMenuToggle={(e) => setChargeUsersTeam(e)}
                             options={options}
-                            value={equiposCapacitacion}
+                            value={(condicionShowTodos || equiposCapacitacion?.length === 0) ? [{label: 'Todos'}] : equiposCapacitacion?.filter(equipos => equipos?.label !== 'Todos')}
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
                             hasSelectAll = {false}
@@ -697,6 +711,14 @@ export const FormularioVideos = () => {
                 </div>
             </form>
         </div>
+
+        {
+            (paraEditar)
+                &&
+            <div style={{position: 'fixed', zIndex: 1045, bottom: 10, right: 25}}>
+                <span>Ultima modificación: {moment(paraEditar?.updatedAt ).format('DD/MM/YYYY, h:mm a')}</span>
+            </div>
+        }
 
         <ModalPreview 
             modalPreview={modalPreview} 

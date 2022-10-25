@@ -17,20 +17,35 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     let sumaPorcentage = []
 
+    let sumaPorcentageIncompleto = []
+
+    let sumaCompleta = []
+
     capacitacionFilterSlice?.filter(
         capacitacion => capacitacion?.publicar === true 
-      )?.map(({video, _id, EvaluatShow}) => {
+      )?.map(({video, _id, EvaluatShow, team}) => {
         const CantidadCheck = video?.filter(video => usuarioFiltrado?.some(usuario => video?.check?.includes(usuario?.id)))
     
-        const evaluacionFilt = evaluacion?.filter(evaluacion => usuarioFiltrado?.some(usuario => evaluacion?.idUsuario === usuario?.id) && evaluacion?.idCapacitacion === _id)
+        const evaluacionFilt = evaluacion?.filter(evaluacion => usuarioFiltrado?.some(usuario => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id) && evaluacion?.idCapacitacion === _id)
     
-        const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
+        const porcentaje = parseInt((CantidadCheck[0]?.check?.length / team?.length) * 100)
+
         return (
-          (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) && sumaPorcentage.push(porcentaje)
+          (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) ? sumaPorcentage.push(porcentaje) : sumaPorcentageIncompleto.push(porcentaje)
         )
       })
 
-      const sumaPromedioCapacitaciones = (sumaPorcentage?.length/capacitacionFilterSlice?.length) * 100 || 0
+      sumaCompleta = [...sumaPorcentageIncompleto, ...sumaPorcentage]
+
+      let suma = 0
+
+      sumaCompleta?.map(calificacion => suma = suma + calificacion)
+
+      const sumaPromedioCapacitaciones = (suma / (capacitacionFilterSlice?.length*100)) * 100 || 0
+
+    //   console.log(sumaTotal)
+
+    //   const sumaPromedioCapacitaciones = (sumaPorcentage?.length/capacitacionFilterSlice?.length) * 100 || 0
 
   return (
     <>

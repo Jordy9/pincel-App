@@ -1,5 +1,6 @@
+import moment from "moment";
 import salonApi from "../../salonApi/salonApi";
-import { createEvaluacion, getEvaluacion, updateEvaluacion } from "./evaluacionSlice";
+import { createEvaluacion, getEvaluacion, updateEvaluacion, filterEvaluacionSlice } from "./evaluacionSlice";
 
 export const obtenerEvaluacion = () => {
     return async(dispatch) => {
@@ -8,6 +9,10 @@ export const obtenerEvaluacion = () => {
             const resp = await salonApi.get(`/evaluacion`)
     
             dispatch(getEvaluacion(resp.data.evaluacion))
+
+            const evaluacion = resp.data.evaluacion?.filter(evaluacion => moment(evaluacion?.createdAt).format('M/Y') === moment().format('M/Y'))
+
+            dispatch(filterEvaluacionSlice(evaluacion))
 
         } catch (error) {
         }

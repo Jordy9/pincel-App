@@ -14,7 +14,9 @@ export const ModalUser = () => {
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
+
+    const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
     const handleClose = () => {
         dispatch(modalClose())
@@ -37,7 +39,7 @@ export const ModalUser = () => {
 
     let capacitacionTOList = []
     
-    capacitacionTOList = capacitacionFilterSlice?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
+    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id) && evaluacionFilterSlice?.some(evaluacio => evaluacio?.idCapacitacion === evaluacion?._id && evaluacio?.idUsuario === activeUser?.id))
 
     const [title, setTitle] = useState('')
 

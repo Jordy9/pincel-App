@@ -12,24 +12,24 @@ export const TableContent = (props) => {
 
     const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
 
-    const { evaluacion } = useSelector(state => state.ev);
+    const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
     const { id, name, urlImage, team: usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacion?.filter(evaluacion => capacitacionFilterSlice?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true) && evaluacion?.idUsuario === id)
 
     let sumaPorcentage = []
 
-    capacitacionFilterSlice?.filter(
+    capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
       )?.map(({video, _id, EvaluatShow}) => {
         const CantidadCheck = video?.filter(video => video?.check?.includes(id))
     
-        const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
+        const evaluacionFilt = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
     
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)
         return (
@@ -37,7 +37,7 @@ export const TableContent = (props) => {
         )
       })
 
-    const cantidadVideosFiltradas = capacitacionFilterSlice?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(id)))
+    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.includes(id)))
 
     let video = []
 

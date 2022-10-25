@@ -26,7 +26,7 @@ export const filterEvaluationGeneral = (evaluacion, changeDateRange, changeDate,
 
       const porciento = (5*sumaTotal) / 100
     
-      return [porciento?.toFixed(1), evaluacionsFiltradasPorRango?.length]
+      return [porciento?.toFixed(1), evaluacionsFiltradasPorRango?.length, evaluacionsFiltradasPorRango]
 }
 
 export const EvaluationfiltradasTodosMeses = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate) => {
