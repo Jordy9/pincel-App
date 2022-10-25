@@ -106,14 +106,14 @@ export const Sidebar = ({children}) => {
                     <>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel-admin'><i style={{fontSize: '25px'}} className="bi bi-menu-button-fill"> </i><span>Administrativo</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/pincel'><i style={{fontSize: '25px'}} className="bi bi-house-door-fill"> </i><span>Inicio</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/TipoResenas'><i style={{fontSize: '25px'}} className="bi bi-toggles"> </i><span>Tipo de reseñas</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/TipoResenas'><i style={{fontSize: '25px'}} className="bi bi-toggles"> </i><span>Tipo de reseñas</span></NavLink> */}
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/capacitacion'><i style={{fontSize: '25px'}} className="bi bi-award-fill"> </i><span>Capacitación</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de capacitaciones</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Usuarios'><i style={{fontSize: '25px'}} className="bi bi-people-fill"> </i><span>Usuarios</span></NavLink>
                       <NavLink onClick={navigateToEvaluacion} style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Evaluacion'><i style={{fontSize: '25px'}} className="bi bi-clipboard"> </i><span>Evaluación del personal</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink> */}
                     </>
                   }
                 </div>
@@ -185,9 +185,9 @@ export const Sidebar = ({children}) => {
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListCapacitaciones'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de capacitaciones</span></NavLink>
                       <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Usuarios'><i style={{fontSize: '25px'}} className="bi bi-people-fill"> </i><span>Usuarios</span></NavLink>
                       <NavLink onClick={navigateToEvaluacion} style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Evaluacion'><i style={{fontSize: '25px'}} className="bi bi-clipboard"> </i><span>Evaluación del personal</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
-                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink>
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Aclaraciones'><i style={{fontSize: '25px', color: (notify?.length !== 0) && 'red'}} className="bi bi-question-lg"> </i><span>Aclaraciones</span></NavLink> */}
+                      {/* <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/Comunicado'><i style={{fontSize: '25px'}} className="bi bi-card-text"> </i><span>Comunicado</span></NavLink>
+                      <NavLink style={({ isActive }) => isActive ? activeStyle : undefined} className='nav-link my-4 text-center' to='/ListComunicados'><i style={{fontSize: '25px'}} className="bi bi-list-nested"> </i><span>Listado de comunicados</span></NavLink> */}
                     </>
                   }
                 </ul>
