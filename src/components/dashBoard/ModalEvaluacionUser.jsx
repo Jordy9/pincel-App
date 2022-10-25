@@ -90,7 +90,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                 }
                             </tbody>
                         </table>
-                        <h5 style = {{position: 'absolute', right: 50, bottom: 20}} >Calificación: {evaluacionActiva?.calificacion?.toFixed()}</h5>
+                        <h5 style = {{position: 'absolute', right: 50, bottom: 20}} >Calificación: {evaluacionActiva?.calificacion?.toFixed(1)}</h5>
                     </div>
                 </div>
             </div>

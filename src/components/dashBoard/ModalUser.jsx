@@ -48,7 +48,7 @@ export const ModalUser = () => {
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
-          <Modal.Title><h1>Ver o actualizar usuario</h1></Modal.Title>
+          <Modal.Title><h1>Ver usuario</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <div className="row p-4">

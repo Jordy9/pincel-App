@@ -21,7 +21,7 @@ export const ReseñasfiltradasTodosMeses = (resena, SumaResenasPorMes, showThree
     
         const porcentage = (5*totalSumado) / 100
     
-        return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? porcentage : 0 : porcentage
+        return (showThreeMonth) ? (index >= Number(showThreeMonths[0] - 1) && index <= Number(showThreeMonths[1] - 1)) ? [porcentage, sinAlphabet?.length] : 0 : [porcentage, sinAlphabet?.length]
     }
 
     if (showThreeMonth || showAllMonth) {
@@ -65,7 +65,7 @@ export const ReseñasfiltradasTodosMesesMayorQue = (resena, SumaResenasPorMes, s
 
       const porcentage = (5*totalSumado) / 100
   
-      return porcentage
+      return [porcentage, sinAlphabet?.length]
   }
 
   let arregloNuevo = []
@@ -150,7 +150,7 @@ export const ReseñasfiltradasTodosMesesMayorQueD = (resena, SumaResenasPorMes, 
 
       const porcentage = (5*totalSumado) / 100
   
-      return porcentage
+      return [porcentage, sinAlphabet?.length]
   }
 
   let arregloNuevo = []
@@ -233,7 +233,7 @@ export const ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo = (resena, SumaRe
 
       const porcentage = (5*totalSumado) / 100
   
-      return porcentage
+      return [porcentage, sinAlphabet?.length]
   }
 
   let arregloNuevo = []
@@ -316,7 +316,7 @@ export const ReseñasfiltradasTodosMesesMayorQueMenor = (resena, SumaResenasPorM
 
       const porcentage = (5*totalSumado) / 100
   
-      return porcentage
+      return [porcentage, sinAlphabet?.length]
   }
 
   let arregloNuevo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -401,7 +401,7 @@ export const ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo = (resena, Su
 
       const porcentage = (5*totalSumado) / 100
   
-      return porcentage
+      return [porcentage, sinAlphabet?.length]
   }
 
   let arregloNuevo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

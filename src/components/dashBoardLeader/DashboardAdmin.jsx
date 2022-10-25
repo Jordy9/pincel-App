@@ -31,6 +31,9 @@ import { filterEvaluationGeneral, EvaluationfiltradasTodosMeses, Evaluacionesfil
 import { filterEvaluacionUsuarioEquipoTodosMeses, filterEvaluacionUsuarioEquipoRango } from '../helperLeader/filterEvaluationTeamUser'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
 import { showError } from '../../store/resena/thunk'
+import { filterCapacitacionGeneral } from '../helperLeader/filterCapacitacion'
+import { filterCapacitacionSlice } from '../../store/capacitacion/capacitacionSlice'
+import { filterEvaluacionSlice } from '../../store/evaluacion/evaluacionSlice'
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -66,6 +69,8 @@ export const DashboardAdmin = () => {
 
   const { toShowResena, showResena } = useSelector(state => state.to);
 
+  const { capacitacion } = useSelector(state => state.cp);
+
   const [changeShowResena, setChangeShowResena] = useState('normal')
 
   let usuariosFiltradosLeader = []
@@ -87,6 +92,8 @@ export const DashboardAdmin = () => {
   const [showThisWeek, setShowThisWeek] = useState(false)
 
   const [showLastWeek, setShowLastWeek] = useState(false)
+
+  const [onlyThreeMonths, setOnlyThreeMonths] = useState(false)
 
   const [selectRange, setSelectRange] = useState(
     {
@@ -200,6 +207,8 @@ export const DashboardAdmin = () => {
 
   const evaluacionFiltradaPorRango = filterEvaluationGeneral(evaluacion, changeDateRange, changeDate, selectRange, usuariosParaAdminLeader)
 
+  const capacitacionFiltradaPorRango = filterCapacitacionGeneral(capacitacion, changeDateRange, changeDate, selectRange, usuariosParaAdminLeader)
+
   // Filtro todos los meses
 
   let SumaEvaluacionPorMes = []
@@ -261,6 +270,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: false,
         lastWeek: false,
+        onlyThreeMonth: false,
         key: 'selection',
       }),
     },
@@ -273,6 +283,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: false,
         lastWeek: false,
+        onlyThreeMonth: false,
         key: 'selection',
       }),
     },
@@ -285,6 +296,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: true,
         lastWeek: false,
+        onlyThreeMonth: false,
         key: 'selection',
       }),
     },
@@ -297,6 +309,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: false,
         lastWeek: true,
+        onlyThreeMonth: false,
         key: 'selection',
       }),
     },
@@ -309,6 +322,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: false,
         lastWeek: false,
+        onlyThreeMonth: false,
         key: 'selection',
       }),
     },
@@ -321,6 +335,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: true,
         thisWeek: false,
         lastWeek: false,
+        onlyThreeMonth: true,
         key: 'selection',
       }),
     },
@@ -333,6 +348,7 @@ export const DashboardAdmin = () => {
         ThreeMonth: false,
         thisWeek: false,
         lastWeek: false,
+        onlyThreeMonth: false,
         key: 'selection',
       })
     }
@@ -341,6 +357,20 @@ export const DashboardAdmin = () => {
   useEffect(() => {
     if (changeDate && changeDateRange) {
       dispatch(filterResenaSlice(resenasFiltradas))
+    }
+    
+  }, [changeDate, changeDateRange, dispatch])
+
+  useEffect(() => {
+    if (capacitacionFiltradaPorRango) {
+      dispatch(filterCapacitacionSlice(capacitacionFiltradaPorRango))
+    }
+    
+  }, [changeDate, changeDateRange, dispatch])
+
+  useEffect(() => {
+    if (evaluacionFiltradaPorRango[2]) {
+      dispatch(filterEvaluacionSlice(evaluacionFiltradaPorRango[2]))
     }
     
   }, [changeDate, changeDateRange, dispatch])
@@ -357,6 +387,7 @@ export const DashboardAdmin = () => {
     setShowThreeMonth(range?.ThreeMonth)
     setShowThisWeek(range?.thisWeek)
     setShowLastWeek(range?.lastWeek)
+    setOnlyThreeMonths(range?.onlyThreeMonth)
 
     if (range?.startDate !== range?.endDate) {
       setShowFilter(false)
@@ -511,6 +542,8 @@ export const DashboardAdmin = () => {
               showThisWeek = {showThisWeek}
               showLastWeek = {showLastWeek}
               showThreeMonth = {showThreeMonth}
+              showAllMonth = {showAllMonth}
+              onlyThreeMonths = {onlyThreeMonths}
               usuariosParaAdminLeader = {usuariosParaAdminLeader}
               evaluacionFiltradaPorRango = {(evaluacionFilterArray?.length !== 0 && usuarioFiltrado?.length !== 0) ? evaluacionFilterArray : evaluacionFiltradaPorRango[0]}
               evaluacionFiltroTodosLosMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionEvaluacionPorMesesDeEquipos : CalificacionEvaluacionPorMes}

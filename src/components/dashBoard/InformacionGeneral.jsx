@@ -164,7 +164,7 @@ export const InformacionGeneral = () => {
                         {
                             arregloCalificaciones?.map(calificacion => {
                                 return (
-                                    <h6 className='my-2'>{calificacion?.titulo}: {calificacion?.evaluacion?.toFixed()}/100</h6>
+                                    <h6 className='my-2'>{calificacion?.titulo}: {calificacion?.evaluacion?.toFixed(1)}/100</h6>
                                 )
                             })
                         }

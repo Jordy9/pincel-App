@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Bar } from "react-chartjs-2";
 import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 import moment from 'moment';
+import { ModalResenaPorMes } from '../dashBoard/ModalResenaPorMes';
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, usuariosParaAdminLeader, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount } ) => {
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, showAllMonth, onlyThreeMonths, usuariosParaAdminLeader, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount } ) => {
 
   let FiltroCalificacionResena
 
@@ -74,6 +76,34 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   const options2 = {
     responsive: true,
     maintainAspectRatio: true,
+    tooltips: {
+      callbacks: {
+          label: function(tooltipItem, data) {
+              const monthIndex = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+              var label = data.datasets[tooltipItem.datasetIndex].label || '';
+              const resenasFilt = (resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0
+
+              if (label) {
+                label += ': ';
+              }
+
+              let ThreeAllmeses
+
+              if (showAllMonth) {
+                ThreeAllmeses = calificacionPorMeses[tooltipItem.index][1]
+              }
+
+              if (onlyThreeMonths) {
+                ThreeAllmeses = (calificacionPorMeses[monthIndex.indexOf(tooltipItem.xLabel)]) && calificacionPorMeses[monthIndex.indexOf(tooltipItem.xLabel)][1]
+              }
+
+              return [
+                label += Math.round(tooltipItem.yLabel * 100) / 100,
+                `Total de resenas ${(!showThreeMonth || !showAllMonth) ? resenasFilt : ThreeAllmeses || 0}`
+              ]
+          }
+      }
+    },
     scales: {
       yAxes: [{
         ticks: {
@@ -268,19 +298,25 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           ? 
         (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) 
           ? 
-        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1))
+        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1))
           : 
         (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
           ?
-        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1))
+        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1))
           :
-        calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion?.toFixed(1))
+        calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion[0]?.toFixed(1))
           : 
-        calificacionPorMeses?.map(calififacion => calififacion?.toFixed(1)),
+        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
   };
+
+  const [showModalResena, setShowModalResena] = useState(false)
+
+  const handledActive = () => {
+    setShowModalResena(true)
+  }
 
   return (
     <>
@@ -293,12 +329,19 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
       </div>
 
       <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-        <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px'}}>
+        <div onTouchStart = {(e) => onDoubleTap(e, handledActive)} onDoubleClick={handledActive} className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px', cursor: 'pointer'}}>
           <h6 className='text-center my-1'>Reseñas de los clientes</h6>
           <h6 className='text-center'>Total de reseñas {(resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0}</h6>
           <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
         </div>
       </div>
+
+      {
+        (showModalResena)
+          &&
+        <ModalResenaPorMes showModalResena = {showModalResena} setShowModalResena = {setShowModalResena} />
+      }
+
     </>
   )
 }

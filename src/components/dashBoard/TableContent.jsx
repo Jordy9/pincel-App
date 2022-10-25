@@ -106,7 +106,7 @@ export const TableContent = (props) => {
 
     calificacionEvaluacion?.map(evC => sumaCalific = sumaCalific + evC?.calificacion)
 
-    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed()) || 0
+    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed(1)) || 0
 
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">

@@ -147,7 +147,7 @@ export const AppRoute = () => {
           :
         <Routes>
           <Route path='/login' element = {<Login />} />
-          <Route path='/registro' element = {<Registro />} />
+          {/* <Route path='/registro' element = {<Registro />} /> */}
           <Route path='/Evaluacion' element = { (toShowResena[0]?.showResena === 'Normal') ? <Evaluacion /> : <CustomEvaluacion />} />
 
           <Route path='/*' element = {<Navigate to='/login' />} />

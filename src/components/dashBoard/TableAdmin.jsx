@@ -28,7 +28,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
     
         const evaluacionFilt = evaluacion?.filter(evaluacion => usuarioFiltrado?.some(usuario => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id) && evaluacion?.idCapacitacion === _id)
     
-        const porcentaje = parseInt((CantidadCheck[0]?.check?.length / team?.length) * 100)
+        const porcentaje = parseInt((CantidadCheck[0]?.check?.length / team?.length) * 100) || 0
 
         return (
           (porcentaje === 100 && (evaluacionFilt?.length !== 0 || !EvaluatShow)) ? sumaPorcentage.push(porcentaje) : sumaPorcentageIncompleto.push(porcentaje)
@@ -51,7 +51,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 shadow p-4 d-flex justify-content-center align-items-center my-2" style={{height: 'auto', borderRadius: '35px'}}>
             <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaPorcentage?.length}/${capacitacionFilterSlice?.length} capacitaciones completadas`}>
-                <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones} text={`${sumaPromedioCapacitaciones}%`} />
+                <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(1)} text={`${sumaPromedioCapacitaciones?.toFixed(1)}%`} />
                 <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
             </div>
         </div>

@@ -265,12 +265,12 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
 
                             <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                 <label>Promedio</label>
-                                <input type="text" readOnly value={totalSumado?.toFixed()} placeholder='90' className='form-control' />
+                                <input type="text" readOnly value={totalSumado?.toFixed(1)} placeholder='90' className='form-control' />
                             </div>
 
                             <div className="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 form-group">
                                 <label>Indice</label>
-                                <input type="text" readOnly value={`${porcentage?.toFixed()}/100`} placeholder='4' className='form-control' />
+                                <input type="text" readOnly value={`${porcentage?.toFixed(1)}/100`} placeholder='4' className='form-control' />
                             </div>
                         </div>
                     </div>
