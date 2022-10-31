@@ -59,51 +59,60 @@ export const ModalOrder = ({showOrder, setShowOrder, formEvaluacion, setFormEval
         <Modal.Header style={{border: 'none'}} closeButton></Modal.Header>
         <Modal.Title>Ordenar</Modal.Title>
         <Modal.Body>
-            <div className='row' style={{ height: "300px" }}>
-                <DragDropContext onDragEnd={result => onDragEndOrderUsers(result, formEvaluacion, setFormEvaluacion)}>
-                    {columnsFromBackend.map((e, index) => {
-                    const columnId = formEvaluacion[index]?._id
-                    const column = formEvaluacion
-                    
-                    return (
-                        <div
-                        className='d-flex'
-                        key={columnId}
-                        >
-                        <div className='col-12'>
-                            <h2 className='text-center'>Preguntas</h2>
-                            <div className='d-flex justify-content-center' style={{ margin: 8 }}>
-                                <DroppableOrder columnId={columnId} column = {column} />
+            {
+                (columnsFromBackend[0]?.length > 1)
+                    &&
+                <div className='row' style={{ height: "300px" }}>
+                    <DragDropContext onDragEnd={result => onDragEndOrderUsers(result, formEvaluacion, setFormEvaluacion)}>
+                        {columnsFromBackend.map((e, index) => {
+                        const columnId = formEvaluacion[index]?._id
+                        const column = formEvaluacion
+                        
+                        return (
+                            <div
+                            className='d-flex'
+                            key={columnId}
+                            >
+                            <div className='col-12'>
+                                <h2 className='text-center'>Preguntas</h2>
+                                <div className='d-flex justify-content-center' style={{ margin: 8 }}>
+                                    <DroppableOrder columnId={columnId} column = {column} />
+                                </div>
                             </div>
-                        </div>
-                        </div>
-                    );
-                    })}
-                </DragDropContext>
-            </div>
+                            </div>
+                        );
+                        })}
+                    </DragDropContext>
+                </div>
+            }
 
-            <div className='row' style={{ height: "450px" }}>
-                <DragDropContext onDragEnd={result => onDragEndOrderVideos(result, formValues, setFormValues)}>
-                    {columnsFromBackendVideos.map((e, index) => {
-                    const columnId = formValues[index]?._id
-                    const column = formValues
-                    
-                    return (
-                        <div
-                        className='d-flex'
-                        key={columnId}
-                        >
-                        <div className='col-12'>
-                            <h2 className='text-center'>Videos</h2>
-                            <div className='d-flex justify-content-center' style={{ margin: 8 }}>
-                                <DroppableOrderVideo columnId={columnId} column = {column} />
+            {
+                (columnsFromBackendVideos[0]?.length > 1)
+                    &&
+                <div className='row' style={{ height: "450px" }}>
+                    <DragDropContext onDragEnd={result => onDragEndOrderVideos(result, formValues, setFormValues)}>
+                        {columnsFromBackendVideos.map((e, index) => {
+                        const columnId = formValues[index]?._id
+                        const column = formValues
+                        
+                        return (
+                            <div
+                            className='d-flex'
+                            key={columnId}
+                            >
+                            <div className='col-12'>
+                                <h2 className='text-center'>Videos</h2>
+                                <div className='d-flex justify-content-center' style={{ margin: 8 }}>
+                                    <DroppableOrderVideo columnId={columnId} column = {column} />
+                                </div>
                             </div>
-                        </div>
-                        </div>
-                    );
-                    })}
-                </DragDropContext>
-            </div>
+                            </div>
+                        );
+                        })}
+                    </DragDropContext>
+                </div>
+            }
+
         </Modal.Body>
     </Modal>
   )

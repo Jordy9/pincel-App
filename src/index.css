@@ -19,6 +19,13 @@ td {
   max-width: 100%;
 }
 
+.elipsisOrdercapModal {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
 .no-elipsis {
   white-space: inherit;
   text-overflow: unset;

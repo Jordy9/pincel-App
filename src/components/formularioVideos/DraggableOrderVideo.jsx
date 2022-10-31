@@ -28,7 +28,10 @@ export const DraggableOrderVideo = ({item, index}) => {
                 ...provided.draggableProps.style
             }}
             >
-                <div className='mx-auto'>{item.titulo}</div>
+                <div className="text-center">
+                    <button className='btn btn-primary'>{index + 1}</button>
+                </div>
+                <div className='mx-auto elipsisOrdercapModal'>{item.titulo}</div>
             </div>
         );
         }}

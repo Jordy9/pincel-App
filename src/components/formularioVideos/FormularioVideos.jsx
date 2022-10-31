@@ -461,6 +461,8 @@ export const FormularioVideos = () => {
 
     }, [equiposCapacitacion])
 
+    console.log(formValues?.length, formEvaluacion?.length)
+
   return (
     <Sidebar>
         <div className='p-4'>
@@ -489,11 +491,16 @@ export const FormularioVideos = () => {
                         />
                         {touched.equipos && errors.equipos && <span style={{color: 'red'}}>{errors.equipos}</span>}
                     </div>
+
+                    {
+                        ((evaluateShow && (formValues?.length > 1 || formEvaluacion?.length > 1)) || (!evaluateShow && formValues?.length > 1))
+                            &&
+                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                            <label>Ordenar</label>
+                            <button type='button' onClick={() => setShowOrder(true)} className='btn btn-primary form-control'>Ordenar videos o preguntas</button>
+                        </div>
+                    }
                     
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                        <label>Ordenar</label>
-                        <button type='button' onClick={() => setShowOrder(true)} className='btn btn-primary form-control'>Ordenar videos o preguntas</button>
-                    </div>
 
                     {
                         (evaluateShow)
@@ -715,7 +722,7 @@ export const FormularioVideos = () => {
         {
             (paraEditar)
                 &&
-            <div style={{position: 'fixed', zIndex: 1045, bottom: 10, right: 25}}>
+            <div style={{position: (respWidth < 600) ? 'absolute' : 'fixed', zIndex: 1045, bottom: 10, right: 25}}>
                 <span>Ultima modificación: {moment(paraEditar?.updatedAt ).format('DD/MM/YYYY, h:mm a')}</span>
             </div>
         }
