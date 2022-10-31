@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap'
 export const TableComunicados = () => {
   return (
     <Container>
-        <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
+        <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
             <table className="table borderless">
                 <thead>
                     <tr>

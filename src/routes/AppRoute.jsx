@@ -128,7 +128,7 @@ export const AppRoute = () => {
         <Spinner />
           :
         <>
-          <Notificaciones />
+          {/* <Notificaciones /> */}
           <IconExit />
           <ScrollToTop />
 

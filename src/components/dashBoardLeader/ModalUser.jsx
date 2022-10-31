@@ -39,7 +39,7 @@ export const ModalUser = () => {
 
     let capacitacionTOList = []
     
-    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id) && evaluacionFilterSlice?.some(evaluacio => evaluacio?.idCapacitacion === evaluacion?._id && evaluacio?.idUsuario === activeUser?.id))
+    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
 
     const [title, setTitle] = useState('')
 
@@ -51,7 +51,7 @@ export const ModalUser = () => {
           <Modal.Title><h1>Ver usuario</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div className="row p-4">
+            <div className="row">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                     <div className="row">
                         <div className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4">
@@ -69,8 +69,10 @@ export const ModalUser = () => {
                         </div>
 
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8 my-auto" style={{borderRadius: '35px'}}>
-                            <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
-                                <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
+                            <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
+                                <div className='px-4'>
+                                    <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
+                                </div>
                                 <h4 className='text-center'>Capacitaciones</h4>
                                 <table className="table borderless">
                                     <thead>

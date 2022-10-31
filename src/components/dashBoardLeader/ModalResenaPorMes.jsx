@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRef } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Modal } from 'react-bootstrap'
@@ -29,13 +30,15 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
         setCurrentPage(0)
     }, [])
 
+    const ref = useRef(null)
+
   return (
     <Modal fullscreen show={showModalResena} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
           <Modal.Title><h1>Reseñas</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div className="row my-3 p-4">
+            <div className="row my-3">
                 <div class="form-check text-right">
                 <input className="form-check-input" defaultChecked={showResena} onClick={() => dispatch(showResena0(!showResena))} type="checkbox" value="" id="flexCheckDefault" />
                 <label className="form-check-label mr-4" for="flexCheckDefault">
@@ -44,8 +47,8 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
                 </div>
 
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-auto" style={{borderRadius: '35px'}}>
-                <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
-                    <table className="table borderless">
+                <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
+                    <table ref={ref} className="table borderless">
                         <thead>
                             <tr>
                                 <th scope="col">Calificación</th>
@@ -62,7 +65,7 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
                 </div>
 
                 <div className='mt-3'>
-                    <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {nuevaResenaSlice} />
+                    <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {nuevaResenaSlice} element = {ref?.current} />
                 </div>
             </div>
         </Modal.Body>

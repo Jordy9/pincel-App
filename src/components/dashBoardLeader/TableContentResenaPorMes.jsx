@@ -21,7 +21,7 @@ export const TableContentResenaPorMes = (props) => {
 
     calificacion?.map(calificacion => suma = suma + calificacion?.calificacion)
 
-    const sumaTotal = (suma / calificacion?.length)?.toFixed(1)
+    const sumaTotal = (suma / calificacion?.length)?.toFixed()
 
     const resenaUsuario = {
         id: props?._id,

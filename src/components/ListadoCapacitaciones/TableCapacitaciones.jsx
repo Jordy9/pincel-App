@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Container } from 'react-bootstrap'
 import { TableSpreedList } from './TableSpreedList'
 import { useNavigate } from 'react-router-dom'
@@ -36,6 +36,8 @@ export const TableCapacitaciones = () => {
 
     capacitacionParaList = capacitacion?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)
 
+    const ref = useRef(null)
+
   return (
     <Container>
 
@@ -43,8 +45,8 @@ export const TableCapacitaciones = () => {
         <div className = 'text-right'>
             <button className = 'btn btn-primary my-1' onClick = {goToForm}>Crear capacitación</button>
         </div>
-        <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
-            <table className="table borderless">
+        <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
+            <table ref = {ref} className="table borderless">
                 <thead>
                     <tr>
                         <th scope="col">Imagen</th>
@@ -61,7 +63,7 @@ export const TableCapacitaciones = () => {
         </div>
 
         <div className='mt-3'>
-            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {capacitacionParaList} />
+            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {capacitacionParaList} element = {ref?.current} />
         </div>
     </Container>
   )

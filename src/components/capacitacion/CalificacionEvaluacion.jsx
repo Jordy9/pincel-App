@@ -42,7 +42,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
   return (
     <div className='p-4 shadow mt-5' style={{borderRadius: '35px'}}>
         <h1 className='text-center'>Calificación</h1>
-        <h5 className='text-center'>Tu calificación en esta evaluación es {calificacionShow?.toFixed(1)} de 100</h5>
+        <h5 className='text-center'>Tu calificación en esta evaluación es {calificacionShow?.toFixed()} de 100</h5>
 
         {/* {
           (intentos === 0)

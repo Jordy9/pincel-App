@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useRef } from 'react'
 import { useState } from 'react'
 import { MultiSelect } from 'react-multi-select-component'
 import { useSelector } from 'react-redux'
@@ -31,6 +32,7 @@ export const TableUsers = () => {
         setCurrentPage(0)
     }, [])
     
+    const ref = useRef(null)
     
   return (
     <div className='container'>
@@ -47,8 +49,8 @@ export const TableUsers = () => {
             <button onClick={() => setShowModalCreateUser(true)} className='btn btn-primary my-1'>Crear un usuario</button>
         </div>
         
-        <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
-            <table className="table borderless">
+        <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
+            <table ref = {ref} className="table borderless">
                 <thead>
                     <tr>
                         {
@@ -69,7 +71,7 @@ export const TableUsers = () => {
         </div>
         
         <div className='mt-3'>
-            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} />
+            <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} element = {ref?.current} />
         </div>
 
         <ModalCreateUser showModalCreateUser={showModalCreateUser} setShowModalCreateUser = {setShowModalCreateUser} />

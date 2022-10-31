@@ -133,7 +133,7 @@ export const TableContent = (props) => {
             </div>
         </td>
         <td>{title}</td>
-        <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
+        <td className='no-elipsis'>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
         <td>{(nuevoUser?.length === nuevoTeam?.length) ? 'Todos' : team?.map(teamm => teamm?.label + ', ')}</td>
         <td>        
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>

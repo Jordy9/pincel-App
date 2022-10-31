@@ -18,7 +18,7 @@ export const TableContent = (props) => {
 
     const { id, name, urlImage, team: usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
 
     let sumaPorcentage = []
 
@@ -106,7 +106,7 @@ export const TableContent = (props) => {
 
     calificacionEvaluacion?.map(evC => sumaCalific = sumaCalific + evC?.calificacion)
 
-    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed(1)) || 0
+    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed()) || 0
 
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">

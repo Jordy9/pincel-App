@@ -32,13 +32,14 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
           <Modal.Title><h1>Evaluación</h1></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div className="row my-3 p-4">
+            <div className="row my-3">
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12" style={{borderRadius: '35px'}}>
-                    <div className='table-responsive shadow p-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
+                    <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
                         <h4 className='text-center'>Questionario</h4>
                         <table className="table borderless">
                             <thead>
                                 <tr>
+                                    <th scope="col">Estado respuesta</th>
                                     <th scope="col">Pregunta</th>
                                     <th scope="col">Respuesta seleccionada</th>
                                     <th scope="col">Respuesta correcta</th>

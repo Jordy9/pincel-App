@@ -76,13 +76,13 @@ export const Cards = () => {
   // Condicion emojies
     let condicion = ''
 
-    if (porcentage?.toFixed(1) <= 50) {
+    if (porcentage?.toFixed() <= 50) {
         condicion = 'bi-emoji-frown'
-    } else if (porcentage?.toFixed(1) >= 51 && porcentage?.toFixed(1) <= 69) {
+    } else if (porcentage?.toFixed() >= 51 && porcentage?.toFixed() <= 69) {
         condicion = 'bi-emoji-neutral'
-    } else if (porcentage?.toFixed(1) >= 70 && porcentage?.toFixed(1) <= 90) {
+    } else if (porcentage?.toFixed() >= 70 && porcentage?.toFixed() <= 90) {
         condicion = 'bi-emoji-smile'
-    } else if (porcentage?.toFixed(1) >= 90) {
+    } else if (porcentage?.toFixed() >= 90) {
         condicion = 'bi-emoji-laughing'
     }
   // Fin Condicion emojies
@@ -105,7 +105,7 @@ export const Cards = () => {
             <div className="col-6">
                 <div className='fondos-cards p-4 text-center text-white' style={{height: '110px', overflowY: 'auto', overflowX: 'hidden', borderBottomRightRadius: '10px', borderTopRightRadius: '10px'}}>
                     <span>Indice general</span>
-                    <h3>{porcentage?.toFixed(1)}/100</h3>
+                    <h3>{porcentage?.toFixed()}/100</h3>
                 </div>
             </div>
 
@@ -113,25 +113,25 @@ export const Cards = () => {
                 <div className='fondos-cards p-4 text-center text-white' style={{height: '110px', overflowY: 'auto', overflowX: 'hidden', borderBottomRightRadius: '10px', borderTopRightRadius: '10px'}}>
                     <span>Estado general</span>
                     {
-                        (porcentage?.toFixed(1) <= 50)
+                        (porcentage?.toFixed() <= 50)
                             &&
                         <h3>Malo</h3>
                     }
 
                     {
-                        (porcentage?.toFixed(1) >= 51 && porcentage?.toFixed(1) <= 69)
+                        (porcentage?.toFixed() >= 51 && porcentage?.toFixed() <= 69)
                             &&
                         <h3>Mejorable</h3>
                     }
 
                     {
-                        (porcentage?.toFixed(1) >= 70 && porcentage?.toFixed(1) <= 90)
+                        (porcentage?.toFixed() >= 70 && porcentage?.toFixed() <= 90)
                             &&
                         <h3>Normal</h3>
                     }
 
                     {
-                        (porcentage?.toFixed(1) >= 90)
+                        (porcentage?.toFixed() >= 90)
                             &&
                         <h3>Excelente</h3>
                     }
