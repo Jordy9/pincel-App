@@ -45,7 +45,7 @@ export const Login = () => {
         <div className='shadow p-4 bg-white' style={{borderRadius: '35px', height: 'auto', width: '400px'}}>
             <div className="row d-flex justify-content-center align-items-center">
                 <img src={gse || "https://lh3.googleusercontent.com/a-/AFdZucrCCnOQ3GwmkuCz5Y3g0kDY-Vzre4AaDn2H8soW7g=s96-c-rg-br100"} className='img-fluid' style={{objectFit: 'cover', height: 'auto', width: 'auto'}} alt="" />
-                <h2 className='text-center my-2'>Salón Express</h2>
+                <h2 className='text-center my-2'>Gran Salón Express</h2>
                 <h6 className='text-center my-2'>Capacitate de una forma entretenida</h6>
                 <form onSubmit={handleSubmit}>
                     <div className="col-12">

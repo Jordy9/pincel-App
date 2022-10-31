@@ -47,21 +47,21 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
                 </div>
 
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-auto" style={{borderRadius: '35px'}}>
-                <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
-                    <table ref = {ref} className="table borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col">Calificación</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col">Fecha</th>
-                                <th scope="col">Inhabilitar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <TableSpreedModalPorMes setModalShowDetalle = {setModalShowDetalle} currentPage = {currentPage} resenaFilterSlice = {nuevaResenaSlice} />
-                        </tbody>
-                    </table>
-                </div>
+                    <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '500px'}}>
+                        <table ref = {ref} className="table borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Calificación</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Inhabilitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <TableSpreedModalPorMes setModalShowDetalle = {setModalShowDetalle} currentPage = {currentPage} resenaFilterSlice = {nuevaResenaSlice} />
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div className='mt-3'>

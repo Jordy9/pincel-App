@@ -12,17 +12,17 @@ export const TableContent = (props) => {
 
     const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
 
-    const { capacitacion } = useSelector(state => state.cp);
+    const { capacitacionFilterSlice } = useSelector(state => state.cp);
 
     const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
     const { id, name, urlImage, team: usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacionFilterSlice?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
 
     let sumaPorcentage = []
 
-    capacitacion?.filter(
+    capacitacionFilterSlice?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
@@ -37,7 +37,7 @@ export const TableContent = (props) => {
         )
       })
 
-    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.includes(id)))
+    const cantidadVideosFiltradas = capacitacionFilterSlice?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.includes(id)))
 
     let video = []
 
@@ -80,7 +80,7 @@ export const TableContent = (props) => {
 
     const sumaPorcentage0 = parseInt(suma/division) || 0
 
-    const porcientoVideos = (calificacionEvaluacion?.length !== 0) ? ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+    const porcientoVideos = (calificacionEvaluacion?.length !== 0 || cantidadVideosFiltradas?.some(cap => cap?.EvaluatShow === false) ) ? (cantidadVideosFiltradas?.length === 0) ? (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100 : ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
 
     let evaluacionPlural = (calificacionEvaluacion?.length > 1)
 
@@ -111,7 +111,7 @@ export const TableContent = (props) => {
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
-            (isShow && (sumaPorcentage0 !== 0 || calificacionFinalUsuario !== 0))
+            (isShow && (sumaPorcentage0 !== 0 || calificacionEvaluacion?.length !== 0 || cantidadVideosFiltradas?.some(cap => cap?.EvaluatShow === false)))
                 &&
             <>
                 {

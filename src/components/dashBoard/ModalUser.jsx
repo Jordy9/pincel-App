@@ -7,6 +7,8 @@ import user from '../../heroes/user.webp'
 import { ModalUserResena } from './ModalUserResena'
 import { TableModalUserSpreed } from './TableModalUserSpreed'
 import { onDoubleTap } from '../../helper/onDoubleTap'
+import { Pagination } from '../usuarios/Pagination'
+import { useRef } from 'react'
 
 export const ModalUser = () => {
 
@@ -14,7 +16,7 @@ export const ModalUser = () => {
 
     const { modalUser, activeUser } = useSelector(state => state.auth);
 
-    const { capacitacion } = useSelector(state => state.cp);
+    const { capacitacionFilterSlice } = useSelector(state => state.cp);
 
     const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
@@ -39,11 +41,19 @@ export const ModalUser = () => {
 
     let capacitacionTOList = []
     
-    capacitacionTOList = capacitacion?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
+    capacitacionTOList = capacitacionFilterSlice?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
 
     const [title, setTitle] = useState('')
 
     const capacitacionToShow = capacitacionTOList?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)
+
+    const [currentPage, setCurrentPage] = useState(0)
+
+    useEffect(() => {
+      setCurrentPage(0)
+    }, [])
+
+    const ref = useRef(null)
       
   return (
     <Modal fullscreen show={modalUser} onHide={handleClose}>
@@ -74,7 +84,7 @@ export const ModalUser = () => {
                                     <input placeholder='Buscador' type="search" value={title} onChange={({target}) => setTitle(target.value)} className="form-control buscador" />
                                 </div>
                                 <h4 className='text-center'>Capacitaciones</h4>
-                                <table className="table borderless">
+                                <table ref = {ref} className="table borderless">
                                     <thead>
                                         <tr>
                                             <th scope="col">Imagen</th>
@@ -83,9 +93,13 @@ export const ModalUser = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <TableModalUserSpreed capacitacionTOList = {capacitacionToShow} />
+                                        <TableModalUserSpreed capacitacionTOList = {capacitacionToShow} currentPage = {currentPage} />
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div className='mt-3'>
+                                <Pagination setCurrentPage = {setCurrentPage} usuariosFiltro = {capacitacionToShow} changeNumber = {8} element = {ref?.current} />
                             </div>
                         </div>
                     </div>

@@ -13,11 +13,11 @@ export const TableModalUserContent = (props) => {
 
     const { activeUser } = useSelector(state => state.auth);
 
-    const { evaluacion } = useSelector(state => state.ev);
+    const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
     const {title, image, video, _id, EvaluatShow} = props
 
-    const calificacionEvaluacion = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === activeUser?.id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === activeUser?.id)
 
     const cantidadVideosFiltradas = video?.filter(video => video?.check?.includes(activeUser?.id))
 
@@ -35,10 +35,9 @@ export const TableModalUserContent = (props) => {
 
     // const porciento = (videosFiltrados?.length/capacitacionFiltrada[0]?.video?.length)*100
 
-  const handledActive = (id) => {
-    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === id)
-    if (evaluacionFiltrada?.length !== 0) {
-      dispatch(activeEvaluacion(evaluacionFiltrada[0]))
+  const handledActive = () => {
+    if (calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) {
+      dispatch(activeEvaluacion(calificacionEvaluacion[0]))
       setModalShowEvaluacion(true)
     } else {
       const Toast = Swal.mixin({
@@ -79,7 +78,7 @@ export const TableModalUserContent = (props) => {
   }
 
   return (
-    <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, _id)} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
+    <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, _id)} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitación para ver su evaluación">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={image || user} className='img-fluid' alt="" />

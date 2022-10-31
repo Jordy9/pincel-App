@@ -254,15 +254,15 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           ? 
         (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) 
           ? 
-        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion[0]?.toFixed(1))
+        evaluacionFiltroTodosLosMeses?.map(calificacion => calificacion?.toFixed(1))
           : 
         (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
           ?
-        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion[0]?.toFixed(1))
+        evaluacionFiltroTodosLosMeses?.map(calificacion => calificacion?.toFixed(1))
           :
-        evaluacionFiltroTodosLosMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion[0]?.toFixed(1))
+        evaluacionFiltroTodosLosMeses?.slice(mes[0] - 1, mes[1])?.map(calificacion => calificacion?.toFixed(1))
           : 
-        evaluacionFiltroTodosLosMeses?.map(calififacion => calififacion[0]?.toFixed(1)),
+        evaluacionFiltroTodosLosMeses?.map(calificacion => calificacion?.toFixed(1)),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       }
     ],
@@ -297,15 +297,15 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           ? 
         (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) 
           ? 
-        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1))
+        calificacionPorMeses?.map(calificacion => calificacion[0]?.toFixed(1))
           : 
         (moment(changeDate).format('Y') !== moment(changeDateRange).format('Y'))
           ?
-        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1))
+        calificacionPorMeses?.map(calificacion => calificacion[0]?.toFixed(1))
           :
-        calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calififacion => calififacion[0]?.toFixed(1))
+        calificacionPorMeses?.slice(mes[0] - 1, mes[1])?.map(calificacion => calificacion[0]?.toFixed(1))
           : 
-        calificacionPorMeses?.map(calififacion => calififacion[0]?.toFixed(1)),
+        calificacionPorMeses?.map(calificacion => calificacion[0]?.toFixed(1)),
         backgroundColor: 'green',
       }
     ],
