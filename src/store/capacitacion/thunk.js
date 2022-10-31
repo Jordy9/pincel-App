@@ -192,10 +192,12 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
     return async(dispatch, getState) => {
 
         const { usuarios } = getState().auth;
+        
+        const { equipos } = getState().eq;
 
         if (team?.length === 0) {
             team = []
-            usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.name !== 'Jordy')?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+            equipos?.map(e => team.push({ label: `Equipo de ${e.name}`, value: e.name }))
         }
 
         let usuariosEvaluacion = []
@@ -255,11 +257,11 @@ export const actualizarCapacitacionForm = (title, descripcion, intentos, video, 
 
         const { paraEditar } = getState().cp;
 
-        const { usuarios } = getState().auth;
+        const { equipos } = getState().eq;
         
         if (team?.length === 0) {
             team = []
-            usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.name !== 'Jordy')?.map(e => team.push({ label: e?.name, value: e?.id, team: false }))
+            equipos?.map(e => team.push({ label: `Equipo de ${e.name}`, value: e.name }))
         }
 
         let usuariosEvaluacion = []

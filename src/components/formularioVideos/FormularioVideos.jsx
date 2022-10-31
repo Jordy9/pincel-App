@@ -452,16 +452,11 @@ export const FormularioVideos = () => {
 
     
     useEffect(() => {
-        const nuevoTeam = equiposCapacitacion?.filter(equipo => equipo?.team === false)
-        const newUsuarios = usuarios?.filter(usuarios => usuarios?.estado === true && usuarios?.id !== '62cd8eacd16f6cc5e71f5f29')
-        
         if (equiposCapacitacion?.length !== 0) {
-            setCondicionShowTodos(newUsuarios?.length === nuevoTeam?.length)
+            setCondicionShowTodos(equipos?.length, equiposCapacitacion?.length)
         }
 
     }, [equiposCapacitacion])
-
-    console.log(formValues?.length, formEvaluacion?.length)
 
   return (
     <Sidebar>
@@ -484,7 +479,7 @@ export const FormularioVideos = () => {
                             isLoading = {(chargeUsersTeam && arregloEquipos?.length === 0)}
                             onMenuToggle={(e) => setChargeUsersTeam(e)}
                             options={options}
-                            value={(condicionShowTodos || equiposCapacitacion?.length === 0) ? [{label: 'Todos'}] : equiposCapacitacion?.filter(equipos => equipos?.label !== 'Todos')}
+                            value={(condicionShowTodos || equiposCapacitacion?.length === 0) ? [{label: 'Todos los equipos'}] : equiposCapacitacion?.filter(equipos => equipos?.label !== 'Todos los equipos')}
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
                             hasSelectAll = {false}

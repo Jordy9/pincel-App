@@ -18,7 +18,7 @@ export const obtenerUsuarios = () => {
     }
 }
 
-export const iniciarRegistro = (name, lastName, email, date, team, role, file, password) => {
+export const iniciarRegistro = (name, lastName, email, date, role, file, password) => {
     return async(dispatch) => {
 
         try {
@@ -38,7 +38,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 const idImage = respImage.data.image.id
                 const urlImage = respImage.data.image.url
 
-                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, team, role, urlImage, idImage, password})
+                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, role, urlImage, idImage, password})
 
                 if (resp.data.ok) {
 
@@ -65,7 +65,7 @@ export const iniciarRegistro = (name, lastName, email, date, team, role, file, p
                 }
             } else {
 
-                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, team, role, password})
+                const resp = await salonApi.post(`/auth/new`, {name, lastName, email, date, role, password})
 
                 if (resp.data.ok) {
     

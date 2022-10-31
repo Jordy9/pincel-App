@@ -219,20 +219,8 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
                             </div>
 
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                                <div className="form-group">
-                                    <label>Equipo</label>
-                                    <select {...getFieldProps('team')} className='form-select'>
-                                        <option value="">Seleccione un equipo</option>
-                                        {
-                                            arregloEquipos?.map(equipo => {
-                                                return (
-                                                    <option value={equipo?.value}>{equipo?.label}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                    {touched.team && errors.team && <span style={{color: 'red'}}>{errors.team}</span>}
-                                </div>
+                                <label>Equipo</label>
+                                <input type="text" readOnly {...getFieldProps('team')} placeholder='Equipo' className='form-control' />
                             </div>
 
                             <div className = 'col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6'>

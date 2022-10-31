@@ -121,7 +121,7 @@ export const Sidebar = ({children}) => {
           </div>
 
           <div className="col-10">
-              {children}
+            {children}
           </div>
           </div>
           :
@@ -130,17 +130,17 @@ export const Sidebar = ({children}) => {
           <div className='row my-5'>
 
             <Offcanvas style = {{backgroundColor: 'rgb(10, 25, 45)', color: 'white'}} show={show} onHide={handledClose} >
-              <Offcanvas.Header closeButton><h1>Gran Salón Express</h1></Offcanvas.Header>
+              <Offcanvas.Header closeButton><h1 className='mx-auto'>Gran Salón Express</h1></Offcanvas.Header>
                 <ul>
                   <NavLink className='d-flex justify-content-center' to='/perfil'>
-                    <div className='d-flex justify-content-center' style={{width: '180px', height: '180px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                    <div className='d-flex justify-content-center' style={{width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                       <img src={usuarioActivo?.urlImage || user} className='img-fluid' alt="" />
                     </div>
                   </NavLink>
 
                   <Offcanvas.Title><h5 className='text-center'>{usuarioActivo?.name} {usuarioActivo?.lastName}</h5></Offcanvas.Title>
                   <div className='d-flex justify-content-center'>
-                    <button onClick={navigateTo} className='btn btn-primary text-white'>Ver perfil</button>
+                    <button onClick={navigateTo} className='btn btn-primary text-white btn-sm'>Ver perfil</button>
                   </div>
                 </ul>
               <Offcanvas.Body className='secondary'>

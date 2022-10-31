@@ -12,11 +12,7 @@ export const TableContent = (props) => {
 
     const dispatch = useDispatch();
 
-    const { usuarios } = useSelector(state => state.auth);
-
-    const usuariosInactivos = usuarios?.filter(usuario => usuario?.estado === false)
-
-    let nuevoUser = usuarios?.filter(usuario => usuario?.estado === true && usuario?.name !== 'Jordy')
+    const { equipos } = useSelector(state => state.eq);
 
     const navigate = useNavigate()
     
@@ -123,18 +119,16 @@ export const TableContent = (props) => {
       }
     }
 
-    const nuevoTeam = team?.filter(usuario => !usuariosInactivos?.some(usuarioIn => usuarioIn?.id === usuario?.value))
-
   return (
     <tr onDoubleClick = {() => handledActive(props)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
-                <img src={(image === 'image') ? noImg : image} className='img-fluid' alt="" />
+              <img src={(image === 'image') ? noImg : image} className='img-fluid' alt="" />
             </div>
         </td>
         <td>{title}</td>
         <td className='no-elipsis'>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
-        <td>{(nuevoUser?.length === nuevoTeam?.length) ? 'Todos' : team?.map(teamm => teamm?.label + ', ')}</td>
+        <td>{(equipos?.length === team?.length) ? 'Todos los equipos' : team?.map(teamm => teamm?.label + ', ')}</td>
         <td>        
             <button onClick={() => handledDelete(props)} className='btn btn-primary mx-1 my-1'><i className="bi bi-trash text-danger"></i></button>
             <button onClick={() => handledPublicar(props, publicar)} className='btn btn-primary mx-1 my-1'>{(!publicar) ? 'Publicar' : 'Ocultar'}</button>

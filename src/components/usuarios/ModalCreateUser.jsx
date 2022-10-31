@@ -17,12 +17,6 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
 
     const { upload } = useSelector(state => state.auth);
 
-    let arregloEquipos = []
-
-    const { equipos } = useSelector(state => state.eq);
-
-    equipos?.map(e => arregloEquipos.push({ label: `Equipo de ${e.name}`, value: e.name }))
-
     const [ImagePerfil, setImagePerfil] = useState(null)
 
     const [ImagePerfilShow, setImagePerfilShow] = useState(null)
@@ -33,16 +27,15 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
             lastName: '', 
             email: '',
             date: '',
-            team: '',
             role: '',
             urlImage: '',
             password: '',
             confirmPassword: ''
         },
         enableReinitialize: true,
-        onSubmit: ({name, lastName, email, date, team, role, urlImage, password}) => {
+        onSubmit: ({name, lastName, email, date, role, urlImage, password}) => {
             urlImage = ImagePerfil
-            dispatch(iniciarRegistro(name, lastName, email.toLowerCase(), date, team, role, urlImage, password))
+            dispatch(iniciarRegistro(name, lastName, email.toLowerCase(), date, role, urlImage, password))
         },
         validationSchema: Yup.object({
             name: Yup.string()
@@ -153,7 +146,7 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                     </div>
                                 </div>
 
-                                <div className = 'col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6'>
+                                <div className = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12'>
                                     <div className="form-group">
                                         <label>Correo</label>
                                         <input {...getFieldProps('email')} type="text" placeholder='ejemplo@gmail.com' className='form-control' />
@@ -166,23 +159,6 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                         <label>Fecha de nacimiento</label>
                                         <input {...getFieldProps('date')} type="date" placeholder='Juan' className='form-control' />
                                         {touched.date && errors.date && <span style={{color: 'red'}}>{errors.date}</span>}
-                                    </div>
-                                </div>
-
-                                <div className = 'col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6'>
-                                    <div className="form-group">
-                                        <label>Equipo</label>
-                                        <select {...getFieldProps('team')} className='form-select'>
-                                            <option value="">Seleccione un equipo</option>
-                                            {
-                                                arregloEquipos?.map(equipo => {
-                                                    return (
-                                                        <option value={equipo?.value}>{equipo?.label}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                        {touched.team && errors.team && <span style={{color: 'red'}}>{errors.team}</span>}
                                     </div>
                                 </div>
 

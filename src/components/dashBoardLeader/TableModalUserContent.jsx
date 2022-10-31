@@ -80,14 +80,14 @@ export const TableModalUserContent = (props) => {
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, _id)} onDoubleClick={() => handledActive(_id)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitación para ver su evaluación">
         <td className='d-flex justify-content-center'>
-            <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+            <div className='d-flex justify-content-center my-1' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                 <img src={image || user} className='img-fluid' alt="" />
             </div>
         </td>
         <td>{title}</td>
         <td className='d-flex justify-content-center mx-auto'>
           <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : (!EvaluatShow) ? 'Esta capacitación no tiene evaluación' : 'No ha tomado la evaluación' } ${mostrarCalificacionTooltip}`}>
-            <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : '-'}`} />
+            <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : 'NE'}`} />
           </div>
         </td>
         <ModalEvaluacionUser modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />

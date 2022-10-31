@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sidebar } from '../Sidebar'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -70,6 +70,14 @@ export const Perfil = () => {
             setModalPreview(true)
         }
     }
+
+    useEffect(() => {
+        if (imagePerfil) {
+            setPreviewImage(URL.createObjectURL(imagePerfil))
+            URL.revokeObjectURL(imagePerfil)
+            setModalPreview(true)
+        }
+    }, [imagePerfil])
 
   return (
     <Sidebar>

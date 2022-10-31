@@ -41,7 +41,7 @@ export const ModalUser = () => {
 
     let capacitacionTOList = []
     
-    capacitacionTOList = capacitacionFilterSlice?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id))
+    capacitacionTOList = capacitacionFilterSlice?.filter(evaluacion => evaluacion?.publicar === true && evaluacion?.team?.some(team => team?.value === activeUser?.team || team?.value === activeUser?.id || activeUser?.role === 'Administrador'))
 
     const [title, setTitle] = useState('')
 

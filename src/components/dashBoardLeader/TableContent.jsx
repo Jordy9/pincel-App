@@ -108,6 +108,8 @@ export const TableContent = (props) => {
 
     const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed()) || 0
 
+    const promedioGeneralDelUsuario = (calificacionFinalUsuario + sumaPorcentage0) / 2
+
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
@@ -130,6 +132,7 @@ export const TableContent = (props) => {
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
+                <td>{promedioGeneralDelUsuario || 0}</td>
             </>
         }
 
@@ -153,6 +156,7 @@ export const TableContent = (props) => {
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
+                <td>{promedioGeneralDelUsuario || 0}</td>
             </>
         }
     </tr>
