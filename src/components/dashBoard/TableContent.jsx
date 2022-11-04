@@ -10,24 +10,24 @@ export const TableContent = (props) => {
 
     const dispatch = useDispatch();
 
-    const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
+    const { isShow } = useSelector(state => state.rs);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
 
     const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
-    const { id, name, urlImage, team: usuarioTeam } = props
+    const { id, name, urlImage, team: usuarioTeam, sumaPorcentage0, calificacionFinalUsuario, promedioGeneralDelUsuario, division } = props
 
-    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacionFilterSlice?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
 
     let sumaPorcentage = []
 
-    capacitacionFilterSlice?.filter(
+    capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
       )?.map(({video, _id, EvaluatShow}) => {
-        const CantidadCheck = video?.filter(video => video?.check?.includes(id))
+        const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === id))
     
         const evaluacionFilt = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
     
@@ -37,40 +37,28 @@ export const TableContent = (props) => {
         )
       })
 
-    const cantidadVideosFiltradas = capacitacionFilterSlice?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.includes(id)))
+    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.some(check => check?.id === id)))
 
     let video = []
 
-    cantidadVideosFiltradas?.map(videos => video?.push(videos?.video))
+    let videosTotales = []
+
+    let checkVideo = []
+
+    cantidadVideosFiltradas?.map(videos => video?.push(...videos?.video))
+
+    video?.map(video => video?.check?.some(check => check?.id === id && checkVideo.push(video)))
+
+    capacitacion?.map(videos => videosTotales?.push(...videos?.video))
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
         dispatch(modalOpen())
     }
 
-    let calificacionFiltrada = []
-
-    resenaFilterSlice?.filter(resena => resena?.estado !== false)?.map(resena => {
-        return (
-            (resena?.calificacion?.filter(resena => resena?.id === id))
-                &&
-            calificacionFiltrada.push(resena?.calificacion?.filter(resena => resena?.id === id))
-        )
-    })
-    
-    let suma = 0
-    let division = 0
-
-    calificacionFiltrada?.map((calificacion) => {
-        if (calificacion[0]?.id === id) {
-            division += 1
-        }
-        return suma += calificacion[0]?.calificacion || 0
-    })
-
     const usuarioCompleto = {
         ...props,
-        calificacion: parseInt(suma/division) || 0,
+        calificacion: sumaPorcentage0,
         cantidad: division
     }
 
@@ -78,9 +66,7 @@ export const TableContent = (props) => {
 
     const [ respWidth ] = useResponsive()
 
-    const sumaPorcentage0 = parseInt(suma/division) || 0
-
-    const porcientoVideos = (calificacionEvaluacion?.length !== 0 || cantidadVideosFiltradas?.some(cap => cap?.EvaluatShow === false) ) ? (cantidadVideosFiltradas?.length === 0) ? (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100 : ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+    const porcientoVideos = (checkVideo?.length / videosTotales?.length) * 100
 
     let evaluacionPlural = (calificacionEvaluacion?.length > 1)
 
@@ -106,10 +92,6 @@ export const TableContent = (props) => {
 
     calificacionEvaluacion?.map(evC => sumaCalific = sumaCalific + evC?.calificacion)
 
-    const calificacionFinalUsuario = Number((sumaCalific / calificacionEvaluacion?.length)?.toFixed()) || 0
-
-    const promedioGeneralDelUsuario = (calificacionFinalUsuario + sumaPorcentage0) / 2
-
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
@@ -131,7 +113,7 @@ export const TableContent = (props) => {
                         <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
-                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
+                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{sumaPorcentage0}</td>
                 <td>{promedioGeneralDelUsuario || 0}</td>
             </>
         }
@@ -155,7 +137,7 @@ export const TableContent = (props) => {
                         <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
-                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
+                <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{sumaPorcentage0}</td>
                 <td>{promedioGeneralDelUsuario || 0}</td>
             </>
         }

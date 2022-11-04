@@ -450,10 +450,9 @@ export const FormularioVideos = () => {
 
     const [condicionShowTodos, setCondicionShowTodos] = useState()
 
-    
     useEffect(() => {
         if (equiposCapacitacion?.length !== 0) {
-            setCondicionShowTodos(equipos?.length, equiposCapacitacion?.length)
+            setCondicionShowTodos(equipos?.length === equiposCapacitacion?.length)
         }
 
     }, [equiposCapacitacion])

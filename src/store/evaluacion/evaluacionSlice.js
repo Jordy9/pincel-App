@@ -29,9 +29,13 @@ export const evaluacionSlice = createSlice({
       filterEvaluacionSlice: (state, action) => {
          state.evaluacionFilterSlice = action.payload
       },
+
+      clearEvaluacionActiva: (state, action) => {
+         state.evaluacionActiva = null
+      },
    }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { getEvaluacion, createEvaluacion, activeEvaluacion, updateEvaluacion, filterEvaluacionSlice } = evaluacionSlice.actions;
+export const { getEvaluacion, createEvaluacion, activeEvaluacion, updateEvaluacion, filterEvaluacionSlice, clearEvaluacionActiva } = evaluacionSlice.actions;

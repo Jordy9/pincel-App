@@ -227,7 +227,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   }
 
   const data = {
-    labels: ((moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek))
+    labels: ((moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek))
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       :
@@ -270,7 +270,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
   };
 
   const data2 = {
-    labels: ((moment(defineds, 'M/D/YY').diff(changeDate, 'days') < 7 && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek))
+    labels: ((moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showThisWeek) || (moment(changeDate, 'M') !== moment(changeDateRange, 'M') && showLastWeek))
       ? 
     [`Desde ${moment(changeDate).format('MMMM D')}, hasta ${moment(changeDateRange).format('MMMM D')}`]
       :

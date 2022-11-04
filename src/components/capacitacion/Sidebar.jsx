@@ -15,7 +15,7 @@ export const Sidebar = () => {
     const capacitacionFiltrada = capacitacion?.filter(capacitacion => capacitacion?._id === capacitacionId)
 
     useEffect(() => {
-      if (capacitacionFiltrada[0]?.video?.filter(video => !video.check?.includes(uid))?.length === 0 && capacitacionActiva?.EvaluatShow) {
+      if (capacitacionFiltrada[0]?.video?.filter(video => !video.check?.some(check => check?.id === uid))?.length === 0 && capacitacionActiva?.EvaluatShow) {
         dispatch(Mostrar())
     } else {
         dispatch(noMostrar())
@@ -32,13 +32,13 @@ export const Sidebar = () => {
                     <div onClick={() => dispatch(activeCapacitacion({_id: capacitacionFiltrada[0]?._id, videos: capacitacion, preguntas: capacitacionFiltrada[0]?.Preguntas, descripcion: capacitacionFiltrada[0]?.descripcion, usuariosEvaluacion: capacitacionFiltrada[0]?.usuariosEvaluacion, intentos: capacitacionFiltrada[0]?.intentos, EvaluatShow: capacitacionFiltrada[0]?.EvaluatShow, title: capacitacionFiltrada[0]?.title}))} className={`row p-2 sidebarCapacitacion ${(capacitacionActiva?.videos === capacitacion) && 'sidebarCapacitacionfocus'}`} key={capacitacion?._id}>
                         <div className="col-2 d-flex justify-content-center">
                             {
-                                (capacitacion?.check?.includes(uid))
+                                (capacitacion?.check?.some(check => check?.id === uid))
                                    &&
                                 <input disabled defaultChecked = {true} type="checkbox" className='form-check-input' />
                             }
 
                             {
-                                (!capacitacion?.check?.includes(uid))
+                                (!capacitacion?.check?.some(check => check?.id === uid))
                                    &&
                                 <input disabled defaultChecked = {false} type="checkbox" className='form-check-input' />
                             }

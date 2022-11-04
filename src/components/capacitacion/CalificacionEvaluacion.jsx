@@ -9,19 +9,22 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'No por ahora',
-      confirmButtonColor: 'rgb(89, 7, 211)',
-      cancelButtonColor: 'rgb(89, 7, 211)',
+      confirmButtonColor: 'rgb(0, 197, 0)',
+      cancelButtonColor: 'rgb(0, 197, 0)',
       confirmButtonText: 'Si'
     }).then((result) => {
       if (result.isConfirmed) {
-        setChangeCountResponse(1)
-        setChangeEvaluacionCalificacion(false)
-        setFormValues([{evaluacion: null, respuesta: '', correcta: ''}])
+        if (intentos !== 0) {
+          setChangeCountResponse(1)
+          setChangeEvaluacionCalificacion(false)
+          setFormValues([{evaluacion: null, respuesta: '', correcta: ''}])
+        } else {
+          setModalShowEvaluacion(false)
+          setChangeEvaluacionCalificacion(false)
+        }
       }
     })
   }
-
-  console.log(intentos)
 
   const [segundos, setSegundos] = useState(0)
   const refSegundos = useRef()
@@ -93,7 +96,7 @@ export const CalificacionEvaluacion = ({intentos, calificacionShow, setChangeCou
           (intentos !== 0)
             &&
           <div className='text-center'>
-            <button onClick={handledIntento} className='btn btn-primary'>Volver a intentar</button>
+            <button disabled = {(intentos === 0)} onClick={handledIntento} className='btn btn-primary'>Volver a intentar</button>
           </div>
         }
 

@@ -27,7 +27,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
 
     const permitir = () => {
         Swal.fire({
-            title: '¿Está seguro que desea permitir otro intento a este usuario?',
+            title: '¿Está seguro que desea resetear esta capacitación a este usuario?',
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: 'No por ahora',
@@ -36,7 +36,8 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
             confirmButtonText: 'Si'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario))
+                dispatch(updateUsuarioIntento(evaluacionActiva?.idCapacitacion, evaluacionActiva?.idUsuario, evaluacionActiva?._id, capacitacion))
+                setModalShowEvaluacion(false)
             }
         })
     }
@@ -90,7 +91,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
                                 }
                             </tbody>
                         </table>
-                        <h5 style = {{position: 'absolute', right: 50, bottom: 20}} >Calificación: {evaluacionActiva?.calificacion?.toFixed()}</h5>
+                        <h5 className='text-right'>Calificación: {evaluacionActiva?.calificacion?.toFixed()}</h5>
                     </div>
                 </div>
             </div>
@@ -98,7 +99,7 @@ export const ModalEvaluacionUser = ({modalShowEvaluacion, setModalShowEvaluacion
         </Modal.Body>
         
         <Modal.Footer>
-            <button hidden = {(intentos && intentos[0]?.intentos !== 0)} onClick={permitir} className='btn btn-primary'>Permitir otro intento</button>
+            <button hidden = {(intentos && intentos[0]?.intentos !== 0)} onClick={permitir} className='btn btn-primary'>Resetear capacitación a este usuario</button>
         </Modal.Footer>
     </Modal>
   )

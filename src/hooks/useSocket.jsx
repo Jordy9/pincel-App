@@ -5,6 +5,7 @@ import { onUpdateUser } from '../store/auth/authSlice';
 import { actualizarCapacitacion } from '../store/capacitacion/capacitacionSlice';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { UsuariosCargados } from '../store/chat/chatSlice';
+import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { NotificacionesCargadas } from '../store/notificaciones/notificacionesSlice';
 import { BorrarNotificaciones } from '../store/notificaciones/thunks';
 
@@ -85,6 +86,12 @@ export const useSocket = ( serverPath ) => {
     useEffect(() => {
         socket?.on('updated-one-user-evaluacion', (capacitacion) => {
             dispatch(actualizarCapacitacion(capacitacion))
+        })
+    }, [ socket, dispatch])
+
+    useEffect(() => {
+        socket?.on('updated-one-user-evaluacion-deleted', () => {
+            dispatch(obtenerEvaluacion())
         })
     }, [ socket, dispatch])
 

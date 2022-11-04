@@ -61,7 +61,7 @@ export const Cards = () => {
           {
             PaginateCapacitaciones()?.filter(capacitacion => (title === '') ? capacitacion : (capacitacion.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,"").includes(title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,""))) && capacitacion)?.map(({title, _id, image, duracion, video, EvaluatShow}) => {
               const duration = parseInt(duracion / 60)
-              const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
+              const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === uid))
 
               const EvaluacionDeCap = evaluacion?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === uid)
 

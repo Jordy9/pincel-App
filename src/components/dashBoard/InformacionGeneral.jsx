@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import { useResponsive } from '../../hooks/useResponsive'
 import { activeCapacitacion } from '../../store/capacitacion/capacitacionSlice';
+import { ModalInformacionCalificacion } from './ModalInformacionCalificacion';
 
 export const InformacionGeneral = () => {
 
@@ -89,7 +90,7 @@ export const InformacionGeneral = () => {
           && 
         capacitacion?.team?.some(team => team?.value === uid || team?.value === usuarioActivo?.team)
       )?.map(({video}) => {
-        const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
+        const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === uid))
     
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)   
         return (
@@ -104,9 +105,16 @@ export const InformacionGeneral = () => {
     capacitacion?.filter(capacitacion => evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
         const ev = evaluacionFiltrada?.filter(evaluacion => evaluacion?.idCapacitacion === cap?._id)
         return (
-            arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion})
+            arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion, _id: cap?._id})
         )
     })
+
+    const [showModal, setShowModal] = useState(false)
+
+    const PaginateCalificacion8 = () => {
+      const allCalificacion = [...arregloCalificaciones]
+      return allCalificacion?.slice(0, 8)
+    }
 
   return (
     <>
@@ -128,7 +136,7 @@ export const InformacionGeneral = () => {
               <Slider {...settings}>
                 {
                   capacitacionMostrar?.map((Element, index) => {
-                    const CantidadCheck = Element?.video?.filter(video => video?.check?.includes(uid))
+                    const CantidadCheck = Element?.video?.filter(video => video?.check?.some(check => check?.id === uid))
                     const porcentaje = parseInt((CantidadCheck?.length / Element?.video?.length) * 100)     
                     return (
                       (porcentaje === 100)
@@ -162,16 +170,27 @@ export const InformacionGeneral = () => {
 
                     <div style={{backgroundColor: 'lightgray', borderRadius: '20px', height: '145px', overflowY: 'auto', overflowX: 'hidden', borderTopRightRadius: '10px', borderBottomRightRadius: '10px'}}>
                         {
-                            arregloCalificaciones?.map(calificacion => {
+                            PaginateCalificacion8()?.map(calificacion => {
                                 return (
                                     <h6 className='my-2'>{calificacion?.titulo}: {calificacion?.evaluacion?.toFixed()}/100</h6>
                                 )
                             })
                         }
+                        {
+                          (arregloCalificaciones?.length > 5)
+                            &&
+                          <button onClick={() => setShowModal(true)} className='btn btn-primary form-control my-2'>Ver todas las calificaciones</button>
+                        }
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>    
+
+        {
+          (showModal)
+            &&
+          <ModalInformacionCalificacion showModal={showModal} setShowModal = {setShowModal} calificacion = {arregloCalificaciones} VideoComponent = {VideoComponent} />
+        }    
     </>
   )
 }

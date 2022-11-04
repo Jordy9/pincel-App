@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { toUpdate } from '../../store/capacitacion/capacitacionSlice';
 import { eliminarCapacitacion, publicarCapacitacion } from '../../store/capacitacion/thunk';
 import noImg from '../../heroes/no.jpg'
+import { onDoubleTap } from '../../helper/onDoubleTap';
 
 export const TableContent = (props) => {
 
@@ -120,7 +121,7 @@ export const TableContent = (props) => {
     }
 
   return (
-    <tr onDoubleClick = {() => handledActive(props)} style={{cursor: 'pointer'}}  data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
+    <tr onTouchStart = {(e) => onDoubleTap(e, handledActive, props)} onDoubleClick = {() => handledActive(props)} style={{cursor: 'pointer'}} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre una capacitacion para ver o editar su contenido">
         <td className='d-flex justify-content-center'>
             <div className='d-flex justify-content-center' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
               <img src={(image === 'image') ? noImg : image} className='img-fluid' alt="" />

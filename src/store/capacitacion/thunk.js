@@ -2,6 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import Swal from "sweetalert2";
 import salonApi from "../../salonApi/salonApi";
+import { clearEvaluacionActiva } from "../evaluacion/evaluacionSlice";
 import { activeCapacitacion, actualizarCapacitacion, createCapacitacion, deleteCapacitacion, filterCapacitacionSlice, getCapacitacion, toSave, toUpdate, toUpdateClear, uploadCapacitacion, uploadFinish } from "./capacitacionSlice";
 
 export const obtenerCapacitacion = () => {
@@ -252,6 +253,24 @@ export const crearCapacitacion = (title, descripcion, intentos, video, Preguntas
     }
 }
 
+export const actualizarCapacitacionUsuariosEvaluacion = (capacitacion, id) => {
+    return async(dispatch) => {
+
+        let nuevaEvaluacion = []
+
+        nuevaEvaluacion.push(...capacitacion?.usuariosEvaluacion, {id: id, intentos: capacitacion?.intentos})
+
+        const nuevaCapacitacion = {
+            ...capacitacion,
+            usuariosEvaluacion: nuevaEvaluacion
+        }
+
+        const resp = await salonApi.put(`/capacitacion/update/${nuevaCapacitacion?._id}`, {...nuevaCapacitacion})
+
+        dispatch(actualizarCapacitacion(resp.data.capacitacion))
+    }
+}
+
 export const actualizarCapacitacionForm = (title, descripcion, intentos, video, Preguntas, duracion, team, EvaluatShow, newVideo) => {
     return async(dispatch, getState) => {
 
@@ -440,11 +459,34 @@ export const saveVideoId = (id, uid) => {
     }
 }
 
-export const updateUsuarioIntento = (id, uid) => {
+export const updateUsuarioIntento = (id, uid, idEv, capacitaciones) => {
     return (dispatch, getState) => {
         const { socket } = getState().sk;
 
-        socket?.emit('update-one-user-evaluacion', {id, uid})
+        let nuevosIntegrantesVideo = []
+
+        const capacitacion = capacitaciones?.find(capacitacion => capacitacion._id === id)
+
+        nuevosIntegrantesVideo = capacitacion?.video?.filter(video => video?.check?.some(check => check?.id === uid))
+
+        let videos = []
+
+        nuevosIntegrantesVideo?.map(
+            (video, index) => videos.push(video.check.filter(check => check?.id !== uid))
+        )
+
+        let nuevaCap = []
+
+        videos?.map((check, index) => nuevaCap.push({...capacitacion.video[index], check: check}))
+
+        const nuevaCapacitacion = {
+            ...capacitacion,
+            video: nuevaCap
+        }
+
+        dispatch(clearEvaluacionActiva())
+
+        socket?.emit('update-one-user-evaluacion', {id, uid, idEv, nuevaCapacitacion})
 
         const Toast = Swal.mixin({
             toast: true,

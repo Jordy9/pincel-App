@@ -28,7 +28,7 @@ export const Cards = () => {
       && 
     capacitacion?.team?.some(team => team?.value === uid || team?.value === usuarioActivo?.team)
   )?.map(({video, _id, EvaluatShow}) => {
-    const CantidadCheck = video?.filter(video => video?.check?.includes(uid))
+    const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === uid))
 
     const evaluacionFilt = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && evaluacion?.idCapacitacion === _id)
 
@@ -181,7 +181,7 @@ export const Cards = () => {
         <div className='text-black shadow p-4 d-flex flex-column' style={{width: '100%', height: '300px', borderRadius: '35px', backgroundColor: 'white'}}>
           <div className="row p-2" style={{backgroundColor: 'lightgray', borderRadius: '20px'}}>
             <div className="col-5 d-flex justify-content-start align-items-start p-2">
-              <div className='p-2 text-white' style={{borderRadius: '20px', backgroundColor: 'rgb(71, 7, 168)', width: 'auto', height: 'auto'}}>
+              <div className='p-2 text-white' style={{borderRadius: '20px', backgroundColor: 'rgb(1, 138, 1)', width: 'auto', height: 'auto'}}>
                 {
                   (respWidth > 992 && respWidth < 1476)
                     ?
@@ -207,7 +207,7 @@ export const Cards = () => {
 
           <div className="row p-2 my-2" style={{backgroundColor: 'lightgray', borderRadius: '20px'}}>
             <div className="col-5 d-flex justify-content-start align-items-start p-2">
-              <div className='p-2 text-white' style={{borderRadius: '20px', backgroundColor: 'rgb(71, 7, 168)', width: 'auto', height: 'auto'}}>
+              <div className='p-2 text-white' style={{borderRadius: '20px', backgroundColor: 'rgb(1, 138, 1)', width: 'auto', height: 'auto'}}>
                 {
                   (respWidth > 992 && respWidth < 1476)
                     ?

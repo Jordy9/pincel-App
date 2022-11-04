@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { checkVideoUser, saveVideoId } from '../../store/capacitacion/thunk';
+import { actualizarCapacitacionUsuariosEvaluacion, checkVideoUser, saveVideoId } from '../../store/capacitacion/thunk';
 import ReactPlayer from 'react-player'
 import { useRef } from 'react';
 import { activeCapacitacion } from '../../store/capacitacion/capacitacionSlice';
@@ -80,6 +80,30 @@ export const CapacitacionTema = () => {
     }, [segundos, dispatch])
 
     const nuevoVideo = NextVideo?.video[NextVideo?.video?.indexOf(capacitacionActiva?.videos) + 1]
+
+    useEffect(() => {
+
+      let capInclude
+
+      capInclude = capacitacionActiva?.usuariosEvaluacion?.filter(usuariosE => usuariosE.id === uid)
+
+      if (capInclude?.length === 0) {
+        const capacitacionF = capacitacion?.find(capacitacion => capacitacion?._id === capacitacionActiva?._id)
+        dispatch(actualizarCapacitacionUsuariosEvaluacion(capacitacionF, uid))
+      }
+    }, [])
+  
+    // const capacitaciones = await Capacitacion.find()
+  
+    //       let capacitacionFiltrada = capacitaciones.filter(capacitacion => capacitacion.team.some(team => team.value === usuario?.team || team.value === usuario?.id))
+  
+    //       if (capacitacionFiltrada?.length !== 0) {
+    //           let nuevosUsuariosEvaluacion = []
+      
+    //           capacitacionFiltrada[0].usuariosEvaluacion.map(usuarioE => (usuarioE.id !== usuario?.id) && nuevosUsuariosEvaluacion.push(usuarioE))
+      
+    //           await Capacitacion.updateMany({_id: {$in: capacitacionFiltrada}}, {$set: {usuariosEvaluacion: nuevosUsuariosEvaluacion}})
+    //       }
 
   return (
     // <video onTimeUpdate={(e) => setTimeUpdate(e.target.currentTime)} onDurationChangeCapture = {(e) => setDuration(e.target.duration)} controls style={{width: '100%', borderRadius: '20px'}} src={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />

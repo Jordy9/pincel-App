@@ -31,7 +31,7 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
           && 
         capacitacion?.team?.some(team => team?.value === activeUser?.id || team?.value === activeUser?.team)
       )?.map(({video}) => {
-        const CantidadCheck = video?.filter(video => video?.check?.includes(activeUser?.id))
+        const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === activeUser?.id))
     
         const porcentaje = parseInt((CantidadCheck?.length / video?.length) * 100)   
         return (

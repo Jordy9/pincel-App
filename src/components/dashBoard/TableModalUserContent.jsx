@@ -19,7 +19,7 @@ export const TableModalUserContent = (props) => {
 
     const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === activeUser?.id)
 
-    const cantidadVideosFiltradas = video?.filter(video => video?.check?.includes(activeUser?.id))
+    const cantidadVideosFiltradas = video?.filter(video => video?.check?.some(check => check?.id === activeUser?.id))
 
     const porciento = (cantidadVideosFiltradas?.length/video?.length)*100
 
@@ -87,7 +87,7 @@ export const TableModalUserContent = (props) => {
       <td>{title}</td>
       <td className='d-flex justify-content-center mx-auto'>
         <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${cantidadVideosFiltradas?.length}/${video?.length} videos vistos, ${(calificacionEvaluacion?.length !== 0) ? '1 evaluación' : (!EvaluatShow) ? 'Esta capacitación no tiene evaluación' : 'No ha tomado la evaluación' } ${mostrarCalificacionTooltip}`}>
-          <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : 'NE'}`} />
+          <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionEvaluacion[0]?.calificacion : (!EvaluatShow) ? 'NE' : '-'}`} />
         </div>
       </td>
       <ModalEvaluacionUser modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />

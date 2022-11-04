@@ -12,19 +12,19 @@ export const TableContent = (props) => {
 
     const { resenaFilterSlice, isShow } = useSelector(state => state.rs);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
 
     const { evaluacionFilterSlice } = useSelector(state => state.ev);
 
     const { id, name, urlImage, team:usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacionFilterSlice?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
 
-    const cantidadVideosFiltradas = capacitacionFilterSlice?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.includes(id)))
+    const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.some(check => check?.id === id)))
 
     let video = []
 
-    cantidadVideosFiltradas?.map(videos => video?.push(videos?.video))
+    cantidadVideosFiltradas?.map(videos => video?.push(...videos?.video))
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
@@ -33,12 +33,12 @@ export const TableContent = (props) => {
 
     let sumaPorcentage = []
 
-    capacitacionFilterSlice?.filter(
+    capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
         capacitacion?.team?.some(team => team?.value === id || team?.value === usuarioTeam)
       )?.map(({video, _id, EvaluatShow}) => {
-        const CantidadCheck = video?.filter(video => video?.check?.includes(id))
+        const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === id))
     
         const evaluacionFilt = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idUsuario === id && evaluacion?.idCapacitacion === _id)
     

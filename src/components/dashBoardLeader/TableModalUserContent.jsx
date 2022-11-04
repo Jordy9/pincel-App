@@ -19,7 +19,7 @@ export const TableModalUserContent = (props) => {
 
     const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => evaluacion?.idCapacitacion === _id && evaluacion?.idUsuario === activeUser?.id)
 
-    const cantidadVideosFiltradas = video?.filter(video => video?.check?.includes(activeUser?.id))
+    const cantidadVideosFiltradas = video?.filter(video => video?.check?.some(check => check?.id === activeUser?.id))
 
     const porciento = (cantidadVideosFiltradas?.length/video?.length)*100
 

@@ -43,10 +43,8 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
 
         if (capacitacionActiva?.intentos === Number(intentosPermitidos[0]?.intentos) && evaluacionUserComplete?.length === 0) {
             dispatch(crearEvaluacion(formValues, calificacionFinal?.toFixed()))
-            console.log('Crear')
         } else {
             dispatch(actualizarEvaluacion(formValues, calificacionFinal?.toFixed(), evaluacionUserComplete[0]?._id))
-            console.log('Actualizar')
         }
         
         setChangeEvaluacionCalificacion(true)

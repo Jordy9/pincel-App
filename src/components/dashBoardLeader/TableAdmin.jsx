@@ -28,7 +28,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     usuarioFiltrado?.filter(usuario => usuario?.estado === true)?.map(usuario => {
 
-        const CantidadCheck = cap?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(usuario?.id)))
+        const CantidadCheck = cap?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.some(check => check?.id === usuario?.id)))
 
         const evaluacionFilt = evaluacion?.filter(evaluacion => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id && cap?.some(capacitacion => (evaluacion?.idCapacitacion === capacitacion?._id || !capacitacion?.EvaluatShow)))
 

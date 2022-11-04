@@ -133,7 +133,7 @@ export const Sidebar = ({children}) => {
               <Offcanvas.Header closeButton><h1 className='mx-auto'>Gran Salón Express</h1></Offcanvas.Header>
                 <ul>
                   <NavLink className='d-flex justify-content-center' to='/perfil'>
-                    <div className='d-flex justify-content-center' style={{width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                    <div className='d-flex justify-content-center' style={{width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                       <img src={usuarioActivo?.urlImage || user} className='img-fluid' alt="" />
                     </div>
                   </NavLink>

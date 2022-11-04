@@ -13,7 +13,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     const { evaluacion } = useSelector(state => state.ev);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
 
     let sumaPorcentage = []
 
@@ -21,13 +21,13 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     let sumaCompleta = []
 
-    const cap = capacitacionFilterSlice?.filter(
+    const cap = capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true
     )
 
     usuarioFiltrado?.filter(usuario => usuario?.estado === true)?.map(usuario => {
 
-        const CantidadCheck = cap?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.includes(usuario?.id)))
+        const CantidadCheck = cap?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.some(check => check?.id === usuario?.id)))
 
         const evaluacionFilt = evaluacion?.filter(evaluacion => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id && cap?.some(capacitacion => (evaluacion?.idCapacitacion === capacitacion?._id || !capacitacion?.EvaluatShow)))
 
@@ -67,13 +67,13 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
       const usuariosFilt = usuarioFiltrado?.filter(usuario => usuario?.estado === true)
 
-      const sumaPromedioCapacitaciones = (suma / ((capacitacionFilterSlice?.length*usuariosFilt?.length)*100)) * 100 || 0
+      const sumaPromedioCapacitaciones = (suma / ((capacitacion?.length*usuariosFilt?.length)*100)) * 100 || 0
 
     //   console.log(suma, ((capacitacionFilterSlice?.length*usuariosFilt?.length)*100) * 100)
 
-      const sumaTotalCompletasPorUsuarios = (capacitacionFilterSlice?.length*sumaPromedioCapacitaciones)/100 || 0
+      const sumaTotalCompletasPorUsuarios = (capacitacion?.length*sumaPromedioCapacitaciones)/100 || 0
 
-      let showDecimal = (sumaTotalCompletasPorUsuarios === capacitacionFilterSlice?.length)
+      let showDecimal = (sumaTotalCompletasPorUsuarios === capacitacion?.length)
 
     //   console.log(sumaTotal)
 
@@ -82,14 +82,14 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 shadow p-4 d-flex justify-content-center align-items-center my-2" style={{height: 'auto', borderRadius: '35px'}}>
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${capacitacionFilterSlice?.length} capacitaciones completadas`}>
+            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${capacitacion?.length} capacitaciones completadas`}>
                 <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)} text={`${sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)}%`} />
                 <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
             </div>
         </div>
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-10 col-xxl-10 my-2">
-            <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '300px'}}>
+            <div className='table-responsive shadow pt-4 pb-4' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '300px'}}>
 
                 {
                     (changeShowResena === 'Normal')
@@ -109,7 +109,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
                             </tr>
                         </thead>
                         <tbody>
-                            <TableSpreedList usuarioFiltrado = {usuarioFiltrado} />
+                            <TableSpreedList usuarioFiltrado = {usuariosFilt} />
                         </tbody>
                     </table>
                         :
