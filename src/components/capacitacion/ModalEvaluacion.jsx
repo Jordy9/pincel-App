@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { actualizarEvaluacion, crearEvaluacion } from '../../store/evaluacion/thunk';
@@ -69,6 +69,12 @@ export const ModalEvaluacion = ({modalShowEvaluacion, setModalShowEvaluacion}) =
     let PreguntaAleatoria = capacitacionActiva?.preguntas
 
     let arregloRespuestasAleatorias = useMemo(() => PreguntaAleatoria[changeCountResponse - 1].respuesta?.map(respuesta => respuesta)?.sort(() => Math.random() - 0.5), [changeCountResponse - 1])
+
+    useEffect(() => {
+      if (Number(intentosPermitidos[0]?.intentos) === 0) {
+        setModalShowEvaluacion(false)
+      }
+    }, [intentosPermitidos])
 
   return (
     <Modal fullscreen show={modalShowEvaluacion} onHide={handleClose}>
