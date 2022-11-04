@@ -14,7 +14,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     const { evaluacion } = useSelector(state => state.ev);
 
-    const { capacitacionFilterSlice } = useSelector(state => state.cp);
+    const { capacitacion } = useSelector(state => state.cp);
 
     let sumaPorcentage = []
 
@@ -22,7 +22,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     let sumaCompleta = []
 
-    const cap = capacitacionFilterSlice?.filter(
+    const cap = capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true
     )
 
@@ -68,16 +68,16 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     const usuariosFilt = usuarioFiltrado?.filter(usuario => usuario?.estado === true)
 
-    const sumaPromedioCapacitaciones = (suma / ((capacitacionFilterSlice?.length*usuariosFilt?.length)*100)) * 100 || 0
+    const sumaPromedioCapacitaciones = (suma / ((capacitacion?.length*usuariosFilt?.length)*100)) * 100 || 0
 
-    const sumaTotalCompletasPorUsuarios = (capacitacionFilterSlice?.length*sumaPromedioCapacitaciones)/100 || 0
+    const sumaTotalCompletasPorUsuarios = (capacitacion?.length*sumaPromedioCapacitaciones)/100 || 0
 
-    let showDecimal = (sumaTotalCompletasPorUsuarios === capacitacionFilterSlice?.length)
+    let showDecimal = (sumaTotalCompletasPorUsuarios === capacitacion?.length)
 
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 shadow p-4 d-flex justify-content-center align-items-center my-2" style={{height: 'auto', borderRadius: '35px'}}>
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${capacitacionFilterSlice?.length} capacitaciones completadas`}>
+            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${capacitacion?.length} capacitaciones completadas`}>
                 <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)} text={`${sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)}%`} />
                 <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
             </div>
@@ -100,7 +100,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
                         </tr>
                     </thead>
                     <tbody>
-                        <TableSpreedList usuarioFiltrado = {usuarioFiltrado} />
+                        <TableSpreedList usuarioFiltrado = {usuariosFilt} />
                     </tbody>
                 </table>
             </div>

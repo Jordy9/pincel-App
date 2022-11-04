@@ -24,7 +24,15 @@ export const TableContent = (props) => {
 
     let video = []
 
+    let videosTotales = []
+
+    let checkVideo = []
+
     cantidadVideosFiltradas?.map(videos => video?.push(...videos?.video))
+
+    video?.map(video => video?.check?.some(check => check?.id === id && checkVideo.push(video)))
+
+    capacitacion?.map(videos => videosTotales?.push(...videos?.video))
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
@@ -80,7 +88,7 @@ export const TableContent = (props) => {
 
     const sumaPorcentage0 = parseInt(suma/division) || 0
 
-    const porcientoVideos = (calificacionEvaluacion?.length !== 0 || cantidadVideosFiltradas?.some(cap => cap?.EvaluatShow === false) ) ? (cantidadVideosFiltradas?.length === 0) ? (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100 : ((cantidadVideosFiltradas?.length + 1)/(video?.length + 1)) * 100 : (cantidadVideosFiltradas?.length/(video?.length + 1)) * 100
+    const porcientoVideos = (checkVideo?.length / videosTotales?.length) * 100
 
     let evaluacionPlural = (calificacionEvaluacion?.length > 1)
 
