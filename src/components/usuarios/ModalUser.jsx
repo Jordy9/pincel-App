@@ -46,7 +46,9 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
     const capacitacionMostrar = capacitacion?.filter(
         capacitacion => evaluacionesFiltradas?.some(evaluacion => evaluacion.idCapacitacion === capacitacion?._id)
           &&
-        capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === activeUser?.id && intentos?.intentos === 0)
+        capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === activeUser?.id && intentos?.intentos !== 0)
+            &&
+        capacitacion?.publicar === true
       )
 
     const equipoFiltrado = capacitacion?.filter(
@@ -55,7 +57,7 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
         capacitacion?.team?.some(team => team?.value === activeUser?.id || team?.value === activeUser?.team)
     )
 
-    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === activeUser?.id)
+    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === activeUser?.id && capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === activeUser?.id || team?.value === activeUser?.team)))
 
     let suma = 0
 
