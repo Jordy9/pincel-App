@@ -4,8 +4,8 @@ import "chartjs-plugin-labels";
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import star from '../../heroes/star.png'  
 import moment from 'moment';
-import { ModalResenaPorMes } from '../dashBoard/ModalResenaPorMes';
 import { onDoubleTap } from '../../helper/onDoubleTap';
+import { ModalResenaPorMes } from './ModalResenaPorMes';
 
 export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, showAllMonth, onlyThreeMonths, usuariosParaAdminLeader, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount } ) => {
 

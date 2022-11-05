@@ -39,9 +39,9 @@ export const TableContentResenaPorMes = (props) => {
                     <td>{<Rating size={19} readonly ratingValue={Number(sumaTotal)} />}</td>
                     <td>{descripcion}</td>
                     <td>{moment(createdAt).format('DD/MM/YYYY, h:mm a')}</td>
-                    <td>             
+                    {/* <td>             
                         <button onClick={() => dispatch(actualizarResena(props))} className='btn mx-1 my-1'><i style={{fontSize: '23px'}} className="bi bi-x-circle-fill text-danger"></i></button>
-                    </td>
+                    </td> */}
                 </>
         }
     </tr>

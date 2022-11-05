@@ -54,7 +54,7 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
                                 <th scope="col">Calificación</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Fecha</th>
-                                <th scope="col">Inhabilitar</th>
+                                {/* <th scope="col">Inhabilitar</th> */}
                             </tr>
                         </thead>
                         <tbody>
