@@ -112,14 +112,19 @@ export const Perfil = () => {
                                 <input type="text" {...getFieldProps('email')} placeholder = 'Ejemplo@hotmail.com' className = 'form-control bg-transparent text-black ' />
                                 {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
                             </div>
+                            
+                            {
+                                (usuarioActivo?.role === 'Administrador')
+                                    &&
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
+                                    <label>Imagen</label>
+                                    <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Seleccionar foto de perfil <i className="bi bi-images btn-primary mx-1"></i></button>
+                                    <input accept="image/*" id='fileSelector' hidden = {true} type="file" className='form-control bg-transparent text-black' onChange={(e) => {
+                                        setImagePerfil(e.currentTarget.files[0])
+                                    }} />
+                                </div>
+                            }
 
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 form-group">
-                                <label>Imagen</label>
-                                <button type='button' onClick={onClickImage} className='btn btn-primary form-control'>Seleccionar foto de perfil <i className="bi bi-images btn-primary mx-1"></i></button>
-                                <input accept="image/*" id='fileSelector' hidden = {true} type="file" className='form-control bg-transparent text-black' onChange={(e) => {
-                                    setImagePerfil(e.currentTarget.files[0])
-                                }} />
-                            </div>
 
                             {
                                 (imagePerfil)

@@ -207,7 +207,7 @@ export const DashboardAdmin = () => {
   
   // Filtro general por rango
 
-  const evaluacionFiltradaPorRango = filterEvaluationGeneral(evaluacion, changeDateRange, changeDate, selectRange)
+  const evaluacionFiltradaPorRango = filterEvaluationGeneral(evaluacion, changeDateRange, changeDate, selectRange, capacitacion)
 
   const capacitacionFiltradaPorRango = filterCapacitacionGeneral(capacitacion, changeDateRange, changeDate, selectRange)
 
@@ -220,27 +220,27 @@ export const DashboardAdmin = () => {
   let CalificacionEvaluacionPorMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
   if ((showThreeMonth || showAllMonth) && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
-    CalificacionEvaluacionPorMes = EvaluationfiltradasTodosMeses(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate)
+    CalificacionEvaluacionPorMes = EvaluationfiltradasTodosMeses(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, capacitacion)
   }
 
   if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
-    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQue(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange)
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQue(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, capacitacion)
   }
 
   if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
-    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueD(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange)
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueD(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, capacitacion)
   }
 
   if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
-    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuarioFiltrado)
+    CalificacionEvaluacionPorMes = EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuarioFiltrado, capacitacion)
   }
 
   if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
-    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenor(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange)
+    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenor(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, capacitacion)
   }
 
   if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
-    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuarioFiltrado)
+    CalificacionEvaluacionPorMes = EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo(evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, CalificacionEvaluacionPorMes, changeDate, changeDateRange, usuarioFiltrado, capacitacion)
   }
 
   // Filtros de evaluaciones por equipo o usuario por todos los meses
@@ -255,9 +255,9 @@ export const DashboardAdmin = () => {
 
   let ArregloFilterDateEvaluacion
 
-  evaluacionFilterArray = filterEvaluacionUsuarioEquipoRango(evaluacion, usuarioFiltrado, evaluacionFilterArrayDate, changeDate, changeDateRange, selectRange, ArregloFilterDateEvaluacion, evaluacionFilterArray)
+  evaluacionFilterArray = filterEvaluacionUsuarioEquipoRango(evaluacion, usuarioFiltrado, evaluacionFilterArrayDate, changeDate, changeDateRange, selectRange, ArregloFilterDateEvaluacion, evaluacionFilterArray, capacitacion)
 
-  calificacionEvaluacionPorMesesDeEquipos = filterEvaluacionUsuarioEquipoTodosMeses(evaluacion, SumaEvaluacionesPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionEvaluacionPorMesesDeEquipos, changeDate)
+  calificacionEvaluacionPorMesesDeEquipos = filterEvaluacionUsuarioEquipoTodosMeses(evaluacion, SumaEvaluacionesPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionEvaluacionPorMesesDeEquipos, changeDate, capacitacion)
 
   // Fin de los filtros de las evaluaciones
 

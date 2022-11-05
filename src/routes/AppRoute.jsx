@@ -129,7 +129,7 @@ export const AppRoute = () => {
           :
         <>
           {/* <Notificaciones /> */}
-          <IconExit />
+          {/* <IconExit /> */}
           <ScrollToTop />
 
           {

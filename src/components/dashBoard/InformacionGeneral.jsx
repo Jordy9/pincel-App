@@ -36,8 +36,12 @@ export const InformacionGeneral = () => {
 
     const capacitacionMostrar = capacitacion?.filter(
         capacitacion => evaluacionesFiltradas?.some(evaluacion => evaluacion.idCapacitacion === capacitacion?._id)
-        &&
+          &&
         capacitacion?.usuariosEvaluacion?.some(intentos => intentos?.id === uid && intentos?.intentos !== 0)
+          &&
+        capacitacion?.publicar === true
+          &&
+        capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)
     )
 
     // Fin Evaluaciones por mejorar
@@ -88,7 +92,7 @@ export const InformacionGeneral = () => {
     capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true 
           && 
-        capacitacion?.team?.some(team => team?.value === uid || team?.value === usuarioActivo?.team)
+        capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)
       )?.map(({video}) => {
         const CantidadCheck = video?.filter(video => video?.check?.some(check => check?.id === uid))
     
@@ -102,7 +106,7 @@ export const InformacionGeneral = () => {
 
     let arregloCalificaciones = []
 
-    capacitacion?.filter(capacitacion => evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
+    capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team) && evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
         const ev = evaluacionFiltrada?.filter(evaluacion => evaluacion?.idCapacitacion === cap?._id)
         return (
             arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion, _id: cap?._id})

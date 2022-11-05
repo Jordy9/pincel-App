@@ -50,9 +50,6 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                         .email('La dirección de email no es válida')
                         .required('Requerido'),
             password: Yup.string()
-                        .min(8, 'Debe de tener 8 caracteres o más')
-                        .matches(/(?=.*[A-Z])/, "Debe contener como mínimo una letra mayúscula")
-                        .matches(/(?=.*[0-9])/, "Debe contener como mínimo un número")
                         .required('Requerido'),
             confirmPassword: Yup.string()
                         .oneOf([Yup.ref('password')], 'Las contraseñas deben ser iguales')

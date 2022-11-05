@@ -8,8 +8,6 @@ import { useSelector } from 'react-redux';
 
 export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) => {
 
-    const percentage = 66;
-
     const [ respWidth ] = useResponsive()
 
     const { evaluacion } = useSelector(state => state.ev);
@@ -20,25 +18,35 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
     let sumaPorcentageIncompleto = []
 
-    let sumaCompleta = []
+    let sumaPorcentageCompleto = []
 
     const cap = capacitacion?.filter(
         capacitacion => capacitacion?.publicar === true
+            &&
+        capacitacion?.team?.some(team => usuarioFiltrado?.some(usuario => (team?.value === usuario?.team) && capacitacion))
     )
 
     usuarioFiltrado?.filter(usuario => usuario?.estado === true)?.map(usuario => {
 
         const CantidadCheck = cap?.filter(capacitacion => capacitacion?.video?.some(video => video?.check?.some(check => check?.id === usuario?.id)))
 
-        const evaluacionFilt = evaluacion?.filter(evaluacion => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id && cap?.some(capacitacion => (evaluacion?.idCapacitacion === capacitacion?._id || !capacitacion?.EvaluatShow)))
+        let video = []
+
+        let checkVideo = []
+
+        CantidadCheck?.map(videos => video?.push(...videos?.video))
+
+        video?.map(video => video?.check?.some(check => check?.id === usuario?.id && checkVideo.push(video)))
+
+        const evaluacionFilt = evaluacion?.filter(evaluacion => usuario?.estado === true && evaluacion?.idUsuario === usuario?.id && capacitacion?.some(capacitacion => capacitacion?.publicar === true && (evaluacion?.idCapacitacion === capacitacion?._id || !capacitacion?.EvaluatShow) && capacitacion?.team?.some(team => team?.value === usuario?.team)))
 
         let sumaCantVideos = 0
 
         cap?.map(capacitacion => sumaCantVideos = sumaCantVideos + capacitacion?.video?.length)
 
-        const porcentaje = parseInt((CantidadCheck?.length / sumaCantVideos) * 100) || 0
+        const porcentaje = parseInt((checkVideo?.length / sumaCantVideos) * 100) || 0
 
-        const porcentajeFinal = parseInt(CantidadCheck?.length * 100) || 0
+        const porcentajeFinal = parseInt(checkVideo?.length * 100) || 0
 
         return (
             (porcentaje === 100 && (evaluacionFilt?.length !== 0)) ? sumaPorcentage.push(porcentajeFinal) : sumaPorcentageIncompleto.push(porcentajeFinal)
@@ -60,24 +68,24 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
     //     )
     // })
 
-    sumaCompleta = [...sumaPorcentageIncompleto, ...sumaPorcentage]
-
     let suma = 0
 
-    sumaCompleta?.map(calificacion => suma = suma + calificacion)
+    sumaPorcentageCompleto = [...sumaPorcentage, ...sumaPorcentageIncompleto]
+
+    sumaPorcentageCompleto?.map(calificacion => suma = suma + calificacion)
 
     const usuariosFilt = usuarioFiltrado?.filter(usuario => usuario?.estado === true)
 
-    const sumaPromedioCapacitaciones = (suma / ((capacitacion?.length*usuariosFilt?.length)*100)) * 100 || 0
+    const sumaPromedioCapacitaciones = (suma / ((cap?.length*usuariosFilt?.length)*100)) * 100 || 0
 
-    const sumaTotalCompletasPorUsuarios = (capacitacion?.length*sumaPromedioCapacitaciones)/100 || 0
+    const sumaTotalCompletasPorUsuarios = (cap?.length*sumaPromedioCapacitaciones)/100 || 0
 
-    let showDecimal = (sumaTotalCompletasPorUsuarios === capacitacion?.length)
+    let showDecimal = (sumaTotalCompletasPorUsuarios === cap?.length)
 
   return (
     <>
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 shadow p-4 d-flex justify-content-center align-items-center my-2" style={{height: 'auto', borderRadius: '35px'}}>
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${capacitacion?.length} capacitaciones completadas`}>
+            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${cap?.length} capacitaciones completadas`}>
                 <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)} text={`${sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)}%`} />
                 <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
             </div>

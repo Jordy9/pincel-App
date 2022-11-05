@@ -18,7 +18,7 @@ export const TableContent = (props) => {
 
     const { id, name, urlImage, team:usuarioTeam } = props
 
-    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true) && evaluacion?.idUsuario === id)
+    const calificacionEvaluacion = evaluacionFilterSlice?.filter(evaluacion => capacitacion?.some(capacitacion => evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.publicar === true && capacitacion?.EvaluatShow === true && capacitacion?.team?.some(team => team?.value === usuarioTeam)) && evaluacion?.idUsuario === id)
 
     const cantidadVideosFiltradas = capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.video?.some(video => video?.check?.some(check => check?.id === id)))
 
@@ -32,7 +32,7 @@ export const TableContent = (props) => {
 
     video?.map(video => video?.check?.some(check => check?.id === id && checkVideo.push(video)))
 
-    capacitacion?.map(videos => videosTotales?.push(...videos?.video))
+    capacitacion?.map(videos => videos?.publicar === true && videos?.team?.some(team => team?.value === id || team?.value === usuarioTeam) && videosTotales?.push(...videos?.video))
 
     const handledActive = (user) => {
         dispatch(setActiveUser(user))
@@ -92,6 +92,16 @@ export const TableContent = (props) => {
 
     let evaluacionPlural = (calificacionEvaluacion?.length > 1)
 
+    const filterCapId = capacitacion?.filter(capacitacion => capacitacion?.team?.some(team => team?.value === id))
+
+    let IdShowCap
+
+    if (filterCapId?.length > 1) {
+        IdShowCap = `, ${filterCapId?.length} capacitaciones particulares`
+    } else if (filterCapId?.length === 1) {
+        IdShowCap = `, ${filterCapId?.length} capacitación particular`
+    }
+
     let pluralLetra
 
     if (evaluacionPlural) {
@@ -118,6 +128,8 @@ export const TableContent = (props) => {
 
     const promedioGeneralDelUsuario = (calificacionFinalUsuario + sumaPorcentage0) / 2
 
+    const filterCapTeam = capacitacion?.filter(capacitacion => capacitacion?.team?.some(team => team?.value === usuarioTeam))
+
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
@@ -135,8 +147,8 @@ export const TableContent = (props) => {
                 }
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
-                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}`}>
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
+                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}${(filterCapId?.length !== 0) ? IdShowCap : ''}`}>
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
@@ -159,8 +171,8 @@ export const TableContent = (props) => {
                 }
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
-                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}`}>
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && cantidadVideosFiltradas?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
+                    <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}${(filterCapId?.length !== 0) ? IdShowCap: ''}`}>
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>

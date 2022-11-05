@@ -1,6 +1,6 @@
 import moment from "moment"
 
-export const filterEvaluacionUsuarioEquipoTodosMeses = (evaluacion, SumaEvaluacionesPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionPorMesesDeEquipos, changeDate) => {
+export const filterEvaluacionUsuarioEquipoTodosMeses = (evaluacion, SumaEvaluacionesPorTodosLosMeses, showThreeMonth, showThreeMonths, usuarioFiltrado, calificacionPorMesesDeEquipos, changeDate, _, capacitacion) => {
     const MonthFilterTeam = (index, evaluacion) => {
 
         if (evaluacion !== undefined) {
@@ -8,10 +8,12 @@ export const filterEvaluacionUsuarioEquipoTodosMeses = (evaluacion, SumaEvaluaci
         }
       
         let suma = 0
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionesPorTodosLosMeses?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
     
-        SumaEvaluacionesPorTodosLosMeses?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionesPorTodosLosMeses?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
     
         const porcentage = (5*totalSumado) / 100
     
@@ -23,7 +25,7 @@ export const filterEvaluacionUsuarioEquipoTodosMeses = (evaluacion, SumaEvaluaci
         for (let index = 0; index < 12; index++) {
           SumaEvaluacionesPorTodosLosMeses = []
       
-          evaluacion?.filter(evaluacion => usuarioFiltrado?.some(usuario => evaluacion?.idUsuario === usuario?.id))?.map(evaluacion => (
+          evaluacion?.filter(evaluacion => usuarioFiltrado?.some(usuario => evaluacion?.idUsuario === usuario?.id && capacitacion?.some(capacitacion => capacitacion?.team?.some(team => team?.value === usuario?.team))))?.map(evaluacion => (
             (moment(evaluacion.createdAt).format('M') - 1 === index && moment(evaluacion?.createdAt, 'Y').isSame(moment(changeDate).format('Y')))
               ?
             calificacionPorMesesDeEquipos[index] = MonthFilterTeam(index, evaluacion)
@@ -36,7 +38,7 @@ export const filterEvaluacionUsuarioEquipoTodosMeses = (evaluacion, SumaEvaluaci
     return calificacionPorMesesDeEquipos
 }
 
-export const filterEvaluacionUsuarioEquipoRango = (evaluacion, usuarioFiltrado, evaluacionFilterArrayDate, changeDate, changeDateRange, selectRange, ArregloFilterDate, evaluacionFilterArray) => {
+export const filterEvaluacionUsuarioEquipoRango = (evaluacion, usuarioFiltrado, evaluacionFilterArrayDate, changeDate, changeDateRange, selectRange, ArregloFilterDate, evaluacionFilterArray, _, capacitacion) => {
     if (usuarioFiltrado?.length !== 0) {
         evaluacionFilterArrayDate = evaluacion?.filter(
           evaluacion => (changeDate) 
@@ -57,7 +59,7 @@ export const filterEvaluacionUsuarioEquipoRango = (evaluacion, usuarioFiltrado, 
 
       let suma = 0
 
-      const evaluacionEquipo = evaluacionFilterArray?.filter(evaluacion => usuarioFiltrado?.some(usuario => evaluacion?.idUsuario === usuario?.id))
+      const evaluacionEquipo = evaluacionFilterArray?.filter(evaluacion => usuarioFiltrado?.some(usuario => evaluacion?.idUsuario === usuario?.id && capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuario?.team))))
 
       evaluacionEquipo?.map(evaluacion => suma = suma + evaluacion?.calificacion)
 

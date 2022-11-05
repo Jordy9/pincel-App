@@ -54,11 +54,11 @@ export const Cards = () => {
 
   // Fin porcentage cantidad de cursos
 
-  const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid)
+  const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && capacitacion?.some(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)))
 
     let arregloCalificaciones = []
 
-    capacitacion?.filter(capacitacion => evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
+    capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team) && evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
         const ev = evaluacionFiltrada?.filter(evaluacion => evaluacion?.idCapacitacion === cap?._id)
         return (
             arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion})

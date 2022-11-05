@@ -1,6 +1,6 @@
 import moment from "moment"
 
-export const filterEvaluationGeneral = (evaluacion, changeDateRange, changeDate, selectRange) => {
+export const filterEvaluationGeneral = (evaluacion, changeDateRange, changeDate, selectRange, capacitacion) => {
 
     const evaluacionsFiltradasPorRango = evaluacion?.filter(
         evaluacion => (changeDate) 
@@ -20,25 +20,29 @@ export const filterEvaluationGeneral = (evaluacion, changeDateRange, changeDate,
 
       let suma = 0
 
-      evaluacionsFiltradasPorRango?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+      const evaluacionFiltroEstadoapacitacion = evaluacionsFiltradasPorRango?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
 
-      const sumaTotal = suma/evaluacionsFiltradasPorRango?.length
+      evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+
+      const sumaTotal = suma/evaluacionFiltroEstadoapacitacion?.length
 
       const porciento = (5*sumaTotal) / 100
     
-      return [porciento?.toFixed(1), evaluacionsFiltradasPorRango?.length, evaluacionsFiltradasPorRango]
+      return [porciento?.toFixed(1), evaluacionFiltroEstadoapacitacion?.length, evaluacionFiltroEstadoapacitacion]
 }
 
-export const EvaluationfiltradasTodosMeses = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate) => {
+export const EvaluationfiltradasTodosMeses = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, capacitacion) => {
     const MonthFilter = (index, evaluacion) => {
 
         SumaEvaluacionPorMes.push(evaluacion)
         
         let suma = 0
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
     
         const porcentage = (5*totalSumado) / 100
     
@@ -62,7 +66,7 @@ export const EvaluationfiltradasTodosMeses = (evaluacion, SumaEvaluacionPorMes, 
     return calificacionPorMeses
 }
 
-export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange) => {
+export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, capacitacion) => {
 
     let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
   
@@ -71,10 +75,12 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
         SumaEvaluacionPorMes.push(evaluacion)
         
         let suma = 0
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
   
         const porcentage = (5*totalSumado) / 100
     
@@ -139,19 +145,21 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
     return arregloFinal
   }
 
-  export const EvaluacionesfiltradasTodosMesesMayorQueD = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange) => {
+  export const EvaluacionesfiltradasTodosMesesMayorQueD = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, capacitacion) => {
 
     let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
   
       const MonthFilterNew = (index, evaluacion) => {
   
         SumaEvaluacionPorMes.push(evaluacion)
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
         
         let suma = 0
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
   
         const porcentage = (5*totalSumado) / 100
     
@@ -214,19 +222,21 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
     return arregloFinal
   }
 
-  export const EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado) => {
+  export const EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado, capacitacion) => {
 
     let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
   
       const MonthFilterNew = (index, evaluacion) => {
   
         SumaEvaluacionPorMes.push(evaluacion)
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
         
         let suma = 0
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
   
         const porcentage = (5*totalSumado) / 100
     
@@ -289,7 +299,7 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
     return arregloFinal
   }
 
-  export const EvaluacionfiltradasTodosMesesMayorQueMenor = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange) => {
+  export const EvaluacionfiltradasTodosMesesMayorQueMenor = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, capacitacion) => {
 
     let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
   
@@ -298,10 +308,12 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
         SumaEvaluacionPorMes.push(evaluacion)
         
         let suma = 0
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
   
         const porcentage = (5*totalSumado) / 100
     
@@ -366,7 +378,7 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
     return arregloFinal
   }
 
-  export const EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado) => {
+  export const EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo = (evaluacion, SumaEvaluacionPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado, capacitacion) => {
 
     let mes = [moment(changeDate).format('M'), moment(changeDateRange).format('M')]
   
@@ -375,10 +387,12 @@ export const EvaluacionesfiltradasTodosMesesMayorQue = (evaluacion, SumaEvaluaci
         SumaEvaluacionPorMes.push(evaluacion)
         
         let suma = 0
+
+        const evaluacionFiltroEstadoapacitacion = SumaEvaluacionPorMes?.filter(evaluacion => capacitacion?.some(capacitacion => capacitacion?._id === evaluacion?.idCapacitacion && capacitacion?.publicar === true))
     
-        SumaEvaluacionPorMes?.map(evaluacion => suma = suma + evaluacion?.calificacion)
+        evaluacionFiltroEstadoapacitacion?.map(evaluacion => suma = suma + evaluacion?.calificacion)
     
-        const totalSumado = suma/SumaEvaluacionPorMes?.length
+        const totalSumado = suma/evaluacionFiltroEstadoapacitacion?.length
   
         const porcentage = (5*totalSumado) / 100
     
