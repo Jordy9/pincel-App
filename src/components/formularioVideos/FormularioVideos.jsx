@@ -457,6 +457,18 @@ export const FormularioVideos = () => {
 
     }, [equiposCapacitacion])
 
+    let nombresEquipos = []
+
+    equiposCapacitacion?.map(equipo => nombresEquipos.push(equipo?.value))
+
+    const condicionEquipos = equipos?.filter(equipo => !nombresEquipos?.includes(equipo?.name))
+
+    const customValueRenderer = (selected, _options) => {
+        return selected.length
+          ? selected.map(({ label, value }, index) => (condicionEquipos?.length === 0 && selected?.length === equipos?.length) ? (index === 0) && <span style={{color: '#212529'}}>Todos los equipos</span> : label + ', ')
+          : <span style={{color: '#212529'}}>Todos los equipos</span>
+    };
+
   return (
     <Sidebar>
         <div className='p-4'>
@@ -478,7 +490,8 @@ export const FormularioVideos = () => {
                             isLoading = {(chargeUsersTeam && arregloEquipos?.length === 0)}
                             onMenuToggle={(e) => setChargeUsersTeam(e)}
                             options={options}
-                            value={(condicionShowTodos || equiposCapacitacion?.length === 0) ? [{label: 'Todos los equipos'}] : equiposCapacitacion?.filter(equipos => equipos?.label !== 'Todos los equipos')}
+                            value={equiposCapacitacion}
+                            valueRenderer = {customValueRenderer}
                             onChange={setEquiposCapacitacion}
                             labelledBy="Select"
                             hasSelectAll = {false}
