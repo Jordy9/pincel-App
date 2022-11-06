@@ -502,7 +502,7 @@ export const updateUsuarioIntento = (id, uid, idEv, capacitaciones) => {
         
         return Toast.fire({
             icon: 'success',
-            title: 'Este usuario tiene un intento adicional'
+            title: 'A este usuario se le ha resetado esta capacitación'
         })
     }
 }

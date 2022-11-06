@@ -33,6 +33,8 @@ export const TableUsers = () => {
     }, [])
     
     const ref = useRef(null)
+
+    const [noshow, setNoshow] = useState(true)
     
   return (
     <div className='container'>
@@ -48,8 +50,15 @@ export const TableUsers = () => {
         <div className='text-right'>
             <button onClick={() => setShowModalCreateUser(true)} className='btn btn-primary my-1'>Crear un usuario</button>
         </div>
+
+        <div class="form-check text-right">
+            <input className="form-check-input" defaultChecked={!noshow} onClick={() => setNoshow(!noshow)} type="checkbox" value="" id="flexCheckDefault" />
+            <label className="form-check-label mr-4" for="flexCheckDefault">
+                Mostrar usuarios inactivos
+            </label>
+        </div>
         
-        <div className='table-responsive shadow pt-4 pb-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
+        <div className='table-responsive shadow py-4 px-1' style={{borderTopLeftRadius: '35px', borderBottomLeftRadius: '35px', borderTopRightRadius: '10px', borderBottomRightRadius: '10px', height: '550px'}}>
             <table ref = {ref} className="table borderless">
                 <thead>
                     <tr>
@@ -59,13 +68,13 @@ export const TableUsers = () => {
                             <th scope="col">Foto</th>
                         }
                         <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Correo electrónico</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Equipo</th>
                         <th scope="col">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <TableSpreedList usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} currentPage = {currentPage} />
+                    <TableSpreedList usuariosFiltro = {(usuarioParaList?.length !== 0) ? usuarioParaList : usuarios} currentPage = {currentPage} noshow = {noshow} />
                 </tbody>
             </table>
         </div>

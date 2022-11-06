@@ -23,7 +23,7 @@ export const Sidebar = () => {
     }, [dispatch, uid, capacitacionFiltrada])
     
   return (
-    <div style={{width: '100%', height: '80vh'}}>
+    <div style={{width: '100%', maxHeight: '80vh'}}>
         <h4 className='text-center p-1'>Contenido de la capacitacion</h4>
         {
             capacitacionFiltrada[0]?.video?.map((capacitacion, index) => {

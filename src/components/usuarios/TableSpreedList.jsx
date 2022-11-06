@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { TableContent } from './TableContent'
 
-export const TableSpreedList = ({usuariosFiltro, currentPage}) => {
+export const TableSpreedList = ({usuariosFiltro, currentPage, noshow}) => {
     const { usuarios } = useSelector(state => state.auth)
 
     const PaginateUsers = () => {
@@ -15,7 +15,7 @@ export const TableSpreedList = ({usuariosFiltro, currentPage}) => {
             {
                 (usuarios)
                     &&
-                    PaginateUsers()?.map(usuario => {
+                    PaginateUsers()?.filter(usuario => (noshow) ? usuario?.estado === true : usuario)?.map(usuario => {
                         return (
                             <TableContent key = {usuario?.id} {...usuario} />
                         )

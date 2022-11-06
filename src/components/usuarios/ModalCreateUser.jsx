@@ -83,6 +83,8 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
     
     const [ respWidth ] = useResponsive()
 
+    const [showPassword, setShowPassword] = useState(true)
+
   return (
     <Modal size='xl' show={showModalCreateUser} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -146,7 +148,7 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                 <div className = 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12'>
                                     <div className="form-group">
                                         <label>Correo</label>
-                                        <input {...getFieldProps('email')} type="text" placeholder='ejemplo@gmail.com' className='form-control' />
+                                        <input autoComplete='off' {...getFieldProps('email')} type="text" placeholder='ejemplo@gmail.com' className='form-control' />
                                         {touched.email && errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
                                     </div>
                                 </div>
@@ -174,7 +176,10 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                 <div className = 'col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6'>
                                     <div className="form-group">
                                         <label>Contraseña</label>
-                                        <input {...getFieldProps('password')} type="password" placeholder='********' className='form-control' />
+                                        <div className="input-group mb-3">
+                                            <input autoComplete='off' {...getFieldProps('password')} type={(showPassword) ? 'password' : 'text'} placeholder = '********' className = 'form-control' aria-describedby="basic-addon2" />
+                                            <span style={{cursor: 'pointer'}} onClick={() => setShowPassword(!showPassword)} className="input-group-text" id="basic-addon2"><i style={{color: 'rgb(0, 197, 0)'}} className={(showPassword) ? 'bi bi-eye-slash' : 'bi bi-eye'}></i></span>
+                                        </div>
                                         {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
                                     </div>
                                 </div>
@@ -182,7 +187,7 @@ export const ModalCreateUser = ({showModalCreateUser, setShowModalCreateUser}) =
                                 <div className = 'col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6'>
                                     <div className="form-group">
                                         <label>Confirmar contraseña</label>
-                                        <input {...getFieldProps('confirmPassword')} type="password" placeholder='********' className='form-control' />
+                                        <input autoComplete='off' {...getFieldProps('confirmPassword')} type={(showPassword) ? 'password' : 'text'} placeholder='********' className='form-control' />
                                         {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
                                     </div>
                                 </div>

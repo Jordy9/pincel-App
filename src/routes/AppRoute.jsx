@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Login } from '../components/home/Login';
 import { Registro } from '../components/home/Registro';
@@ -27,16 +27,24 @@ import { obtenerToShowResena } from '../store/toShowResena/thunk';
 import { obtenerCustomResena } from '../store/customResena/thunk';
 import { LeaderRoute } from './LeaderRoute';
 import { ScrollToTop } from '../components/scrollToTop/ScrollToTop';
-import axios from 'axios';
+import { obtenerEnEvaluacion } from '../store/enEvaluacion/thunk';
 moment.locale('es');
 
 export const AppRoute = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate()
+
   const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const { equipos } = useSelector(state => state.eq);
+
+  const { capacitacionActiva } = useSelector(state => state.cp);
+
+  const { enEvaluacion } = useSelector(state => state.enE);
+
+  const enEv = enEvaluacion?.find(ev => ev?.idUsuario === uid)
 
   let usuariosFiltrado = []
 
@@ -52,6 +60,12 @@ export const AppRoute = () => {
 
   const tokenInit = localStorage.getItem('token-init-date')
 
+  useEffect(() => {
+    if (enEv?._id && capacitacionActiva) {
+      navigate(`/evaluacionCapacitacion/${capacitacionActiva?._id}`)
+    }
+  }, [capacitacionActiva])
+  
   // console.log(moment(Number(tokenInit)).fromNow())
 
   // const [segundos, setSegundos] = useState(0)
@@ -82,6 +96,7 @@ export const AppRoute = () => {
     dispatch(obtenerEquipo())
     dispatch(obtenerToShowResena())
     dispatch(obtenerCustomResena())
+    dispatch(obtenerEnEvaluacion())
   }, [dispatch])
 
   useEffect(() => {
@@ -137,11 +152,11 @@ export const AppRoute = () => {
               ?
             (isLeader)
               ?
-            <LeaderRoute />
+            <LeaderRoute capacitacionActiva = {capacitacionActiva} />
               :
-            <UserRoute />
+            <UserRoute capacitacionActiva = {capacitacionActiva} />
               :
-            <AdminRoute />
+            <AdminRoute capacitacionActiva = {capacitacionActiva} />
           }
         </>
           :

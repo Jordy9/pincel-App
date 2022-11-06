@@ -54,16 +54,16 @@ export const Cards = () => {
 
   // Fin porcentage cantidad de cursos
 
-  const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && capacitacion?.some(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)))
+  const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && capacitacion?.some(capacitacion => capacitacion?.publicar === true && evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)))
 
-    let arregloCalificaciones = []
+    // let arregloCalificaciones = []
 
-    capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team) && evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
-        const ev = evaluacionFiltrada?.filter(evaluacion => evaluacion?.idCapacitacion === cap?._id)
-        return (
-            arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion})
-        )
-    })
+    // capacitacion?.filter(capacitacion => capacitacion?.publicar === true && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team) && evaluacionFiltrada?.some(evaluacion => evaluacion?.idCapacitacion === capacitacion?._id))?.map(cap => {
+    //     const ev = evaluacionFiltrada?.filter(evaluacion => evaluacion?.idCapacitacion === cap?._id)
+    //     return (
+    //       arregloCalificaciones.push({titulo: cap?.title, evaluacion: ev[0]?.calificacion})
+    //     )
+    // })
 
     let suma = 0
 

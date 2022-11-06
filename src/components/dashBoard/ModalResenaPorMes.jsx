@@ -40,10 +40,10 @@ export const ModalResenaPorMes = ({showModalResena, setShowModalResena}) => {
         <Modal.Body>
             <div className="row my-3">
                 <div class="form-check text-right">
-                <input className="form-check-input" defaultChecked={showResena} onClick={() => dispatch(showResena0(!showResena))} type="checkbox" value="" id="flexCheckDefault" />
-                <label className="form-check-label mr-4" for="flexCheckDefault">
-                    Mostrar reseñas ocultas
-                </label>
+                    <input className="form-check-input" defaultChecked={showResena} onClick={() => dispatch(showResena0(!showResena))} type="checkbox" value="" id="flexCheckDefault" />
+                    <label className="form-check-label mr-4" for="flexCheckDefault">
+                        Mostrar reseñas ocultas
+                    </label>
                 </div>
 
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-auto" style={{borderRadius: '35px'}}>

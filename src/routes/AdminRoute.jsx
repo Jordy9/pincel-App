@@ -15,9 +15,10 @@ import { TipoResenas } from '../components/tipoResenas/TipoResenas';
 import { useSelector } from 'react-redux';
 import { Spinner } from '../components/Spinner';
 import { ListadoUsuarios } from '../components/usuarios/ListadoUsuarios';
+import { EvaluacionPage } from '../components/capacitacion/EvaluacionPage';
 
 
-export const AdminRoute = () => {
+export const AdminRoute = ({capacitacionActiva}) => {
 
   const { toShowResena } = useSelector(state => state.to);
   
@@ -29,6 +30,7 @@ export const AdminRoute = () => {
         <Route path='/formCapacitaciones' element = {<FormularioVideos />} />
         <Route path='/ListCapacitaciones' element = {<ListadoCapacitaciones />} />
         <Route path='/capacitacion/:id' element = {<VideosComponent />} />
+        <Route path='/evaluacionCapacitacion/:id' element = {(capacitacionActiva?._id) && <EvaluacionPage />} />
         <Route path='/Aclaraciones' element = {<ChatScreen />} />
         <Route path='/Comunicado' element = {<Comunicado />} />
         <Route path='/ListComunicados' element = {<ListadoComunicados />} />

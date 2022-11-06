@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
@@ -40,6 +39,8 @@ export const Login = () => {
         })
     })
 
+    const [showPassword, setShowPassword] = useState(true)
+
   return (
     <div className='d-flex justify-content-center align-items-center' style={{height: '100%', backgroundImage: 'url("https://cdn.pixabay.com/photo/2020/05/21/11/42/hair-salon-5200393_960_720.jpg")', backgroundPosition: 'center center', backgroundSize: 'cover', minHeight: '100vh'}}>
         <div className='shadow p-4 bg-white' style={{borderRadius: '35px', height: 'auto', width: '400px'}}>
@@ -52,14 +53,15 @@ export const Login = () => {
                         <div className="row my-3">
                             <div className="col-12">
                                 <label>Correo electrónico</label>
-                                <input {...getFieldProps('email')} type="text" placeholder = 'Ejemplo@gmail.com' className = 'form-control' />
+                                <input autoComplete='off' {...getFieldProps('email')} type="text" placeholder = 'Ejemplo@gmail.com' className = 'form-control' />
                             </div>
                         </div>
 
                         <div className="row">
-                            <div className="col-12 form-group">
-                                <label>Contraseña</label>
-                                <input {...getFieldProps('password')} type="text" placeholder = '********' className = 'form-control' />
+                            <label>Contraseña</label>
+                            <div className="input-group mb-3">
+                                <input autoComplete='off' {...getFieldProps('password')} type={(showPassword) ? 'password' : 'text'} placeholder = '********' className = 'form-control' aria-describedby="basic-addon1" />
+                                <span style={{cursor: 'pointer'}} onClick={() => setShowPassword(!showPassword)} className="input-group-text" id="basic-addon1"><i style={{color: 'rgb(0, 197, 0)'}} className={(showPassword) ? 'bi bi-eye-slash' : 'bi bi-eye'}></i></span>
                             </div>
                         </div>
 

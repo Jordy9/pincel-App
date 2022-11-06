@@ -7,8 +7,13 @@ import { useSelector } from 'react-redux'
 import { ModalEvaluacion } from './ModalEvaluacion'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { tomandoEvaluacion } from '../../store/enEvaluacion/thunk'
+import Swal from 'sweetalert2'
 
 export const VideosComponent = () => {
+
+  const dispatch = useDispatch();
 
   const { noMostrarBoton, capacitacionActiva, capacitacion } = useSelector(state => state.cp);
 
@@ -33,6 +38,28 @@ export const VideosComponent = () => {
   const calificacion = evaluacionCompleta?.filter(evaluacion => evaluacion?.idCapacitacion === capacitacionActiva?._id)
 
   const intentos = capacitacionActiva?.usuariosEvaluacion?.filter(usuario => usuario?.id === uid)
+
+  const tomarEv = () => {
+    if (capacitacionActiva?.intentos > intentos[0]?.intentos && intentos[0]?.intentos > 0) {
+      Swal.fire({
+        title: 'Si toma la evaluación de nuevo, solo se tomará en cuenta su nueva calificación',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'No por ahora',
+        confirmButtonColor: 'rgb(0, 197, 0)',
+        cancelButtonColor: 'rgb(0, 197, 0)',
+        confirmButtonText: 'Si'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(tomandoEvaluacion(capacitacionActiva?._id, uid, capacitacionActiva))
+          navigate(`/evaluacionCapacitacion/${capacitacionActiva?._id}`)
+        }
+      })
+    } else {
+      dispatch(tomandoEvaluacion(capacitacionActiva?._id, uid, capacitacionActiva))
+      navigate(`/evaluacionCapacitacion/${capacitacionActiva?._id}`)
+    }
+  }
   
   return (
       <>
@@ -48,9 +75,13 @@ export const VideosComponent = () => {
                       <p style={{fontSize: '17px'}}>{capacitacionActiva?.descripcion}</p>
                   </div>
 
-                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4" style={{overflowY: 'auto'}}>
+                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mb-5" style={{overflowY: 'auto'}}>
                     <Sidebar />
                   </div>
+              </div>
+
+              <div className='text-center mb-5'>
+                <button onClick={tomarEv} disabled = {(intentos && intentos[0]?.intentos === 0)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>{(evaluacionCompleta?.length !== 0 && (intentos[0]?.intentos === 0)) ? `Calificación: ${calificacion[0]?.calificacion} / 100` : (intentos && capacitacionActiva?.intentos > intentos[0]?.intentos && intentos[0]?.intentos > 0) ? `Volver a intentar, calificación: ${calificacion[0]?.calificacion} / 100` : 'Tomar evaluación'}</button>
               </div>
           </div>
 
@@ -61,10 +92,6 @@ export const VideosComponent = () => {
             &&
           <ModalEvaluacion modalShowEvaluacion = {modalShowEvaluacion} setModalShowEvaluacion = {setModalShowEvaluacion} />
         }
-
-        <div style={{position: 'fixed', marginTop: '-80px', marginLeft: '-75px', left: '50%', top: '95%', zIndex: 1045}}>
-          <button onClick={() => setModalShowEvaluacion(true)} disabled = {(intentos && intentos[0]?.intentos === 0)} hidden = {noMostrarBoton} className='btn btn-primary btn-lg'>{(evaluacionCompleta?.length !== 0 && (intentos[0]?.intentos === 0)) ? `Calificación: ${calificacion[0]?.calificacion} / 100` : 'Tomar evaluación'}</button>
-        </div>
       </>
   )
 }
