@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -40,6 +40,8 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
         document.getElementById('idButton').click()
     }
 
+    const [showPassword, setShowPassword] = useState(true)
+
   return (
     <Modal size='md' show={showModal} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -48,10 +50,13 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
         <Modal.Body>
             <form onSubmit={handleSubmit}>
                 <label>Contraseña</label>
-                <input type="text" {...getFieldProps('passwordActual')} placeholder = 'Contraseña actual' className = 'form-control bg-transparent text-black my-2' />
-                <input type="text" {...getFieldProps('password')} placeholder = 'Contraseña nueva' className = 'form-control bg-transparent text-black my-2' />
+                <div className="input-group mb-3">
+                    <input autoComplete='off' {...getFieldProps('passwordActual')} type={(showPassword) ? 'password' : 'text'} placeholder = '********' className = 'form-control' aria-describedby="basic-addon2" />
+                    <span style={{cursor: 'pointer'}} onClick={() => setShowPassword(!showPassword)} className="input-group-text" id="basic-addon2"><i style={{color: 'rgb(0, 197, 0)'}} className={(showPassword) ? 'bi bi-eye-slash' : 'bi bi-eye'}></i></span>
+                </div>
+                <input autoComplete='off' type={(showPassword) ? 'password' : 'text'} {...getFieldProps('password')} placeholder = 'Contraseña nueva' className = 'form-control bg-transparent text-black my-2' />
                 {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
-                <input type="text" {...getFieldProps('confirmPassword')} placeholder = 'Escribe de nuevo la nueva contraseña' className = 'form-control bg-transparent text-black my-2' />
+                <input autoComplete='off' type={(showPassword) ? 'password' : 'text'} {...getFieldProps('confirmPassword')} placeholder = 'Escribe de nuevo la nueva contraseña' className = 'form-control bg-transparent text-black my-2' />
                 {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
                 <button type='submit' id='idButton' hidden></button>
             </form>
