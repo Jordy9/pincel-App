@@ -102,7 +102,7 @@ export const InformacionGeneral = () => {
         )
       })
     
-    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid)
+    const evaluacionFiltrada = evaluacion?.filter(evaluacion => evaluacion?.idUsuario === uid && capacitacion?.some(capacitacion => capacitacion?.publicar === true && evaluacion?.idCapacitacion === capacitacion?._id && capacitacion?.team?.some(team => team?.value === usuarioActivo?.team)))
 
     let arregloCalificaciones = []
 
