@@ -32,10 +32,13 @@ export const CapacitacionTema = () => {
 
   const [timeUpdate, setTimeUpdate] = useState(-2)
 
+  const [isEnd, setIsEnd] = useState(false)
+
   useEffect(() => {
     const calculoCheckVideo = (duration*98) / 100
 
-    if (parseInt(timeUpdate) >= parseInt(calculoCheckVideo)) {
+    if (isEnd || (parseInt(timeUpdate) >= parseInt(calculoCheckVideo))) {
+      setIsEnd(false)
       dispatch(checkVideoUser(capacitacionId, capacitacionActiva?.videos?.idVideo, uid))
     }
 
@@ -64,7 +67,7 @@ export const CapacitacionTema = () => {
     useEffect(() => {
       const calculoCheckVideo = (duration*100) / 100
 
-      if (parseInt(timeUpdate) === parseInt(calculoCheckVideo) - 1 && NextVideo?.video?.length !== cuentaVideos) {
+      if ((isEnd || parseInt(timeUpdate) === parseInt(calculoCheckVideo) - 1) && NextVideo?.video?.length !== cuentaVideos) {
         setShowContinue(false)
       }
     }, [timeUpdate])
@@ -118,7 +121,7 @@ export const CapacitacionTema = () => {
           <h5>A continuación en {(segundos > -1) && segundos} {(NextVideo?.video?.length !== cuentaVideos) && nuevoVideo?.titulo}</h5>
         </div>
           :
-        <ReactPlayer onProgress={(state) => setTimeUpdate(state.playedSeconds)} onDuration = {(e) => setDuration(e)} width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
+        <ReactPlayer onEnded={() => setIsEnd(true)} onProgress={(state) => setTimeUpdate(state.playedSeconds)} onDuration = {(e) => setDuration(e)} width='100%' height = '60vh' controls url={capacitacionActiva?.videos?.video || capacitacion[0]?.video[0]?.video} />
       }
     </>
   )

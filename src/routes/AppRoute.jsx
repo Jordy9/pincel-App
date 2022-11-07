@@ -78,6 +78,14 @@ export const AppRoute = () => {
   //       , 1000)
   //   }, [token])
 
+  useEffect(() => {
+    setInterval(
+      () => (token) && (moment().diff(moment(Number(tokenInit)), 'minutes') >= 10 && moment().diff(moment(Number(tokenInit)), 'minutes') < 27797517)
+          &&
+        dispatch(iniciarAutenticacion())
+      , 1000)
+  }, [token])
+
   // useEffect(() => {
   //   if (moment().diff(moment(Number(tokenInit)), 'hours') >= 2 && moment().diff(moment(Number(tokenInit)), 'hours') < 462716) {
   //     dispatch(iniciarAutenticacion())
