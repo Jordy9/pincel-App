@@ -133,7 +133,7 @@ export const Sidebar = ({children}) => {
           <div className='row my-5'>
 
             <Offcanvas style = {{backgroundColor: 'rgb(10, 25, 45)', color: 'white'}} show={show} onHide={handledClose} >
-              <Offcanvas.Header closeButton><h1 className='mx-auto'>Gran Salón Express</h1></Offcanvas.Header>
+              <Offcanvas.Header closeVariant='white' closeButton><h1 className='mx-auto'>Gran Salón Express</h1></Offcanvas.Header>
                 <ul>
                   <NavLink className='d-flex justify-content-center' to='/perfil'>
                     <div className='d-flex justify-content-center' style={{width: '70px', height: '70px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
