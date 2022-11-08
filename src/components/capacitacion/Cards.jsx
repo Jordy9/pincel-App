@@ -75,9 +75,13 @@ export const Cards = () => {
                       <p style={{fontSize: '13.5px'}} className='text-muted'>Duracion: {(duration < 1) ? 1 : duration} min</p>
                       {
                         (porcentaje >= 1)
-                          &&
+                          ?
                         <div className="progress my-2">
                           <div className="progress-bar" role="progressbar" style={{width: `${porcentaje}%`, backgroundColor: 'rgb(89, 7, 211)'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{porcentaje}%</div>
+                        </div>
+                          :
+                        <div className='my-2'>
+                          <hr />
                         </div>
                       }
                       <button onClick={() => VideoComponent(_id)} className='btn btn-primary form-control'>{(porcentaje === 100 && (EvaluacionDeCap?.length !== 0 || !EvaluatShow)) ? 'Capacitación completa' : (porcentaje >= 1 && EvaluacionDeCap?.length === 0) ? 'Continuar capacitación' : 'Empezar capacitación'}</button>

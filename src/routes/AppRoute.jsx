@@ -78,6 +78,21 @@ export const AppRoute = () => {
   //       , 1000)
   //   }, [token])
 
+  // const [click, setClick] = useState()
+
+  // useEffect(() => {
+  //   window.addEventListener('click', () => {
+  //       setClick(new Date())
+  //     })
+    
+  //   console.log(click)
+
+  //   window.removeEventListener('click', () => {
+  //     console.log('clik')
+  //   })
+
+  // }, [click])
+
   useEffect(() => {
     setInterval(
       () => (token) && (moment().diff(moment(Number(tokenInit)), 'minutes') >= 10 && moment().diff(moment(Number(tokenInit)), 'minutes') < 27797517)

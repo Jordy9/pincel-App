@@ -13,17 +13,14 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
 
     const {handleSubmit, getFieldProps, touched, errors} = useFormik({
         initialValues: {
-            passwordActual: '',
             password: '',
             confirmPassword: ''
         },
         enableReinitialize: true,
-        onSubmit: ({passwordActual, password}) => {
-            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.date, usuarioActivo?.email.toLowerCase(), passwordActual, password, usuarioActivo?.role, usuarioActivo?.team, usuarioActivo?.urlImage))
+        onSubmit: ({password}) => {
+            dispatch(iniciarActualizacionPass(usuarioActivo?.id, usuarioActivo?.name, usuarioActivo?.lastName, usuarioActivo?.date, usuarioActivo?.email.toLowerCase(), password, usuarioActivo?.role, usuarioActivo?.team, usuarioActivo?.urlImage))
         },
         validationSchema: Yup.object({
-            passwordActual: Yup.string()
-                        .required('Requerido'),
             password: Yup.string()
                         .required('Requerido'),
             confirmPassword: Yup.string()
@@ -51,10 +48,9 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
             <form onSubmit={handleSubmit}>
                 <label>Contraseña</label>
                 <div className="input-group mb-3">
-                    <input autoComplete='off' {...getFieldProps('passwordActual')} type={(showPassword) ? 'password' : 'text'} placeholder = '********' className = 'form-control' aria-describedby="basic-addon2" />
+                    <input autoComplete='off' {...getFieldProps('password')} type={(showPassword) ? 'password' : 'text'} placeholder = '********' className = 'form-control' aria-describedby="basic-addon2" />
                     <span style={{cursor: 'pointer'}} onClick={() => setShowPassword(!showPassword)} className="input-group-text" id="basic-addon2"><i style={{color: 'rgb(0, 197, 0)'}} className={(showPassword) ? 'bi bi-eye-slash' : 'bi bi-eye'}></i></span>
                 </div>
-                <input autoComplete='off' type={(showPassword) ? 'password' : 'text'} {...getFieldProps('password')} placeholder = 'Contraseña nueva' className = 'form-control bg-transparent text-black my-2' />
                 {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
                 <input autoComplete='off' type={(showPassword) ? 'password' : 'text'} {...getFieldProps('confirmPassword')} placeholder = 'Escribe de nuevo la nueva contraseña' className = 'form-control bg-transparent text-black my-2' />
                 {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}

@@ -84,10 +84,12 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
 
   return (
     <>
-        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 shadow p-4 d-flex justify-content-center align-items-center my-2" style={{height: 'auto', borderRadius: '35px'}}>
-            <div data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${cap?.length} capacitaciones completadas`}>
-                <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)} text={`${sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)}%`} />
-                <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
+        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 col-xxl-2 my-2">
+            <div className='row shadow p-3 d-flex align-items-center justify-content-center' style={{height: '100%', borderRadius: '35px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${sumaTotalCompletasPorUsuarios?.toFixed(!showDecimal && 1)}/${cap?.length} capacitaciones completadas`}>
+                <div className='col-12'>
+                    <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)',})} value={sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)} text={`${sumaPromedioCapacitaciones?.toFixed(!showDecimal && 1)}%`} />
+                    <h6 className='text-center my-1'>Promedio de las capacitaciones completas</h6>
+                </div>
             </div>
         </div>
 

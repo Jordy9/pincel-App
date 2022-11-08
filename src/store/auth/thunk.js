@@ -382,11 +382,11 @@ export const cambiarEstadoUsuario = (id, estado, team, activeResena) => {
     }
 }
 
-export const iniciarActualizacionPass = (id, name, lastName, date, email, passwordActual, password, role, team, urlImage) => {
+export const iniciarActualizacionPass = (id, name, lastName, date, email, password, role, team, urlImage) => {
     return async(dispatch) => {
 
         try {
-            const resp = await salonApi.put(`/auth/updatePassword/${id}`, {name, lastName, date, email, passwordActual, password, role, team, urlImage})
+            const resp = await salonApi.put(`/auth/updatePassword/${id}`, {name, lastName, date, email, password, role, team, urlImage})
     
             if (resp.data.ok) {
 

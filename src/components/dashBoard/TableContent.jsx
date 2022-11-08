@@ -114,7 +114,7 @@ export const TableContent = (props) => {
                     (respWidth > 992)
                         &&
                     <td className='d-flex justify-content-center'>
-                        <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                        <div className='d-flex justify-content-center my-1' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                             <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
                         </div>
                     </td>
@@ -138,7 +138,7 @@ export const TableContent = (props) => {
                     (respWidth > 992)
                         &&
                     <td className='d-flex justify-content-center'>
-                        <div className='d-flex justify-content-center my-3' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
+                        <div className='d-flex justify-content-center my-1' style={{width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', objectFit: 'cover'}}>
                             <img src={(urlImage) ? urlImage : user} className='img-fluid' alt="" />
                         </div>
                     </td>

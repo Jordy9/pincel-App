@@ -85,7 +85,20 @@ export const EvaluacionPage = () => {
     <>
         <div className="row my-5 p-4">
             <>
-                <NavbarEvaluacion direction = {'top'} />
+                <NavbarEvaluacion 
+                    direction = {'top'} 
+                    anteriorPregunta = {anteriorPregunta}
+                    capacitacionActiva = {capacitacionActiva}
+                    changeCountResponse = {changeCountResponse}
+                    changeEvaluacionCalificacion = {null}
+                    formValues = {formValues}
+                    intentosPermitidos = {intentosPermitidos}
+                    seleccionados = {seleccionados}
+                    siguientePregunta = {siguientePregunta}
+                    terminar = {terminar}
+                    intentos = {Number(intentosPermitidos[0]?.intentos)}
+                    evaluacionId = {enEva?._id}
+                />
                 <h4>{changeCountResponse}/{capacitacionActiva?.preguntas?.length}</h4>
 
                 <div className='p-4 text-black'>
@@ -120,6 +133,7 @@ export const EvaluacionPage = () => {
             siguientePregunta = {siguientePregunta}
             terminar = {terminar}
             intentos = {Number(intentosPermitidos[0]?.intentos)}
+            evaluacionId = {enEva?._id}
          />
     </>
   )
