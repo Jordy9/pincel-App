@@ -88,7 +88,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
       const trueFalse = resena.filter(resena => resena.role === 'Administrador')
 
       const handledButton = () => {
-        document.getElementById('idButton').click()
+        document.getElementById('idButtonEvaluacion').click()
         setShowModalFront(true)
     }
 
@@ -155,7 +155,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
                         </Slider>
                     </div>
 
-                    <button type='button' id='idButton' hidden></button>
+                    <button type='button' id='idButtonEvaluacion' hidden></button>
                 </div>
             </div>
 

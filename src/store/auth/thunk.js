@@ -1,3 +1,4 @@
+import axios from "axios";
 import Swal from "sweetalert2"
 import salonApi from "../../salonApi/salonApi";
 import { onActiveUser, onGetUsers, onLogin, onLogout, onRegister, onUpdate, onUpdateUser, uploadFinish, uploadImagePerfil } from "./authSlice"
@@ -556,5 +557,63 @@ export const iniciarLogoutTokenExpire = () => {
             icon: 'error',
             title: 'Su token expiro'
         })
+    }
+}
+
+export const recuperarCont = (email) => {
+    return async (dispatch) => {
+        await salonApi.post('auth/sendUserEmail', {email})
+    }
+}
+
+export const recuperarPass = (id, name, lastName, date, email, password, role, team, urlImage, tokenUser) => {
+    return async(dispatch) => {
+
+        try {
+
+            const resp = await axios.put(`${process.env.REACT_APP_API_URL}/auth/resetPassword/${id}`, {name, lastName, date, email, password, role, team, urlImage, tokenUser}, {headers: {'token-user': tokenUser}})
+
+    
+            if (resp.data.ok) {
+
+                dispatch(onUpdate(resp.data.usuario))
+    
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                
+                return Toast.fire({
+                    icon: 'success',
+                    title: 'Usuario actualizado correctamente'
+                })
+            }
+        } catch ({response}) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            return Toast.fire({
+                icon: 'error',
+                title: response.data.msg
+            })
+        }
+        
+
     }
 }

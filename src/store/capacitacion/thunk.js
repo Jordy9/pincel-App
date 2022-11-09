@@ -506,3 +506,30 @@ export const updateUsuarioIntento = (id, uid, idEv, capacitaciones) => {
         })
     }
 }
+
+export const sendEmail = (capacitacion) => {
+    return async (dispatch, getState) => {
+
+        const { usuarios } = getState().auth;
+
+        let arregloFiltroUserEmail = []
+
+        let arregloEmails = []
+
+        arregloFiltroUserEmail = usuarios?.filter(usuario => capacitacion?.team?.some(teamm => teamm?.value === usuario?.id || teamm?.value === usuario?.id))
+
+        arregloFiltroUserEmail?.map(usuario => arregloEmails.push(usuario?.email))
+
+        const email = 'xilero45@gmail.com'
+
+        const email2 = arregloEmails
+
+        const subject = 'Hola'
+
+        let title = 'Hola'
+
+        let descripcion = 'Hola'
+
+        await salonApi.post('/sendEmail', {subject, title, email2, descripcion, email})
+    }
+}

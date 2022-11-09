@@ -103,7 +103,7 @@ export const ModalUser = () => {
                             </div>
                         </div>
                     </div>
-                    <button type='submit' id='idButton' hidden></button>
+                    <button type='submit' hidden></button>
                 </div>
             </div>
 

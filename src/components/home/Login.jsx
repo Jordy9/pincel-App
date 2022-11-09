@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { iniciarLogin } from '../../store/auth/thunk'
 import gse from '../../heroes/gse.png'
+import { NavLink } from 'react-router-dom'
 
 export const Login = () => {
 
@@ -72,7 +73,7 @@ export const Login = () => {
                         
                         <button type='submit' className='btn btn-primary form-control my-3'>Iniciar Sesión</button>
 
-                        {/* <NavLink to='/Registro' className='d-flex justify-content-center' style={{textDecoration: 'none', color: 'black', textAlign: 'center'}}>¿Aún no tienes una cuenta? Registrate</NavLink> */}
+                        {/* <NavLink to='/olvidasteContrasena' className='d-flex justify-content-center' style={{color: 'black', textAlign: 'center'}}>¿Olvidaste tu contraseña? haz click aqui</NavLink> */}
                     </div>
                 </form>
             </div>

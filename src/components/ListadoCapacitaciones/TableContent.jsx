@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { toUpdate } from '../../store/capacitacion/capacitacionSlice';
-import { eliminarCapacitacion, publicarCapacitacion } from '../../store/capacitacion/thunk';
+import { eliminarCapacitacion, publicarCapacitacion, sendEmail } from '../../store/capacitacion/thunk';
 import noImg from '../../heroes/no.jpg'
 import { onDoubleTap } from '../../helper/onDoubleTap';
 
@@ -86,6 +86,7 @@ export const TableContent = (props) => {
             }).then((result) => {
               if (result.isConfirmed) {
                 dispatch(publicarCapacitacion(capacita, !publicarAhora))
+                // dispatch(sendEmail(capacita))
               }
             })
     

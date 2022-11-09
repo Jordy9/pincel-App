@@ -34,7 +34,7 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
     }
 
     const handledButton = () => {
-        document.getElementById('idButton').click()
+        document.getElementById('idButtonCambiarPass').click()
     }
 
     const [showPassword, setShowPassword] = useState(true)
@@ -54,7 +54,7 @@ export const ModalCambPass = ({showModal, setShowModal}) => {
                 {touched.password && errors.password && <span style={{color: 'red'}}>{errors.password}</span>}
                 <input autoComplete='off' type={(showPassword) ? 'password' : 'text'} {...getFieldProps('confirmPassword')} placeholder = 'Escribe de nuevo la nueva contraseña' className = 'form-control bg-transparent text-black my-2' />
                 {touched.confirmPassword && errors.confirmPassword && <span style={{color: 'red'}}>{errors.confirmPassword}</span>}
-                <button type='submit' id='idButton' hidden></button>
+                <button type='submit' id='idButtonCambiarPass' hidden></button>
             </form>
         </Modal.Body>
         <Modal.Footer onSubmit={handleSubmit}>
