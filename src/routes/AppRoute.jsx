@@ -33,17 +33,9 @@ export const AppRoute = () => {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate()
-
   const { uid, usuarioActivo } = useSelector(state => state.auth);
 
   const { equipos } = useSelector(state => state.eq);
-
-  const { capacitacionActiva } = useSelector(state => state.cp);
-
-  const { enEvaluacion } = useSelector(state => state.enE);
-
-  const enEv = enEvaluacion?.find(ev => ev?.idUsuario === uid)
 
   let usuariosFiltrado = []
 
@@ -56,12 +48,6 @@ export const AppRoute = () => {
   const {socket, online, conectarSocket, desconectarSocket} = useSocket(`${process.env.REACT_APP_API_URL.split('/api')[0]}`)
 
   const token = localStorage.getItem('token')
-
-  useEffect(() => {
-    if (enEv?._id && capacitacionActiva) {
-      navigate(`/evaluacionCapacitacion/${capacitacionActiva?._id}`)
-    }
-  }, [capacitacionActiva])
 
   const refInterval = useRef()
 
@@ -93,7 +79,6 @@ export const AppRoute = () => {
     dispatch(obtenerEquipo())
     dispatch(obtenerToShowResena())
     dispatch(obtenerCustomResena())
-    dispatch(obtenerEnEvaluacion())
   }, [dispatch])
 
   useEffect(() => {
@@ -145,15 +130,25 @@ export const AppRoute = () => {
           <ScrollToTop />
 
           {
+            (usuarioActivo?.role && usuarioActivo?.role === 'Administrador')
+              &&
+            <AdminRoute uid = {uid} />
+          }
+
+          {
             (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
-              ?
+              &&
+            (!isLeader)
+              &&
+            <UserRoute uid = {uid} />
+          }
+
+          {
+            (usuarioActivo?.role && usuarioActivo?.role === 'Usuario')
+              &&
             (isLeader)
-              ?
-            <LeaderRoute capacitacionActiva = {capacitacionActiva} />
-              :
-            <UserRoute capacitacionActiva = {capacitacionActiva} />
-              :
-            <AdminRoute capacitacionActiva = {capacitacionActiva} />
+              &&
+            <LeaderRoute uid = {uid} />
           }
         </>
           :

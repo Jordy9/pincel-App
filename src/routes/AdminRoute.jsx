@@ -1,5 +1,5 @@
-import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Capacitacion } from '../components/capacitacion/Capacitacion';
 import { VideosComponent } from '../components/capacitacion/VideosComponent';
 import { Dashboard } from '../components/dashBoard/Dashboard';
@@ -16,11 +16,36 @@ import { useSelector } from 'react-redux';
 import { Spinner } from '../components/Spinner';
 import { ListadoUsuarios } from '../components/usuarios/ListadoUsuarios';
 import { EvaluacionPage } from '../components/capacitacion/EvaluacionPage';
+import { ToRedirect } from '../components/capacitacion/ToRedirect';
+import { useDispatch } from 'react-redux';
+import { activeCapacitacion } from '../store/capacitacion/capacitacionSlice';
+import { obtenerEnEvaluacion } from '../store/enEvaluacion/thunk';
 
 
-export const AdminRoute = ({capacitacionActiva}) => {
+export const AdminRoute = ({uid}) => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(obtenerEnEvaluacion())
+  }, [])
 
   const { toShowResena } = useSelector(state => state.to);
+
+  const { enEvaluacion } = useSelector(state => state.enE);
+
+  const { capacitacionActiva } = useSelector(state => state.cp);
+
+  const enEv = enEvaluacion?.find(ev => ev?.idUsuario === uid)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (enEv?._id && enEv?.capacitacionActiva) {
+      dispatch(activeCapacitacion({...enEv?.capacitacionActiva}))
+      navigate(`/evaluacionCapacitacion/${enEv?.capacitacionActiva?._id}`)
+    }
+  }, [enEv, dispatch, navigate])
   
   return (
     <Routes>
@@ -30,7 +55,7 @@ export const AdminRoute = ({capacitacionActiva}) => {
         <Route path='/formCapacitaciones' element = {<FormularioVideos />} />
         <Route path='/ListCapacitaciones' element = {<ListadoCapacitaciones />} />
         <Route path='/capacitacion/:id' element = {<VideosComponent />} />
-        <Route path='/evaluacionCapacitacion/:id' element = {(capacitacionActiva?._id) && <EvaluacionPage />} />
+        <Route path='/evaluacionCapacitacion/:id' element = {(enEv?.capacitacionActiva?._id && capacitacionActiva) ? <EvaluacionPage /> : <ToRedirect capacitacionActiva={enEv?.capacitacionActiva?._id} />} />
         <Route path='/Aclaraciones' element = {<ChatScreen />} />
         <Route path='/Comunicado' element = {<Comunicado />} />
         <Route path='/ListComunicados' element = {<ListadoComunicados />} />

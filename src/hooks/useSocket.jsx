@@ -5,6 +5,7 @@ import { onUpdateUser } from '../store/auth/authSlice';
 import { actualizarCapacitacion } from '../store/capacitacion/capacitacionSlice';
 import { obtenerCapacitacion } from '../store/capacitacion/thunk';
 import { UsuariosCargados } from '../store/chat/chatSlice';
+import { createEnEvaluacion, deleteEnEvaluacion } from '../store/enEvaluacion/enEvaluacionSlice';
 import { obtenerEvaluacion } from '../store/evaluacion/thunk';
 import { NotificacionesCargadas } from '../store/notificaciones/notificacionesSlice';
 import { BorrarNotificaciones } from '../store/notificaciones/thunks';
@@ -92,6 +93,18 @@ export const useSocket = ( serverPath ) => {
     useEffect(() => {
         socket?.on('updated-one-user-evaluacion-deleted', () => {
             dispatch(obtenerEvaluacion())
+        })
+    }, [ socket, dispatch])
+
+    useEffect(() => {
+        socket?.on('deleted-enevaluation', (payload) => {
+            dispatch(deleteEnEvaluacion(payload?.id))
+        })
+    }, [ socket, dispatch])
+
+    useEffect(() => {
+        socket?.on('new-enevaluation-added', (payload) => {
+            dispatch(createEnEvaluacion(payload))
         })
     }, [ socket, dispatch])
 

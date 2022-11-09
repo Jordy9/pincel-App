@@ -1,37 +1,29 @@
 import salonApi from "../../salonApi/salonApi"
-import { activeCapacitacion } from "../capacitacion/capacitacionSlice"
 import { createEnEvaluacion, deleteEnEvaluacion, getEnEvaluacion } from "./enEvaluacionSlice"
 
 export const obtenerEnEvaluacion = () => {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         const resp = await salonApi.get(`/enEvaluacion`)
 
         dispatch(getEnEvaluacion(resp.data.enEvaluacion))
-
-        const { uid } = getState().auth;
-
-        const enEv = resp.data.enEvaluacion?.find(ev => ev?.idUsuario === uid)
-
-        if (enEv?.capacitacionActiva) {
-            dispatch(activeCapacitacion({...enEv?.capacitacionActiva}))
-        }
     }
 }
 
 export const tomandoEvaluacion = (idCapacitacion, idUsuario, capacitacionActiva) => {
-    return async (dispatch) => {
-        
-        const resp = await salonApi.post(`/enEvaluacion/new`, {idCapacitacion, idUsuario, capacitacionActiva})
+    return async (dispatch, getState) => {
 
-        dispatch(createEnEvaluacion(resp.data.enEvaluacion))
-        
+        const { socket } = getState().sk;
+
+        socket?.emit('new-enevaluation', {idCapacitacion, idUsuario, capacitacionActiva})        
     }
 }
 
 export const eliminarEnEvaluacion = (id) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         
-        await salonApi.delete(`/enEvaluacion/delete/${id}`)
+        const { socket } = getState().sk;
+        
+        socket?.emit('delete-enevaluation', {id: id})
 
         dispatch(deleteEnEvaluacion(id))
         

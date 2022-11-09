@@ -92,7 +92,6 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
         },
         enableReinitialize: true,
         onSubmit: ({name, lastName, email, date, team, role, urlImage, password}) => {
-            console.log(name)
             if (!password) {
                 password = activeUser?.password
             }

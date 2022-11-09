@@ -15,7 +15,6 @@ export const EvaluacionPage = () => {
     const navigate = useNavigate()
 
     const { capacitacionActiva } = useSelector(state => state.cp);
-
     
     const { evaluacion } = useSelector(state => state.ev);
     
@@ -51,7 +50,7 @@ export const EvaluacionPage = () => {
             dispatch(eliminarEnEvaluacion(enEva?._id))
         }
 
-        navigate(`/capacitacion/${capacitacionActiva?._id}`)
+        navigate(`/capacitacion/${capacitacionActiva?._id}`, {replace: true})
         
     }
 
@@ -73,11 +72,11 @@ export const EvaluacionPage = () => {
 
     let PreguntaAleatoria = capacitacionActiva?.preguntas
 
-    let arregloRespuestasAleatorias = useMemo(() => PreguntaAleatoria[changeCountResponse - 1].respuesta?.map(respuesta => respuesta)?.sort(() => Math.random() - 0.5), [changeCountResponse - 1])
+    let arregloRespuestasAleatorias = useMemo(() => PreguntaAleatoria[changeCountResponse - 1]?.respuesta?.map(respuesta => respuesta)?.sort(() => Math.random() - 0.5), [changeCountResponse - 1])
 
     useEffect(() => {
       if (Number(intentosPermitidos[0]?.intentos) === 0) {
-        navigate(`/capacitacion/${capacitacionActiva?._id}`)
+        navigate(`/capacitacion/${capacitacionActiva?._id}`, {replace: true})
       }
     }, [intentosPermitidos])
     

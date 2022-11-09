@@ -23,7 +23,7 @@ export const NavbarEvaluacion = ({direction, changeCountResponse, changeEvaluaci
         }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(eliminarEnEvaluacion(evaluacionId))
-                navigate(`/capacitacion/${capacitacionActiva?._id}`)
+                navigate(`/capacitacion/${capacitacionActiva?._id}`, {replace: true})
             }
           })
     }
