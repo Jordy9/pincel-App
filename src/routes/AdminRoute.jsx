@@ -30,6 +30,8 @@ export const AdminRoute = ({uid}) => {
     dispatch(obtenerEnEvaluacion())
   }, [])
 
+  const capacitacionId = window.location.pathname.split('/')[2]
+
   const { toShowResena } = useSelector(state => state.to);
 
   const { enEvaluacion } = useSelector(state => state.enE);
@@ -54,7 +56,7 @@ export const AdminRoute = ({uid}) => {
         <Route path='/capacitacion' element = {<Capacitacion />} />
         <Route path='/formCapacitaciones' element = {<FormularioVideos />} />
         <Route path='/ListCapacitaciones' element = {<ListadoCapacitaciones />} />
-        <Route path='/capacitacion/:id' element = {<VideosComponent />} />
+        <Route path='/capacitacion/:id' element = {(capacitacionActiva && capacitacionId === capacitacionActiva?._id) ? <VideosComponent /> : <ToRedirect capacitacionActiva={capacitacionActiva?._id} />} />
         <Route path='/evaluacionCapacitacion/:id' element = {(enEv?.capacitacionActiva?._id && capacitacionActiva) ? <EvaluacionPage /> : <ToRedirect capacitacionActiva={enEv?.capacitacionActiva?._id} />} />
         <Route path='/Aclaraciones' element = {<ChatScreen />} />
         <Route path='/Comunicado' element = {<Comunicado />} />

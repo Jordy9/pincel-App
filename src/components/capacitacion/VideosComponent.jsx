@@ -60,12 +60,6 @@ export const VideosComponent = () => {
       navigate(`/evaluacionCapacitacion/${capacitacionActiva?._id}`)
     }
   }
-
-  useEffect(() => {
-    if (!capacitacionActiva) {
-      navigate('/capacitacion', { replace: true })
-    }
-  }, [])
   
   return (
       <>
