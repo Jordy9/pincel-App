@@ -122,7 +122,7 @@ export const TableContent = (props) => {
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
                     <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}${(filterCapId?.length !== 0) ? IdShowCap : ''}`}>
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={(usuarioTeam !== 'Sin equipo') ? porcientoVideos || 0 : 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{sumaPorcentage0}</td>
@@ -146,7 +146,7 @@ export const TableContent = (props) => {
                 <td>{name}</td>
                 <td className='d-flex justify-content-center mx-auto'>
                     <div className='d-flex justify-content-center' style={{width: '50px'}} data-bs-toggle="tooltip" data-bs-placement="left" title={`${(sumaPorcentage?.length !== 0) ? pluralLetraCapacitacion : '0 capacitaciones'}, ${(calificacionEvaluacion?.length !== 0) ? pluralLetra : '0 evaluaciones' } y una calificación ${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ?  `de ${calificacionFinalUsuario}` : 'Incompleta'}${(filterCapId?.length !== 0) ? IdShowCap: ''}`}>
-                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={porcientoVideos || 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
+                        <CircularProgressbar styles={buildStyles({pathColor: 'rgb(71, 7, 168)', textColor: 'rgb(71, 7, 168)', textSize: '30px'}) } value={(usuarioTeam !== 'Sin equipo') ? porcientoVideos || 0 : 0} text={`${(calificacionEvaluacion?.length !== 0 && filterCapTeam?.length !== 0) ? calificacionFinalUsuario : '-'}`} />
                     </div>
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{sumaPorcentage0}</td>

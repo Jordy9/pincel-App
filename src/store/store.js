@@ -29,4 +29,9 @@ export const store = configureStore({
     cr: customResenaSlice.reducer,
     enE: enEvaluacionSlice.reducer,
   },
+  
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })

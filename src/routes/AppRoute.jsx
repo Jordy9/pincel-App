@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Login } from '../components/home/Login';
 import { useSelector, useDispatch } from 'react-redux'
-import { iniciarAutenticacion, obtenerUsuarioActivo, obtenerUsuarios } from '../store/auth/thunk';
+import { iniciarAutenticacion, iniciarLogout, obtenerUsuarioActivo, obtenerUsuarios } from '../store/auth/thunk';
 import { Spinner } from '../components/Spinner';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -24,7 +24,6 @@ import { obtenerToShowResena } from '../store/toShowResena/thunk';
 import { obtenerCustomResena } from '../store/customResena/thunk';
 import { LeaderRoute } from './LeaderRoute';
 import { ScrollToTop } from '../components/scrollToTop/ScrollToTop';
-import { obtenerEnEvaluacion } from '../store/enEvaluacion/thunk';
 import { OlvidasteContrasena } from '../components/home/OlvidasteContrasena';
 import { RecuperarContrasena } from '../components/home/RecuperarContrasena';
 moment.locale('es');
@@ -48,6 +47,35 @@ export const AppRoute = () => {
   const {socket, online, conectarSocket, desconectarSocket} = useSocket(`${process.env.REACT_APP_API_URL.split('/api')[0]}`)
 
   const token = localStorage.getItem('token')
+
+  const refIntervalOnClick = useRef()
+
+  const onClick = () => {
+    localStorage.setItem('date-click', new Date().getTime())
+  }
+  
+  useEffect(() => {
+    window.addEventListener('click', onClick)
+
+    return () => window.removeEventListener('click', onClick)
+
+  }, [])
+  
+  useEffect(() => {
+    let newDateClick = localStorage.getItem('date-click')
+
+    refIntervalOnClick.current && clearInterval(refIntervalOnClick.current)
+    refIntervalOnClick.current = setInterval(
+      () => {
+        if (!!token) {
+          newDateClick = localStorage.getItem('date-click')
+          if (moment().diff(moment(Number(newDateClick)), 'minutes') >= 15 && moment().diff(moment(Number(newDateClick)), 'minutes') < 27797517) {
+            dispatch(iniciarLogout())
+          }
+        }
+      }
+      , 300000)
+  }, [token, dispatch])
 
   const refInterval = useRef()
 

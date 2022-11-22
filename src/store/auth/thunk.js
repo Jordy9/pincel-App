@@ -448,6 +448,7 @@ export const iniciarLogin = (email, password) => {
     
                 localStorage.setItem('token', resp.data.token)
                 localStorage.setItem('token-init-date', new Date().getTime());
+                localStorage.setItem('date-click', new Date().getTime())
 
                 dispatch(obtenerUsuarioActivo())
             }
@@ -491,6 +492,7 @@ export const iniciarLogout = () => {
     return (dispatch) => {
         localStorage.removeItem('token')
         localStorage.removeItem('token-init-date')
+        localStorage.removeItem('date-click')
 
         dispatch(onLogout())
     }
@@ -539,6 +541,7 @@ export const iniciarLogoutTokenExpire = () => {
     return (dispatch) => {
         localStorage.removeItem('token')
         localStorage.removeItem('token-init-date')
+        localStorage.removeItem('date-click')
         dispatch(onLogout())
 
         const Toast = Swal.mixin({

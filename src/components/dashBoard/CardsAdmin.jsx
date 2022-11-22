@@ -335,7 +335,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'} p-4`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Evaluaciones de los empleados</h6>
             <h6 className='text-center'>Total {evaluacionCount}</h6>
-            <Bar options={options} data={data} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
+            <Bar options={options} data={data} width = {((respWidth < 610) ? '100%' : 'auto')} height = {((respWidth < 610) ? '80%' : 'auto')} />
           </div>
         </div>
 
@@ -343,7 +343,7 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           <div onTouchStart = {(e) => onDoubleTap(e, handledActive)} onDoubleClick={handledActive} className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px', cursor: 'pointer'}}>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
             <h6 className='text-center'>Total de reseñas {(resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0}</h6>
-            <Bar options={options2} data={data2} plugins = {ChartDataLabels} width = {((respWidth < 610) && '100%')} height = {((respWidth < 610) && '80%')} />
+            <Bar options={options2} data={data2} plugins = {[ChartDataLabels]} width = {((respWidth < 610) ? '100%' : 'auto')} height = {((respWidth < 610) ? '80%' : 'auto')} />
           </div>
         </div>
 
