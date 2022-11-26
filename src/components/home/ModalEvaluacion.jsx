@@ -85,7 +85,7 @@ export const ModalEvaluacion = ({modalShow, setModalShow, resena, activeUser}) =
         }
       }, [idUsuarios, resena?.length])
 
-      const trueFalse = resena.filter(resena => resena.role === 'Administrador')
+      const trueFalse = resena.filter(resena => resena.toResena === 'Coordinadores Activos')
 
       const handledButton = () => {
         document.getElementById('idButtonEvaluacion').click()

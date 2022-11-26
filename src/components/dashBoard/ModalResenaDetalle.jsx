@@ -30,7 +30,6 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
             confirmButtonText: 'Eliminar'
           }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById('idButton').click()
                 dispatch(eliminarResena(activeResena?.id))
                 setModalShowDetalle(false)
             }
@@ -107,13 +106,13 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
             </Slider>
                 <div className = "shadow p-2" style={{borderRadius: '35px'}}>
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-2">
-                        <h4 className='d-flex justify-content-center'>Calificación</h4>
-                        <span className='d-flex justify-content-center'><Rating size={20} readonly ratingValue={activeResena?.calificacion} /></span>
+                      <h4 className='d-flex justify-content-center'>Calificación</h4>
+                      <span className='d-flex justify-content-center'><Rating size={20} readonly ratingValue={activeResena?.calificacion} /></span>
                     </div>
 
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-2">
-                        <label className='d-flex justify-content-center'>Reseña general para el equipo</label>
-                        <textarea readOnly type="text" cols={30} rows={10} value = {activeResena.descripcion} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
+                      <label className='d-flex justify-content-center'>Reseña general para el equipo</label>
+                      <textarea readOnly type="text" cols={30} rows={10} value = {activeResena.descripcion} style = {{resize: 'none'}} placeholder='Descripción de la Reseña' className='form-control' />
                     </div>
                 </div>
             </div>
@@ -121,7 +120,7 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
         </Modal.Body>
         <Modal.Footer>
             <button type='button' onClick={handledButton} className='btn btn-danger'>
-                Eliminar definitivamente
+              Eliminar definitivamente
             </button>
         </Modal.Footer>
     </Modal>

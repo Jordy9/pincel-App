@@ -28,8 +28,6 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
     const [modalShowDescripcion, setModalShowDescripcion] = useState(false)
 
-    const { usuarios } = useSelector(state => state.auth);
-
     const { comenzar, toResena } = useSelector(state => state.rs);
 
     const handledButton = () => {
@@ -37,7 +35,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
         setModalShowDescripcion(true)
     }
 
-    const trueFalse = resena.filter(resena => resena.role === 'Administrador')
+    const trueFalse = resena.filter(resena => resena.toResena === 'Coordinadores Activos')
 
     const settings = {
         dots: false,
@@ -93,7 +91,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
 
       const [next, setNext] = useState(false)
 
-      const resenaToDesc = resena?.filter(resena => resena?.role === 'Administrador')
+      const resenaToDesc = resena?.filter(resena => resena?.toResena === 'Coordinadores Activos')
 
     useEffect(() => {
 
@@ -141,6 +139,20 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
       }
     }, [segundos])
 
+    const onClickUserResena = (usuario) => {
+        dispatch(crearAResena(usuario))
+
+        const condicion = idUsuarios?.filter(idUsu => idUsu?.id === usuario?.id)
+
+        let newIdUsuarios = []
+        
+        if (condicion?.length !== 0) {
+            newIdUsuarios = idUsuarios?.filter(idUsu => idUsu?.id !== usuario?.id)
+            setIdUsuarios(newIdUsuarios)
+        }
+
+    }
+
   return (
     <Modal fullscreen show={ShowModalFront} onHide={handleClose}>
         <Modal.Header style={{border: 'none'}} closeButton>
@@ -158,7 +170,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     ?
                                 toResena[1]?.items?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map(usuario => {
                                     return (
-                                        <div key={usuario?.id} hidden = {false} onClick={() => dispatch(crearAResena(usuario))} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
+                                        <div key={usuario?.id} hidden = {false} onClick={() => onClickUserResena(usuario)} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 my-4">
                                             <div className='d-flex justify-content-center mx-auto' style={{width: '300px', height: 'auto', borderRadius: '10px', overflow: 'hidden', objectFit: 'cover'}}>
                                                 {
                                                     (resena?.includes(usuario))
@@ -174,7 +186,8 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                     :
                                 <Slider ref={ref} {...settings}>
                                     {
-                                        resena?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map(usuario => {
+                                        resena?.filter(usuarios => usuarios?.toResena === 'Coordinadores Activos')?.map((usuario, index) => {
+                                            const idUsuarioFiltrado = idUsuarios?.find(idUsu => idUsu?.id === usuario?.id)
                                             return (
                                                 <div key={usuario?.id} className="col-col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 my-4">
                                                     <h1 className='text-center my-2 mb-5'>¿Cómo fue el servicio de <strong>{usuario?.name}</strong> hoy?</h1>
@@ -182,7 +195,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                                                         <img src={usuario?.urlImage || user} className='img-fluid' style={{cursor: 'pointer', borderRadius: '20px'}} alt="" />
                                                     </div>
                                                     <div className='text-center mt-3'>
-                                                        <Rating allowHover transition emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={(usuario?.id === idUsuarios[1]) && idUsuarios[0]} />
+                                                        <Rating allowHover transition emptyColor='#828282' size={50} onClick={(rate) => handleRating([rate, usuario.id])} ratingValue={idUsuarioFiltrado?.calificacion || 0} />
                                                         <span style={{fontSize: '12px'}}></span>
                                                     </div>
                                                 </div>
@@ -214,7 +227,7 @@ export const ModalEvaluacionFront = ({resena, idUsuarios, setIdUsuarios, ShowMod
                 Anterior
             </button>
 
-            <button disabled = {(!next)} hidden = {evaluateFront} type='button' onClick={handledButton} className='btn btn-primary'>
+            <button disabled = {(idUsuarios?.length !== resena?.length)} hidden = {evaluateFront} type='button' onClick={handledButton} className='btn btn-primary'>
                 Siguiente
             </button>
         </Modal.Footer>
