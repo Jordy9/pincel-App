@@ -3,17 +3,23 @@ import Swal from "sweetalert2"
 import salonApi from '../../salonApi/salonApi';
 import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, filterResenaSlice, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
 
-export const obtenerResena = () => {
+export const obtenerResena = (inicio, fin, setIsLoading) => {
     return async(dispatch) => {
 
+        setIsLoading(true)
+        
         try {
-            const resp = await salonApi.get(`/resena`)
+            const resp = await salonApi.get(`/resena?inicio=${inicio}&fin=${fin}`)
     
             dispatch(getResena(resp.data.resena))
 
             const resena = resp.data.resena?.filter(resena => moment(resena?.createdAt).format('M/Y') === moment().format('M/Y'))
 
             dispatch(filterResenaSlice(resena))
+
+            if (resp.data.ok) {
+                setIsLoading(false)
+            }
 
         } catch (error) {
         }
@@ -37,8 +43,6 @@ export const obtenerToResena = () => {
 
 export const crearResena = (calificacion, descripcion, handleClose, setIdUsuarios) => {
     return async(dispatch) => {
-
-        console.log(calificacion?.length)
 
         try {
             if (calificacion?.length !== 0) {

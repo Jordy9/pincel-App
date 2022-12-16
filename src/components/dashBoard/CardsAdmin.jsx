@@ -7,8 +7,9 @@ import moment from 'moment';
 import { useState } from 'react';
 import { ModalResenaPorMes } from './ModalResenaPorMes';
 import { onDoubleTap } from '../../helper/onDoubleTap';
+import { Spinner } from '../Spinner';
 
-export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, showAllMonth, onlyThreeMonths, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount } ) => {
+export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, showAllMonth, onlyThreeMonths, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount, isLoading } ) => {
 
   let FiltroCalificacionResena
 
@@ -335,15 +336,25 @@ export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show,
           <div className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'} p-4`} style={{borderRadius: '35px'}}>
             <h6 className='text-center my-1'>Evaluaciones de los empleados</h6>
             <h6 className='text-center'>Total {evaluacionCount}</h6>
-            <Bar options={options} data={data} width = {((respWidth < 610) ? '100%' : 'auto')} height = {((respWidth < 610) ? '80%' : 'auto')} />
+            <Bar options={options} data={data} width = {((respWidth < 610) ? '90%' : '100%')} height = {((respWidth < 610) ? '90%' : '50vh')} />
           </div>
         </div>
 
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 my-2">
-          <div onTouchStart = {(e) => onDoubleTap(e, handledActive)} onDoubleClick={handledActive} className={`shadow ${(respWidth > 610) ? 'p-4' : 'p-1'}`} style={{borderRadius: '35px', cursor: 'pointer'}}>
+          <div onTouchStart = {(e) => onDoubleTap(e, handledActive)} onDoubleClick={handledActive} className={`shadow ${(respWidth > 610) ? 'p-4' : ''}`} style={{borderRadius: '35px', cursor: 'pointer', height: (respWidth < 610) ? 'auto' : '100%'}}>
             <h6 className='text-center my-1'>Reseñas de los clientes</h6>
             <h6 className='text-center'>Total de reseñas {(resenasFiltradas && resenasFiltradas[0]?.estado) ? resenasFiltradas?.filter(resena => resena?.estado === true)?.length : resenasFiltradas?.length || 0}</h6>
-            <Bar options={options2} data={data2} plugins = {[ChartDataLabels]} width = {((respWidth < 610) ? '100%' : 'auto')} height = {((respWidth < 610) ? '80%' : 'auto')} />
+            {
+              (isLoading)
+                ?
+              <div className='d-flex justify-content-center align-items-center' style={{height: (respWidth < 610) ? '40vh' : '80%'}}>
+                <div className="spinner-border" style={{width: '3rem', height: '3rem', color: 'rgb(71, 7, 168)'}} role="status">
+                  <span className="sr-only">Cargando...</span>
+                </div>
+              </div>
+                :
+              <Bar options={options2} data={data2} plugins = {[ChartDataLabels]} width = {((respWidth < 610) ? '90%' : '100%')} height = {((respWidth < 610) ? '90%' : '50vh')} />
+            }
           </div>
         </div>
 

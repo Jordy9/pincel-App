@@ -109,8 +109,6 @@ export const ReseñasfiltradasTodosMesesMayorQue = (resena, SumaResenasPorMes, s
 
   }
 
-  console.log(calificacionPorMeses)
-
   let arregloFinal = []
 
   let resta = (mes[0] - 1) - 11

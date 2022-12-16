@@ -32,7 +32,7 @@ import { CardsAdminCustomResena } from './CardsAdminCustomResena'
 import { filterResenaRango, ReseñasfiltradasTodosMeses, ReseñasfiltradasTodosMesesMayorQue, ReseñasfiltradasTodosMesesMayorQueD, ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo, ReseñasfiltradasTodosMesesMayorQueMenor, ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo, ReseñasfiltradasTodosMesesMenorQue } from '../../helper/filterResena'
 import { filterResenaUsuarioEquipoRango, filterResenaUsuarioEquipoTodosMeses } from '../../helper/filterResenaTeamUser'
 import { filterCustomResenaSlice } from '../../store/customResena/customResenaSlice'
-import { showError } from '../../store/resena/thunk'
+import { obtenerResena, showError } from '../../store/resena/thunk'
 import { EvaluacionesfiltradasTodosMesesMayorQue, EvaluacionesfiltradasTodosMesesMayorQueD, EvaluacionesfiltradasTodosMesesMayorQueDUsuarioEquipo, EvaluacionfiltradasTodosMesesMayorQueMenor, EvaluacionfiltradasTodosMesesMayorQueMenorUsuarioEquipo, EvaluationfiltradasTodosMeses, filterEvaluationGeneral } from '../../helper/filterEvaluation'
 import { filterEvaluacionUsuarioEquipoTodosMeses, filterEvaluacionUsuarioEquipoRango } from '../../helper/filterEvaluationTeamUser'
 import { filterCapacitacionGeneral, filterCapacitacionGeneralVideos } from '../../helper/filterCapacitacion'
@@ -154,13 +154,25 @@ export const DashboardAdmin = () => {
 
   // Filtro de las resenas por fecha y rango de fecha en general
 
-  const resenasFiltradas = filterResenaRango(resena, changeDate, changeDateRange, selectRange, showResena)
+  const resenasFiltradas = resena
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+
+    if (selectRange.startDate && selectRange.endDate) {
+      dispatch(obtenerResena(
+        moment(selectRange.startDate).format('YYYY-MM-DDTHH:mm:ss'),
+        moment(selectRange.endDate).format('YYYY-MM-DDTHH:mm:ss'),
+        setIsLoading
+      ))
+    }
+    
+  }, [dispatch, selectRange.startDate, selectRange.endDate])
 
   // Reseñas filtradas por los meses
 
   let SumaResenasPorMes = []
-
-  let calificacionPorMeses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
   useEffect(() => {
 
@@ -177,29 +189,35 @@ export const DashboardAdmin = () => {
     }
   }, [changeDate, changeDateRange])
 
-  if ((showThreeMonth || showAllMonth) && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
-    calificacionPorMeses = ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-  }
+  const [calificacionPorMeses, setcalificacionPorMeses] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-  if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-  }
-
-  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-  }
-
-  if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado)
-  }
-
-  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange)
-  }
-
-  if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
-    calificacionPorMeses = ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado)
-  }
+  useEffect(() => {
+    let calificacionPorMeses = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+    if ((showThreeMonth || showAllMonth) && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMeses(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange))
+    }
+  
+    if (mes[0] - 1 > mes[1] && moment(changeDate).format('Y') === moment(changeDateRange).format('Y')) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMesesMayorQue(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange))
+    }
+  
+    if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMesesMayorQueD(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange))
+    }
+  
+    if (changeDate > changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMesesMayorQueDUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado))
+    }
+  
+    if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length === 0) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMesesMayorQueMenor(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange))
+    }
+  
+    if (changeDate < changeDateRange && moment(changeDate).format('Y') !== moment(changeDateRange).format('Y') && usuarioFiltrado?.length !== 0) {
+      setcalificacionPorMeses(ReseñasfiltradasTodosMesesMayorQueMenorUsuarioEquipo(resena, SumaResenasPorMes, showThreeMonth, showThreeMonths, showAllMonth, calificacionPorMeses, changeDate, changeDateRange, usuarioFiltrado))
+    }
+  }, [resena])
  
   // Fin de los filtros de resena
 
@@ -461,8 +479,6 @@ export const DashboardAdmin = () => {
   // Filtro por todos los meses de las reseñas personalizadas
   
   const customResenaTodosLosMeses = filterCustomResenaTodosMeses(customResena, showThreeMonth, changeDate, changeDateRange, showThreeMonths, showAllMonth)
-
-  const [showModalCreateUser, setShowModalCreateUser] = useState(false)
   
   return (
     <Sidebar>
@@ -575,6 +591,7 @@ export const DashboardAdmin = () => {
                 evaluacionFiltradaPorRango = {(evaluacionFilterArray?.length !== 0 && usuarioFiltrado?.length !== 0) ? evaluacionFilterArray[0] : evaluacionFiltradaPorRango[0]}
                 evaluacionFiltroTodosLosMeses = {(usuarioFiltrado?.length !== 0 && mes[0] - 1 < mes[1]) ? calificacionEvaluacionPorMesesDeEquipos : CalificacionEvaluacionPorMes}
                 evaluacionCount = {(usuarioFiltrado?.length !== 0) ? evaluacionFilterArray[1] : evaluacionFiltradaPorRango[1]}
+                isLoading = {isLoading}
               />
                 :
               <CardsAdminCustomResena 
