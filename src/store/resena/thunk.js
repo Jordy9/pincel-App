@@ -1,4 +1,3 @@
-import moment from 'moment';
 import Swal from "sweetalert2"
 import salonApi from '../../salonApi/salonApi';
 import { comenzarResena, createAResena, createResena, deleteAResena, DeleteResena, filterResenaSlice, getResena, getToResena, setClearResena, UpdateResena } from './resenaSlice';
@@ -13,9 +12,7 @@ export const obtenerResena = (inicio, fin, setIsLoading) => {
     
             dispatch(getResena(resp.data.resena))
 
-            const resena = resp.data.resena?.filter(resena => moment(resena?.createdAt).format('M/Y') === moment().format('M/Y'))
-
-            dispatch(filterResenaSlice(resena))
+            dispatch(filterResenaSlice(resp.data.resena))
 
             if (resp.data.ok) {
                 setIsLoading(false)

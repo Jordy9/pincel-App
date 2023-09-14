@@ -12,7 +12,7 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
 
     const dispatch = useDispatch();
 
-    const { activeUser } = useSelector(state => state.auth);
+    const { activeUser, upload } = useSelector(state => state.auth);
 
     const { equipos } = useSelector(state => state.eq);
 
@@ -167,6 +167,16 @@ export const ModalUser = ({ShowModalUser, setShowModalUser}) => {
                     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
                         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center align-items-center">
                             <img src={ImagePerfilShow || user} style={{maxWidth: '250px', maxHeight: '250px', width: '250px', height: '250px', objectFit: 'cover', clipPath: 'circle()'}} alt="" />
+                        </div>
+
+                        <div className='d-grid gap-2 col-7 mx-auto mt-4'>
+                            {
+                                (upload !== 0)
+                                    &&
+                                <div className="progress2 my-2">
+                                    <div className="progress-bar" role="progressbar" style={{width: `${upload}%`, backgroundColor: 'rgb(89, 7, 211)', color: 'white', borderRadius: 100}} aria-valuemin="0" aria-valuemax="100">Subiendo foto de perfil {upload}%</div>
+                                </div>
+                            }
                         </div>
 
                         <div className='d-grid gap-2 col-6 mx-auto mt-4'>

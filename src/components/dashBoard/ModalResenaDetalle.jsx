@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { eliminarResena } from '../../store/resena/thunk'
 import Swal from 'sweetalert2'
 import Slider from 'react-slick'
+import userImg from '../../heroes/user.webp'
 
 export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
 
@@ -92,7 +93,7 @@ export const ModalResenaDetalle = ({modalShowDetalle, setModalShowDetalle}) => {
                         return (
                             <>
                                 <div className='d-flex justify-content-center'>
-                                    <img src={e[0]?.urlImage} style={{height: 'auto', width: 'auto', maxHeight: '90px', maxWidth: '90px', borderRadius: '50%'}} alt="" />
+                                    <img src={e[0]?.urlImage ?? userImg} style={{height: 'auto', width: 'auto', maxHeight: '90px', maxWidth: '90px', borderRadius: '50%'}} alt="" />
                                 </div>
                                 
                                 <div className='text-center'>

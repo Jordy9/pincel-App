@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate';
+import { useResponsive } from '../../hooks/useResponsive';
 
 export const Pagination = ({setCurrentPage, usuariosFiltro, changeNumber = 25, element}) => {
 
@@ -23,15 +24,17 @@ export const Pagination = ({setCurrentPage, usuariosFiltro, changeNumber = 25, e
         }
     }, [changePage, element, changeNumber]);
 
+    const [ respWidth ] = useResponsive();
+
     return (
-        <>
+        <div>
             <ReactPaginate
                 breakLabel="..."
-                nextLabel="Siguiente"
+                nextLabel={ ( respWidth > 991 ) ? "Siguiente" : <i className="bi bi-arrow-right-circle-fill"></i> }
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={changeNumber}
+                pageRangeDisplayed={ ( respWidth > 991 ) ? changeNumber : 0.5}
                 pageCount={(total) ? total : 1}
-                previousLabel="Anterior"
+                previousLabel={ ( respWidth > 991 ) ? "Anterior" : <i className="bi bi-arrow-left-circle-fill"></i> }
                 containerClassName='pagination justify-content-center'
                 pageClassName='page-item'
                 pageLinkClassName='page-link'
@@ -44,6 +47,6 @@ export const Pagination = ({setCurrentPage, usuariosFiltro, changeNumber = 25, e
                 activeClassName='active'
                 initialPage={0}
             />
-        </>
+        </div>
     )
 }

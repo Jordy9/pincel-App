@@ -7,7 +7,6 @@ import moment from 'moment';
 import { useState } from 'react';
 import { ModalResenaPorMes } from './ModalResenaPorMes';
 import { onDoubleTap } from '../../helper/onDoubleTap';
-import { Spinner } from '../Spinner';
 
 export const CardsAdmin = ( { resenasFiltradas, mes, calificacionPorMeses, show, respWidth, changeShowResena, setChangeShowResena, defineds, changeDate, changeDateRange, showThisWeek, showLastWeek, showThreeMonth, showAllMonth, onlyThreeMonths, evaluacionFiltradaPorRango, evaluacionFiltroTodosLosMeses, evaluacionCount, isLoading } ) => {
 

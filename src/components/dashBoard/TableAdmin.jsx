@@ -118,6 +118,7 @@ export const TableAdmin = ({usuarioFiltrado, toShowResena, changeShowResena}) =>
                                 <th scope="col">Promedio de las evaluaciones</th>
                                 <th scope="col">Promedio de las reseñas</th>
                                 <th scope="col">Promedio general</th>
+                                <th scope="col">Promedio en estrellas</th>
                             </tr>
                         </thead>
                         <tbody>

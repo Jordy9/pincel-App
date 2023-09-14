@@ -130,6 +130,8 @@ export const TableContent = (props) => {
 
     const filterCapTeam = capacitacion?.filter(capacitacion => capacitacion?.team?.some(team => team?.value === usuarioTeam))
 
+    const calBase5 = ( sumaPorcentage0*5 ) /100
+
   return (
     <tr style={{cursor: 'pointer'}} onTouchStart = {(e) => onDoubleTap(e, handledActive, usuarioCompleto)} onDoubleClick={() => handledActive(usuarioCompleto)} data-bs-toggle="tooltip" data-bs-placement="left" title="Haga doble click sobre un usuario para ver su detalle">
         {
@@ -153,6 +155,7 @@ export const TableContent = (props) => {
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
                 <td>{promedioGeneralDelUsuario || 0}</td>
+                <td>{formatearNumero(calBase5) || 0} <i style={{ color: 'gold' }} className="bi bi-star-fill"></i></td>
             </>
         }
 
@@ -177,8 +180,17 @@ export const TableContent = (props) => {
                 </td>
                 <td data-bs-toggle="tooltip" data-bs-placement="left" title={`${division} Reseñas`}>{parseInt(suma/division) || 0}</td>
                 <td>{promedioGeneralDelUsuario || 0}</td>
+                <td>{formatearNumero(calBase5) || 0} <i style={{ color: 'gold' }} className="bi bi-star-fill"></i></td>
             </>
         }
     </tr>
   )
+}
+
+const formatearNumero = ( numero ) => {
+    if (numero === Math.floor(numero)) {
+      return numero.toString(); // Es un número entero, lo mostramos como está.
+    } else {
+      return numero.toFixed(1); // Es un número decimal, lo mostramos con un solo decimal.
+    }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Login } from '../components/home/Login';
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,7 +11,7 @@ import { useSocket } from '../hooks/useSocket';
 import { startSocket } from '../store/socket/socketSlice';
 import { activeMessage, isTyping } from '../store/chat/chatSlice';
 import { cargarNotificaciones } from '../store/notificaciones/thunks';
-import { obtenerResena, obtenerToResena } from '../store/resena/thunk';
+import { obtenerToResena } from '../store/resena/thunk';
 import { obtenerComunicados } from '../store/comunicado/thunk';
 import { UserRoute } from './UserRoute';
 import { AdminRoute } from './AdminRoute';
@@ -99,7 +99,6 @@ export const AppRoute = () => {
     dispatch(obtenerUsuarios())
     dispatch(iniciarAutenticacion())
     dispatch(cargarNotificaciones())
-    dispatch(obtenerResena())
     dispatch(obtenerToResena())
     dispatch(obtenerCapacitacion())
     dispatch(obtenerComunicados())
